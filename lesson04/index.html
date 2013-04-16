@@ -49,7 +49,6 @@
         }
     }
 
-
     function getShader(gl, id) {
         var shaderScript = document.getElementById(id);
         if (!shaderScript) {
@@ -148,34 +147,61 @@
     var cubeVertexPositionBuffer;
     var cubeVertexColorBuffer;
     var cubeVertexIndexBuffer;
+    var vertices = [];
+
+    function rec (p1,p2,p3,d){
+        if(d==0){
+            vertices = vertices.concat(p1).concat(p2).concat(p3);
+            return;
+        }
+
+        var m1x = ((p3[0]-p1[0])/2.0)+p1[0];
+        var m1y = ((p3[1]-p1[1])/2.0)+p1[1];
+        var m1z = ((p3[2]-p1[2])/2.0)+p1[2];
+
+        var m1 = vec3.normalize([((p3[0]-p1[0])/2.0)+p1[0] ,((p3[1]-p1[1])/2.0)+p1[1],((p3[2]-p1[2])/2.0)+p1[2]]);
+        var m2 = vec3.normalize([((p2[0]-p1[0])/2.0)+p1[0] ,((p2[1]-p1[1])/2.0)+p1[1],((p2[2]-p1[2])/2.0)+p1[2]]);
+        var m3 = vec3.normalize([((p3[0]-p2[0])/2.0)+p2[0] ,((p3[1]-p2[1])/2.0)+p2[1],((p3[2]-p2[2])/2.0)+p2[2]]);
+
+        //var m1 = vec3.normalize([(p1[0]*p2[0]*0.5),p1[1]*p2[1]*0.5,p1[2]*p2[2]*0.5]);
+        //var m2 = vec3.normalize([(p1[0]*p3[0]*0.5),p1[1]*p3[1]*0.5,p1[2]*p3[2]*0.5]);
+        //var m3 = vec3.normalize([(p2[0]*p3[0]*0.5),p2[1]*p3[1]*0.5,p2[2]*p3[2]*0.5]);
+
+        console.log(p1 +" | "+p2 +" | "+p3+" --- "+m1+" | "+m2+" | "+m3 + " --- " + m1x + " | " + m1y + " | " + m1z);
+
+        rec(m1,m2,p3,(d-1));
+        rec(m1,m2,m3,(d-1));
+        rec(m1,p2,m3,(d-1));
+        rec(p1,m1,m2,(d-1));
+    }
 
     function initBuffers() {
         pyramidVertexPositionBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, pyramidVertexPositionBuffer);
-        var vertices = [
-            // Front face
-             0.0,  1.0,  0.0,
-            -1.0, -1.0,  1.0,
-             1.0, -1.0,  1.0,
 
-            // Right face
-             0.0,  1.0,  0.0,
-             1.0, -1.0,  1.0,
-             1.0, -1.0, -1.0,
+        var p1 =  [-1.1, 1.1, 1.1];
+        var p2 =  [1.1, 1.1, -1.1];
+        var p3 =  [-1.1,-1.1,-1.1];
+        var p4 =  [1.1, -1.1, 1.1];
 
-            // Back face
-             0.0,  1.0,  0.0,
-             1.0, -1.0, -1.0,
-            -1.0, -1.0, -1.0,
 
-            // Left face
-             0.0,  1.0,  0.0,
-            -1.0, -1.0, -1.0,
-            -1.0, -1.0,  1.0
-        ];
+
+        //var p5 =  [2.0, -2.0, 2.0];
+        //vertices = p1.concat(p2).concat(p3).concat(p2).concat(p3).concat(p4).concat(p1).concat(p3).concat(p4).concat(p1).concat(p2).concat(p4);
+
+        var d=1;
+        rec(p1,p2,p3,d);
+        //rec(p2,p3,p4,d);
+        //rec(p1,p3,p4,d);
+        //rec(p1,p2,p4,d);
+
+        console.log(vertices);
+        console.log("count vert: "+vertices.length) ;
+
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
         pyramidVertexPositionBuffer.itemSize = 3;
-        pyramidVertexPositionBuffer.numItems = 12;
+        pyramidVertexPositionBuffer.numItems = 3;
+        //pyramidVertexPositionBuffer.numItems = vertices.length/3;
 
         pyramidVertexColorBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, pyramidVertexColorBuffer);
@@ -198,11 +224,77 @@
             // Left face
             1.0, 0.0, 0.0, 1.0,
             0.0, 0.0, 1.0, 1.0,
+            0.0, 1.0, 0.0, 1.0,
+
+            // Left face
+            1.0, 0.0, 0.0, 1.0,
+            0.0, 0.0, 1.0, 1.0,
+            0.0, 1.0, 0.0, 1.0,
+
+            // Front face
+            1.0, 0.0, 0.0, 1.0,
+            0.0, 1.0, 0.0, 1.0,
+            0.0, 0.0, 1.0, 1.0,
+
+            // Right face
+            1.0, 0.0, 0.0, 1.0,
+            0.0, 0.0, 1.0, 1.0,
+            0.0, 1.0, 0.0, 1.0,
+
+            // Back face
+            1.0, 0.0, 0.0, 1.0,
+            0.0, 1.0, 0.0, 1.0,
+            0.0, 0.0, 1.0, 1.0,
+
+            // Front face
+            1.0, 0.0, 0.0, 1.0,
+            0.0, 1.0, 0.0, 1.0,
+            0.0, 0.0, 1.0, 1.0,
+
+            // Right face
+            1.0, 0.0, 0.0, 1.0,
+            0.0, 0.0, 1.0, 1.0,
+            0.0, 1.0, 0.0, 1.0,
+
+            // Back face
+            1.0, 0.0, 0.0, 1.0,
+            0.0, 1.0, 0.0, 1.0,
+            0.0, 0.0, 1.0, 1.0,
+
+            // Left face
+            1.0, 0.0, 0.0, 1.0,
+            0.0, 0.0, 1.0, 1.0,
+            0.0, 1.0, 0.0, 1.0,
+
+            // Left face
+            1.0, 0.0, 0.0, 1.0,
+            0.0, 0.0, 1.0, 1.0,
+            0.0, 1.0, 0.0, 1.0,
+
+            // Front face
+            1.0, 0.0, 0.0, 1.0,
+            0.0, 1.0, 0.0, 1.0,
+            0.0, 0.0, 1.0, 1.0,
+
+            // Right face
+            1.0, 0.0, 0.0, 1.0,
+            0.0, 0.0, 1.0, 1.0,
+            0.0, 1.0, 0.0, 1.0,
+
+            // Back face
+            1.0, 0.0, 0.0, 1.0,
+            0.0, 1.0, 0.0, 1.0,
+            0.0, 0.0, 1.0, 1.0,
+
+            // Left face
+            1.0, 0.0, 0.0, 1.0,
+            0.0, 0.0, 1.0, 1.0,
             0.0, 1.0, 0.0, 1.0
+
         ];
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
-        pyramidVertexColorBuffer.itemSize = 4;
-        pyramidVertexColorBuffer.numItems = 12;
+        pyramidVertexColorBuffer.itemSize = 3;
+        pyramidVertexColorBuffer.numItems = 1;
 
 
         cubeVertexPositionBuffer = gl.createBuffer();
@@ -217,26 +309,26 @@
             // Back face
             -1.0, -1.0, -1.0,
             -1.0,  1.0, -1.0,
-             1.0,  1.0, -1.0,
-             1.0, -1.0, -1.0,
+            1.0,  1.0, -1.0,
+            1.0, -1.0, -1.0,
 
             // Top face
             -1.0,  1.0, -1.0,
             -1.0,  1.0,  1.0,
-             1.0,  1.0,  1.0,
-             1.0,  1.0, -1.0,
+            1.0,  1.0,  1.0,
+            1.0,  1.0, -1.0,
 
             // Bottom face
             -1.0, -1.0, -1.0,
-             1.0, -1.0, -1.0,
-             1.0, -1.0,  1.0,
+            1.0, -1.0, -1.0,
+            1.0, -1.0,  1.0,
             -1.0, -1.0,  1.0,
 
             // Right face
-             1.0, -1.0, -1.0,
-             1.0,  1.0, -1.0,
-             1.0,  1.0,  1.0,
-             1.0, -1.0,  1.0,
+            1.0, -1.0, -1.0,
+            1.0,  1.0, -1.0,
+            1.0,  1.0,  1.0,
+            1.0, -1.0,  1.0,
 
             // Left face
             -1.0, -1.0, -1.0,
@@ -304,11 +396,14 @@
         gl.bindBuffer(gl.ARRAY_BUFFER, pyramidVertexPositionBuffer);
         gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, pyramidVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
+
         gl.bindBuffer(gl.ARRAY_BUFFER, pyramidVertexColorBuffer);
         gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, pyramidVertexColorBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
+
         setMatrixUniforms();
         gl.drawArrays(gl.TRIANGLES, 0, pyramidVertexPositionBuffer.numItems);
+
 
         mvPopMatrix();
 
@@ -340,7 +435,7 @@
         if (lastTime != 0) {
             var elapsed = timeNow - lastTime;
 
-            rPyramid += (90 * elapsed) / 1000.0;
+            //rPyramid += (90 * elapsed) / 1000.0;
             rCube -= (75 * elapsed) / 1000.0;
         }
         lastTime = timeNow;
