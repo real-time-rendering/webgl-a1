@@ -147,49 +147,47 @@
     var cubeVertexPositionBuffer;
     var cubeVertexColorBuffer;
     var cubeVertexIndexBuffer;
-    var vertices = [];
-
-    function addtovertices(p){
-        vertices.push(p[0]);
-        vertices.push(p[1]);
-        vertices.push(p[2]);
-    }
-
-    function rec (p1,p2,p3,d){
-        if(d==0){
-            addtovertices(p1);
-            addtovertices(p2);
-            addtovertices(p3);
-            return;
+    
+    function sphere_rec (d, p1, p2, p3){
+        if(typeof p1 === 'undefined'){
+            p1 = vec3.normalize([-1.1,  1.1,  1.1]);
+            p2 = vec3.normalize([ 1.1,  1.1, -1.1]);
+            p3 = vec3.normalize([-1.1, -1.1, -1.1]);
+            p4 = vec3.normalize([ 1.1, -1.1,  1.1]);
+            return [].concat(
+                sphere_rec(d, p1, p2, p3),
+                sphere_rec(d, p2, p3, p4),
+                sphere_rec(d, p1, p3, p4),
+                sphere_rec(d, p1, p2, p4)
+            );
+        } else {
+            if(d==0){
+                return [
+                    p1[0], p1[1], p1[2],
+                    p2[0], p2[1], p2[2], 
+                    p3[0], p3[1], p3[2]
+                ];
+            } else {
+                var m1 = vec3.normalize([((p3[0]-p1[0])/2.0)+p1[0] ,((p3[1]-p1[1])/2.0)+p1[1],((p3[2]-p1[2])/2.0)+p1[2]]);
+                var m2 = vec3.normalize([((p2[0]-p1[0])/2.0)+p1[0] ,((p2[1]-p1[1])/2.0)+p1[1],((p2[2]-p1[2])/2.0)+p1[2]]);
+                var m3 = vec3.normalize([((p3[0]-p2[0])/2.0)+p2[0] ,((p3[1]-p2[1])/2.0)+p2[1],((p3[2]-p2[2])/2.0)+p2[2]]);
+                return [].concat(
+                            sphere_rec((d-1), p1, m1, m2),
+                            sphere_rec((d-1), m1, m3, p3), 
+                            sphere_rec((d-1), m2, p2, m3),
+                            sphere_rec((d-1), m1, m2, m3));
+            }
         }
-
-        var m1 = vec3.normalize([((p3[0]-p1[0])/2.0)+p1[0] ,((p3[1]-p1[1])/2.0)+p1[1],((p3[2]-p1[2])/2.0)+p1[2]]);
-        var m2 = vec3.normalize([((p2[0]-p1[0])/2.0)+p1[0] ,((p2[1]-p1[1])/2.0)+p1[1],((p2[2]-p1[2])/2.0)+p1[2]]);
-        var m3 = vec3.normalize([((p3[0]-p2[0])/2.0)+p2[0] ,((p3[1]-p2[1])/2.0)+p2[1],((p3[2]-p2[2])/2.0)+p2[2]]);
-
-        rec(p1,m1,m2,(d-1));
-        rec(m1,m3,p3,(d-1));
-        rec(m2,p2,m3,(d-1));
-        rec(m1,m2,m3,(d-1));
     }
 
     function initBuffers() {
         pyramidVertexPositionBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, pyramidVertexPositionBuffer);
 
-        var p1 =   vec3.normalize([-1.1, 1.1, 1.1]);
-        var p2 =   vec3.normalize([1.1, 1.1, -1.1]);
-        var p3 =   vec3.normalize([-1.1,-1.1,-1.1]);
-        var p4 =   vec3.normalize([1.1, -1.1, 1.1]);
-        
-        var d=6;
-        rec(p1,p2,p3,d);
-        rec(p2,p3,p4,d);
-        rec(p1,p3,p4,d);
-        rec(p1,p2,p4,d);
+        var vertices = sphere_rec(4);
 
         console.log(vertices);
-        console.log("count vert: "+vertices.length) ;
+        console.log("count vert: "+vertices.length);
 
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
         pyramidVertexPositionBuffer.itemSize = 3;
@@ -200,10 +198,10 @@
        
         var colors = [];
         for (var i = 0; i < (vertices.length/4); i++) {
-            colors.push(1);
-            colors.push(1);
-            colors.push(0);
-            colors.push(1);
+            colors.push(vertices[i*4]);
+            colors.push(vertices[i*4+1]);
+            colors.push(vertices[i*4+2]);
+            colors.push(vertices[i*4+3]);
         }
 
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
