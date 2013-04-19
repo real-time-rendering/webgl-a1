@@ -5,27 +5,61 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Real Time Rendering</title>
-    <link type="text/css" rel="stylesheet" media="screen" href="design.css" />
+    <link type="text/css" rel="stylesheet" media="screen" href="bootstrap/css/bootstrap.min.css" />
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="jquery-1.9.1.min.js"></script>
+    <script type="text/javascript">
+        function loadPage(htmlfile, cssselector){
+            if(typeof cssselector === 'undefined'){
+                cssselector = '#content';
+            }
+            $.ajax({
+                    url: htmlfile,
+                    cache: false
+                }).done(function( html ) {
+                    $(cssselector).html(html);
+            });
+        }
+        $(function(){
+            loadPage("ueber.html");
+        });
+    </script>
+    <style type="text/css">
+        #title{
+            background-image: url(bg.png);
+            background-repeat: no-repeat;
+            padding: 35px 0;
+        }
+    </style>
 </head>
 <body>
-<h1 id="title">Real Time Rendering</h1>
+    
+<div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container">
+      <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="brand" href="#">Real Time Rendering</a>
+      <div class="nav-collapse collapse">
+        <ul class="nav">
+          <li><a onclick="loadPage('ueber.html')" href="#start">Start</a></li>
+          <li><a onclick="loadPage('uebung2.html')" href="#uebung2">Übung 2</a></li>
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </div>
+</div>
+<div class="container" style="padding-top: 30px;">
+    <div class="row">
+        <h1 id="title"></br></h1>
+    </div>
 
-<div id="border"></div>
-
-<ul id="navi">
-    <li class="active"><a href="index.html" title="Home">&Uuml;ber...</a></li>
-    <li><a href="uebung2.html" title="&Uuml;bung 2">&Uuml;bung 2</a></li>
-</ul>
-
-<div id="content">
-    <h2>&Uuml;ber...</h2>
-    <p>Diese Webseite dient zur Präsentation der Übungsergebnisse von Tom Wallroth </br>
-        und Philipp Liepert im Kurs Real Time Rendering von Prof. Dr. Henrik Tramberend </br>
-        im Master-Studiengang Medieninformatik der Beuth Hochschule für Technik Berlin.</p>
-    <p><b>Tom Wallroth</b></p>
-    <p>Matrikelnummer: S798597</br>eMail:tomwallroth(at)gmail.com</p>
-    <p><b>Philipp Liepert</b></p>
-    <p>Matrikelnummer: S7980650</br>eMail: philipp(at)phillsoft.de</p>
+    <div id="content">
+        
+    </div>
 </div>
 </body>
 </html>

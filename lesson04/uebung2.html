@@ -1,68 +1,14 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Real Time Rendering</title>
-    <link type="text/css" rel="stylesheet" media="screen" href="design.css" />
-
-    <script type="text/javascript" src="glMatrix-0.9.5.min.js"></script>
-    <script type="text/javascript" src="webgl-utils.js"></script>
-    <script type="text/javascript" src="sphere.js"></script>
-    <script type="text/javascript" src="uebung2.js"></script>
-
-    <script id="shader-fs" type="x-shader/x-fragment">
-        precision mediump float;
-
-        varying vec4 vColor;
-
-        void main(void) {
-        gl_FragColor = vColor;
-        }
-    </script>
-
-    <script id="shader-vs" type="x-shader/x-vertex">
-        attribute vec3 aVertexPosition;
-        attribute vec4 aVertexColor;
-
-        uniform mat4 uMVMatrix;
-        uniform mat4 uPMatrix;
-
-        varying vec4 vColor;
-
-        void main(void) {
-        gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
-        vColor = aVertexColor;
-        }
-    </script>
-
-</head>
-
-<body onload="webGLStart();">
-<h1 id="title">Real Time Rendering</h1>
-
-<div id="border"></div>
-
-<ul id="navi">
-    <li class="active"><a href="index.html" title="Home">&Uuml;ber...</a></li>
-    <li><a href="#" title="&Uuml;bung 2">&Uuml;bung 2</a></li>
-</ul>
-
-<div id="content">
-    <h2>&Uuml;bung2</h2>
-    <p><b>Aufgabe 2.2</b></p>
-    <p>Legen sie eine Kopie der Lektion 4 des Learning WebGL Tutorials an. Ersetzen sie die dargestellte Pyramide durch eine Kugel. Lagern sie die Implementierung Ihrer Kugel in ein separates Objekt in einer eigenen Datei sphere.js aus. Parametrisieren sie die Konstruktorfunktion der Kugel mit der Rekursionstiefe und definieren sie eine Instanzfunktion draw() für die Darstellung der Kugel. Verwenden sie dafür nicht den Code aus Lektion 11, sondern erzeugen sie die Dreiecke der Kugel durch rekursive Unterteilung eines Tetraeders oder einer anderen geeigneten Ausgangsform. Recherchieren sie Details zu dem Algorithmus selbstständig. Erzeugen sie die Farbinformation für die Eckpunkte der Dreiecke aus den Koordinaten der Eckpunkte indem sie diese jeweils in das Interval [0, 1] transformieren.</p>
-    <p><b>Aufgabe 2.3</b></p>
-    <p>Ersetzen sie den Würfel in dem Beispiel durch acht um 50% verkleinerte Kugeln. Platzieren sie eine der Kugeln an jedem der acht Eckpunkte des Würfels. Erzeugen sie dabei nur eine Instanz Ihrer Kugel und transformieren diese durch Angabe von geeigneten Transformationsmatrizen an die richtigen Positionen.</p>
-    <p><b>Lösung</b></p>
-    <canvas id="lesson04-canvas" style="border: none;" width="500" height="500"></canvas>
-    <p> <a href="index.html" title="uebung2.js">uebung2.js</a></b>
-        <a href="index.html" title="sphere.js">sphere.js</a></b>
-        <a href="index.html" title="glMatrix-0.9.5.min.js">glMatrix-0.9.5.min.js</a></b>
-        <a href="index.html" title="webgl-utils.js">webgl-utils.js</a></b>
-    </p>
-    <p>Beschreibung...</p>
-</div>
-</body>
-</html>
+<h2>&Uuml;bung 2</h2>
+<p><b>Aufgabe 2.2</b></p>
+<p>Legen sie eine Kopie der Lektion 4 des Learning WebGL Tutorials an. Ersetzen sie die dargestellte Pyramide durch eine Kugel. Lagern sie die Implementierung Ihrer Kugel in ein separates Objekt in einer eigenen Datei sphere.js aus. Parametrisieren sie die Konstruktorfunktion der Kugel mit der Rekursionstiefe und definieren sie eine Instanzfunktion draw() für die Darstellung der Kugel. Verwenden sie dafür nicht den Code aus Lektion 11, sondern erzeugen sie die Dreiecke der Kugel durch rekursive Unterteilung eines Tetraeders oder einer anderen geeigneten Ausgangsform. Recherchieren sie Details zu dem Algorithmus selbstständig. Erzeugen sie die Farbinformation für die Eckpunkte der Dreiecke aus den Koordinaten der Eckpunkte indem sie diese jeweils in das Interval [0, 1] transformieren.</p>
+<p><b>Aufgabe 2.3</b></p>
+<p>Ersetzen sie den Würfel in dem Beispiel durch acht um 50% verkleinerte Kugeln. Platzieren sie eine der Kugeln an jedem der acht Eckpunkte des Würfels. Erzeugen sie dabei nur eine Instanz Ihrer Kugel und transformieren diese durch Angabe von geeigneten Transformationsmatrizen an die richtigen Positionen.</p>
+<p><b>Lösung</b></p>
+<div class="btn" onclick="$('#uebung2-frame').attr('src','uebung2/index.html')">OpenGL canvas laden und anzeigen</div>
+<br>
+<iframe width="520" height="520" id="uebung2-frame"></iframe>
+</br>
+<li><a href="uebung2/uebung2.js">uebung2.js</a></li>
+<li><a href="uebung2/sphere.js">sphere.js</a></li>
+<li><a href="uebung2/webgl-utils.js">webgl-utils.js</a></li>
+<li><a href="uebung2/glMatrix-0.9.5.min.js">glMatrix-0.9.5.min.js</a></li>
