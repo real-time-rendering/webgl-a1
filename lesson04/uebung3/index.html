@@ -1,0 +1,285 @@
+
+<!--
+A WebGL example using tdl.js (http://code.google.com/p/threedlibrary/).
+
+author: Henrik Tramberend (tramberend@beuth-hochschule.de)
+-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>WebGL using tdl.js</title>
+    <script type="text/javascript" src="tdl/base.js"></script>
+    <script type="text/javascript" src="tdl/gl-matrix.js"></script>
+    <script src="../jquery-1.9.1.min.js"></script>
+
+    <style type="text/css">
+        #error { display: none; }
+        #canvas { border: 1px solid black; }
+    </style>
+
+    <script type="text/javascript" src="lit.js"></script>
+</head>
+
+<body>
+<div class="container">
+    <pre id="error" class="alert alert-error"></pre>
+
+    <div id="canvas-container">
+        <p><canvas id="canvas" width="600" height="500"></canvas></p>
+    </div>
+</div>
+</body>
+
+<!-- Constant color -->
+
+<script id="vs0" type="text/glsl">
+    uniform mat4 projection;
+    uniform mat4 view;
+    uniform mat4 model;
+
+    attribute vec4 position;
+
+    void main() {
+    gl_Position = projection * view * model * position;
+    }
+</script>
+
+<script id="fs0" type="text/glsl">
+    precision highp float;
+
+    uniform vec3 color;
+
+    void main() {
+    gl_FragColor.rgb = 0.7 * color;
+    gl_FragColor.a = 1.0;
+    }
+</script>
+
+<!-- Lambert lighting model, Gouraud shading -->
+
+<script id="vs1" type="text/glsl">
+    uniform mat4 projection;
+    uniform mat4 view;
+    uniform mat4 model;
+
+    uniform vec3 color;
+    uniform vec3 lightIntensity;
+    uniform vec3 lightPosition;
+    uniform vec3 eyePosition;
+
+    attribute vec4 position;
+    attribute vec3 normal;
+
+    varying vec3 intensity;
+
+    vec3 lambert(vec3 normal, vec3 light,
+    vec3 intensity, vec3 reflectivity) {
+    return 0.1 * reflectivity * intensity +
+    0.6 * reflectivity * intensity * max(0.0, dot(normal, light));
+    }
+
+    void main() {
+    vec3 normalW = (model * vec4(normal, 0.0)).xyz;
+    vec4 positionW = model * position;
+    vec3 lightDirectionW = normalize(lightPosition - positionW.xyz);
+
+    intensity = lambert(normalW, lightDirectionW, lightIntensity, color);
+    gl_Position = projection * view * positionW;
+    }
+</script>
+
+<script id="fs1" type="text/glsl">
+    precision highp float;
+
+    varying vec3 intensity;
+
+    void main() {
+    gl_FragColor.rgb = intensity;
+    gl_FragColor.a = 1.0;
+    }
+</script>
+
+<!-- Phong lighting model, Gouraud shading -->
+
+<script id="vs2" type="text/glsl">
+    uniform mat4 projection;
+    uniform mat4 view;
+    uniform mat4 model;
+
+    uniform vec3 color;
+    uniform vec3 lightIntensity;
+    uniform vec3 lightPosition;
+    uniform vec3 eyePosition;
+
+    attribute vec4 position;
+    attribute vec3 normal;
+
+    varying vec3 intensity;
+
+    vec3 lambert(vec3 normal, vec3 light,
+    vec3 intensity, vec3 reflectivity) {
+    return 0.1 * reflectivity * intensity +
+    0.6 * reflectivity * intensity *
+    max(0.0, dot(normal, light));
+    }
+
+    vec3 phong(vec3 normal, vec3 eye, vec3 light,
+    vec3 intensity, vec3 reflectivity) {
+    return lambert(normal, light, intensity, reflectivity) +
+    0.3 * intensity * pow(max(0.0, dot(reflect(-eye, normal),
+    light)), 10.0);
+    }
+
+    void main() {
+    vec3 normalW = (model * vec4(normal, 0.0)).xyz;
+    vec4 positionW = model * position;
+    vec3 lightDirectionW = normalize(lightPosition - positionW.xyz);
+    vec3 eyeDirectionW = normalize(eyePosition - positionW.xyz);
+
+    intensity = phong(normalW, eyeDirectionW, lightDirectionW,
+    lightIntensity, color);
+    gl_Position = projection * view * positionW;
+    }
+</script>
+
+<script id="fs2" type="text/glsl">
+    precision highp float;
+
+    varying vec3 intensity;
+
+    void main() {
+    gl_FragColor.rgb = intensity;
+    gl_FragColor.a = 1.0;
+    }
+</script>
+
+<!-- Phong lighting model, Phong shading -->
+
+<script id="vs3" type="text/glsl">
+    uniform mat4 projection;
+    uniform mat4 view;
+    uniform mat4 model;
+
+    uniform vec3 lightPosition;
+    uniform vec3 eyePosition;
+
+    attribute vec4 position;
+    attribute vec3 normal;
+
+    varying vec3 normalW;
+    varying vec3 lightDirectionW;
+    varying vec3 eyeDirectionW;
+
+    void main() {
+    vec4 positionW = model * position;
+    normalW = (model * vec4(normal, 0.0)).xyz;
+    lightDirectionW = lightPosition - positionW.xyz;
+    eyeDirectionW = eyePosition - positionW.xyz;
+
+    gl_Position = projection * view * positionW;
+    }
+</script>
+
+<script id="fs3" type="text/glsl">
+    precision highp float;
+
+    uniform vec3 color;
+    uniform vec3 lightIntensity;
+
+    varying vec3 normalW;
+    varying vec3 lightDirectionW;
+    varying vec3 eyeDirectionW;
+
+    vec3 lambert(vec3 normal, vec3 light,
+    vec3 intensity, vec3 reflectivity) {
+    return 0.1 * reflectivity * intensity +
+    0.6 * reflectivity * intensity * max(0.0, dot(normal, light));
+    }
+
+    vec3 phong(vec3 normal, vec3 eye, vec3 light,
+    vec3 intensity, vec3 reflectivity) {
+    return lambert(normal, light, intensity, reflectivity) +
+    0.3 * intensity * pow(max(0.0, dot(reflect(-eye, normal),
+    light)), 10.0);
+    }
+
+    void main() {
+    gl_FragColor.rgb = phong(
+    normalize(normalW),
+    normalize(eyeDirectionW),
+    normalize(lightDirectionW),
+    lightIntensity, color);
+    gl_FragColor.a = 1.0;
+    }
+</script>
+
+<!-- Phong lighting model, Phong shading with texture -->
+
+<script id="vs4" type="text/glsl">
+    uniform mat4 projection;
+    uniform mat4 view;
+    uniform mat4 model;
+
+    uniform vec3 lightPosition;
+    uniform vec3 eyePosition;
+
+    attribute vec4 position;
+    attribute vec3 normal;
+    attribute vec2 texCoord;
+
+    varying vec3 normalW;
+    varying vec3 lightDirectionW;
+    varying vec3 eyeDirectionW;
+    varying vec2 texCoordI;
+
+    void main() {
+    vec4 positionW = model * position;
+    normalW = (model * vec4(normal, 0.0)).xyz;
+    lightDirectionW = lightPosition - positionW.xyz;
+    eyeDirectionW = eyePosition - positionW.xyz;
+
+    texCoordI = texCoord;
+    gl_Position = projection * view * positionW;
+    }
+</script>
+
+<script id="fs4" type="text/glsl">
+    precision highp float;
+
+    uniform vec3 lightIntensity;
+
+    uniform sampler2D earth;
+
+    varying vec3 normalW;
+    varying vec3 lightDirectionW;
+    varying vec3 eyeDirectionW;
+    varying vec2 texCoordI;
+
+    vec3 lambert(vec3 normal, vec3 light,
+    vec3 intensity, vec3 reflectivity) {
+    return 0.1 * reflectivity * intensity +
+    0.6 * reflectivity * intensity * max(0.0, dot(normal, light));
+    }
+
+    vec3 phong(vec3 normal, vec3 eye, vec3 light,
+    vec3 intensity, vec3 reflectivity) {
+    return lambert(normal, light, intensity, reflectivity) +
+    0.3 * intensity * pow(max(0.0, dot(reflect(-eye, normal),
+    light)), 10.0);
+    }
+
+    void main() {
+    vec3 color = texture2D(earth, texCoordI).rgb;
+
+    gl_FragColor.rgb = phong(
+    normalize(normalW),
+    normalize(eyeDirectionW),
+    normalize(lightDirectionW),
+    lightIntensity, color);
+    gl_FragColor.a = 1.0;
+    }
+</script>
+
+</html>
