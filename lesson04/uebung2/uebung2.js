@@ -106,34 +106,10 @@ function degToRad(degrees) {
     return degrees * Math.PI / 180;
 }
 
-var itemSize;
-var sphereVertexPositionBuffer;
-var sphereVertexColorBuffer;
-var cubeVertexPositionBuffer;
-var cubeVertexColorBuffer;
-var cubeVertexIndexBuffer;
+var sphere;
 
 function initBuffers() {
-    itemSize = 3;
-
-    // assign sphere attributes
-    sphereVertexPositionBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, sphereVertexPositionBuffer);
-
-    var sphere_vertices = sphere.vertices;
-
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(sphere_vertices), gl.STATIC_DRAW);
-    sphereVertexPositionBuffer.itemSize = itemSize;
-    sphereVertexPositionBuffer.numItems = sphere_vertices.length/itemSize;
-
-    sphereVertexColorBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, sphereVertexColorBuffer);
-
-    var colors = sphere.colors;
-
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
-    sphereVertexColorBuffer.itemSize = itemSize;
-    sphereVertexColorBuffer.numItems = 4;
+    sphere = new Sphere(gl,4);
 }
 
 
@@ -147,49 +123,22 @@ var cube_corners = [
     -1.0, -1.0,  1.0,
     -1.0,  1.0, -1.0,
     1.0, -1.0, -1.0,
-    -1.0, -1.0, -1.0,];
+    -1.0, -1.0, -1.0];
 
 function drawScene() {
     gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
     mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, pMatrix);
-
     mat4.identity(mvMatrix);
-
     mat4.translate(mvMatrix, [-1.5, 0.0, -8.0]);
 
-    mvPushMatrix();
-    mat4.rotate(mvMatrix, degToRad(rPyramid), [0, 1, 0]);
-
-    gl.bindBuffer(gl.ARRAY_BUFFER, sphereVertexPositionBuffer);
-    gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, sphereVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
-
-
-    gl.bindBuffer(gl.ARRAY_BUFFER, sphereVertexColorBuffer);
-    gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, sphereVertexColorBuffer.itemSize, gl.FLOAT, false, 0, 0);
-
-
-    setMatrixUniforms();
-    gl.drawArrays(gl.TRIANGLES, 0, sphereVertexPositionBuffer.numItems);
-
-    mvPopMatrix();
-
+    sphere.draw(gl,degToRad(rCube),[1, 1, 1],[0,0,0],[1.0,1.0,1.0]);
 
     mat4.translate(mvMatrix, [3.0, 0.0, 0.0]);
-
     for(var i=0; i<cube_corners.length/3; i++){
-        mvPushMatrix();
-        mat4.rotate(mvMatrix, degToRad(rCube), [1, 1, 1]);
-        mat4.translate(mvMatrix, cube_corners.slice(i*3,i*3+3));
-        mat4.scale(mvMatrix, [0.5,0.5,0.5]);
-        setMatrixUniforms();
-        gl.drawArrays(gl.TRIANGLES, 0, sphereVertexPositionBuffer.numItems);
-        mvPopMatrix();
+        sphere.draw(gl,degToRad(rCube),[1, 1, 1],cube_corners.slice(i*3,i*3+3),[0.5,0.5,0.5]);
     }
-
 }
-
 
 var lastTime = 0;
 

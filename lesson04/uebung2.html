@@ -1,14 +1,27 @@
 <h2>&Uuml;bung 2</h2>
+</br>
 <p><b>Aufgabe 2.2</b></p>
-<p>Legen sie eine Kopie der Lektion 4 des Learning WebGL Tutorials an. Ersetzen sie die dargestellte Pyramide durch eine Kugel. Lagern sie die Implementierung Ihrer Kugel in ein separates Objekt in einer eigenen Datei sphere.js aus. Parametrisieren sie die Konstruktorfunktion der Kugel mit der Rekursionstiefe und definieren sie eine Instanzfunktion draw() für die Darstellung der Kugel. Verwenden sie dafür nicht den Code aus Lektion 11, sondern erzeugen sie die Dreiecke der Kugel durch rekursive Unterteilung eines Tetraeders oder einer anderen geeigneten Ausgangsform. Recherchieren sie Details zu dem Algorithmus selbstständig. Erzeugen sie die Farbinformation für die Eckpunkte der Dreiecke aus den Koordinaten der Eckpunkte indem sie diese jeweils in das Interval [0, 1] transformieren.</p>
+<p>Legen sie eine Kopie der <b>Lektion 4</b> des Learning WebGL Tutorials an. Ersetzen sie die dargestellte Pyramide durch eine Kugel. Lagern sie die Implementierung Ihrer Kugel in ein separates Objekt in einer eigenen Datei <b>sphere.js</b> aus. Parametrisieren sie die Konstruktorfunktion der Kugel mit der Rekursionstiefe und definieren sie eine Instanzfunktion <b>draw()</b> für die Darstellung der Kugel. Verwenden sie dafür <b>nicht</b> den Code aus <b>Lektion 11</b>, sondern erzeugen sie die Dreiecke der Kugel durch rekursive Unterteilung eines Tetraeders oder einer anderen geeigneten Ausgangsform. Recherchieren sie Details zu dem Algorithmus selbstständig. Erzeugen sie die Farbinformation für die Eckpunkte der Dreiecke aus den Koordinaten der Eckpunkte indem sie diese jeweils in das Interval [0, 1] transformieren.</p>
+</br>
 <p><b>Aufgabe 2.3</b></p>
 <p>Ersetzen sie den Würfel in dem Beispiel durch acht um 50% verkleinerte Kugeln. Platzieren sie eine der Kugeln an jedem der acht Eckpunkte des Würfels. Erzeugen sie dabei nur eine Instanz Ihrer Kugel und transformieren diese durch Angabe von geeigneten Transformationsmatrizen an die richtigen Positionen.</p>
-<p><b>Lösung</b></p>
+</br>
+<p><b>Ergebniss</b></p>
 <div class="btn" onclick="$('#uebung2-frame').attr('src','uebung2/index.html')">OpenGL canvas laden und anzeigen</div>
 <br>
-<iframe width="520" height="520" id="uebung2-frame"></iframe>
+<iframe width="620" height="520" id="uebung2-frame"></iframe>
 </br>
 <li><a href="uebung2/uebung2.js">uebung2.js</a></li>
 <li><a href="uebung2/sphere.js">sphere.js</a></li>
 <li><a href="uebung2/webgl-utils.js">webgl-utils.js</a></li>
 <li><a href="uebung2/glMatrix-0.9.5.min.js">glMatrix-0.9.5.min.js</a></li>
+</br>
+<p><b>Lösungsansatz</b></p>
+Ausgehend von einem Tetraeder, werden die Koordinaten der die Kugel beschreibenden Dreiecke über einen rekursiven Funktionsaufruf berechnet. An die rekursive Funktion werden jeweils die Eckpunkte der das Tetraeder beschreibenden Dreiecke und der Wert der maximalen Rekursionstiefe (d>=0) übergeben. Ihr Algorithmus lässt sich wie folgt beschreiben:
+</br></br>
+So lange die Abbruchbedingung (d = 0) nicht erreicht ist, werden die Mittelpunkte (M1, M2, M3) der übergebenen Punkte (P1, P2, P3) berechnet. Die Eckpunkte der dadurch neu entstanden Dreiecke werden normalisiert, der Ergebnismenge hinzugefügt und erneut der rekursiven Funktion (mit d = d-1) übergeben. Dabei gilt:
+</br></br>
+<b>M1 = (P3 x,y - P1 x,y)/2+P1 x,y</b></br>
+<b>M2 = (P2 x,y - P1 x,y)/2+P1 x,y</b></br>
+<b>M3 = (P3 x,y – P2 x,y)/2+P2 x,y</b></br></br>
+<img src="uebung2/tetraeder.png"/>
