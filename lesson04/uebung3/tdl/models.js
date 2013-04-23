@@ -131,7 +131,7 @@ tdl.models.Model.prototype.drawPrep = function() {
   var buffers = this.buffers;
   var textures = this.textures;
 
-  program.use();
+program.use();
   for (var buffer in buffers) {
     var b = buffers[buffer];
     if (buffer == 'indices') {

@@ -20,7 +20,7 @@ window.onload = function() {
         var width = $('#canvas-container').innerWidth();
         $('#canvas')
             .attr('width', width)
-            .attr('height', width * 0.6);
+            .attr('height', width * 0.5);
     });
     $(window).resize();
     try {
@@ -57,7 +57,7 @@ function initialize() {
 
     // Load textures.
     var textures = {
-        earth: tdl.textures.loadTexture('earth-2k-land-ocean-noshade.png'),
+        earth: tdl.textures.loadTexture('earth-2k-land-ocean-noshade.png')
     };
 
     var frag =  window.location.hash.substring(1);
@@ -67,8 +67,10 @@ function initialize() {
     // program.
     var sphere = new tdl.models.Model(
         programs[pnum],
-        tdl.primitives.createSphere(0.4, 10, 12),
-        textures);
+
+        tdl.primitives.createTorus(0.28,0.15,30,20),textures);
+       // tdl.primitives.createCylinder(0.4,0.4,9,9),textures);
+       // tdl.primitives.createSphere(0.4, 10, 12),textures);
 
     // Register a keypress-handler for shader program switching using the number
     // keys.
@@ -170,8 +172,10 @@ function initialize() {
         for (var xx = 0; xx < across; ++xx) {
             for (var yy = 0; yy < across; ++yy) {
                 for (var zz = 0; zz < across; ++zz) {
-                    //console.log("bla " + spherePer.model[2] );
-                    mat4.translate(mat4.identity(spherePer.model), [xx - half, yy - half, zz - half]);
+                    var ident = mat4.identity(spherePer.model);
+                    mat4.rotate(ident,90* Math.PI / 180,[1, 0, 0]);
+                    mat4.translate(ident, [xx - half, yy - half, zz - half]);
+
                     spherePer.color[0] = xx / (across - 1);
                     spherePer.color[1] = yy / (across - 1);
                     spherePer.color[2] = zz / (across - 1);
