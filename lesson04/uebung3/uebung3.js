@@ -88,8 +88,21 @@ function initialize() {
     var model = mat4.create();
 
     // Uniforms for lighting.
-    var lightPosition = vec3.create([10, 10, 10]);
-    var lightIntensity = vec3.create([1, 1, 1]);
+    //var lightPosition = vec3.create([10, 10, 10]);
+    var LIGHT_NUM = 4;
+    var lightPos = [10, 10, 10];
+    var lightPositions = [];
+    var lightColors = [];
+    for(var i=0; i<LIGHT_NUM; i++){
+        lightPositions = lightPositions.concat([10, 10, 10]);
+    }
+    lightColors = [1.0,0.0,0.0, 0.0,1.0,0.0, 0.0,0.0,1.0, 1.0,1.0,1.0];
+    lightPositions = [10,10,10, 0,10,10, 10,0,10, 0,0,0];
+    lightPositions = Float32Array(lightPositions);
+    
+    var lightIntensity = vec3.create([0.5,
+                                      0.5,
+                                      0.5]);
     var color = vec3.create();
 
     var eyePosition = vec3.create();
@@ -112,8 +125,8 @@ function initialize() {
         view: view,
         projection: projection,
         eyePosition: eyePosition,
-        lightPosition: lightPosition,
-        lightIntensity: lightIntensity,
+        lightPositions: lightPositions,
+        lightColors: lightColors,
         time: clock
     };
 
