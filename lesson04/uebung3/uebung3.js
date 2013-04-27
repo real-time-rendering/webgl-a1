@@ -16,13 +16,6 @@ function createProgramsFromTags() {
 
 // Registers an onload handler.
 window.onload = function() {
-    $(window).resize(function() {
-        var width = $('#canvas-container').innerWidth();
-        $('#canvas')
-            .attr('width', width)
-            .attr('height', width * 0.5);
-    });
-    $(window).resize();
     try {
         initialize();
     } catch (e) {
@@ -35,7 +28,7 @@ window.onload = function() {
 function perFaceNormals(arrays) {
     var n = arrays.indices.numElements;
     var idx = arrays.indices;
-    var pos = arrays.position;
+    //var pos = arrays.position;
     var nrm = arrays.normal;
     for (var ti = 0; ti != n; ti++) {
         var i = idx.getElement(ti);
@@ -63,14 +56,12 @@ function initialize() {
     var frag =  window.location.hash.substring(1);
     var pnum = frag ? parseInt(frag) : 0;
 
-    // Create a sphere mesh that initialy is renderd using the first shader
+    // Create a torus mesh that initialy is renderd using the first shader
     // program.
-    var sphere = new tdl.models.Model(
+    var torus = new tdl.models.Model(
         programs[pnum],
 
         tdl.primitives.createTorus(0.28,0.15,30,20),textures);
-       // tdl.primitives.createCylinder(0.4,0.4,9,9),textures);
-       // tdl.primitives.createSphere(0.4, 10, 12),textures);
 
     // Register a keypress-handler for shader program switching using the number
     // keys.
@@ -79,7 +70,7 @@ function initialize() {
         if (n == "s")
             animate = !animate;
         else
-            sphere.setProgram(programs[n % programs.length]);
+            torus.setProgram(programs[n % programs.length]);
     };
 
     // Create some matrices and vectors now to save time later.
@@ -90,19 +81,19 @@ function initialize() {
     // Uniforms for lighting.
     //var lightPosition = vec3.create([10, 10, 10]);
     var LIGHT_NUM = 4;
-    var lightPos = [10, 10, 10];
+    //var lightPos = [10, 10, 10];
     var lightPositions = [];
-    var lightColors = [];
+    //var lightColors = [];
     for(var i=0; i<LIGHT_NUM; i++){
         lightPositions = lightPositions.concat([10, 10, 10]);
     }
-    lightColors = [1.0,0.0,0.0, 0.0,1.0,0.0, 0.0,0.0,1.0, 1.0,1.0,1.0];
+    var lightColors = [1.0,0.0,0.0, 0.0,1.0,0.0, 0.0,0.0,1.0, 1.0,1.0,1.0];
     lightPositions = [10,10,10, 0,10,10, 10,0,10, 0,0,0];
-    lightPositions = Float32Array(lightPositions);
+    lightPositions = new Float32Array(lightPositions);
     
-    var lightIntensity = vec3.create([0.5,
+    /*var lightIntensity = vec3.create([0.5,
                                       0.5,
-                                      0.5]);
+                                      0.5]);  */
     var color = vec3.create();
 
     var eyePosition = vec3.create();
@@ -121,7 +112,7 @@ function initialize() {
     var clock = 0.0;
 
     // Uniform variables that are the same for all sphere in one frame.
-    var sphereConst = {
+    var torusConst = {
         view: view,
         projection: projection,
         eyePosition: eyePosition,
@@ -130,8 +121,8 @@ function initialize() {
         time: clock
     };
 
-    // Uniform variables that change for each sphere in a frame.
-    var spherePer = {
+    // Uniform variables that change for each torus in a frame.
+    var torusPer = {
         model: model,
         color: color
     };
@@ -154,7 +145,7 @@ function initialize() {
         eyePosition[2] = Math.cos(clock * eyeSpeed) * eyeRadius;
 
         // Setup global WebGL rendering behavior.
-        gl.viewport(0, 0, canvas.width, canvas.width * 0.6);
+        gl.viewport(0, 0, canvas.width, canvas.width * 0.9);
         gl.colorMask(true, true, true, true);
         gl.depthMask(true);
         gl.clearColor(0.5, 0.5, 0.5, 1);
@@ -176,25 +167,25 @@ function initialize() {
             eyePosition, target, up,
             view);
 
-        // Prepare rendering of spheres.
-        sphereConst.time = clock;
-        sphere.drawPrep(sphereConst);
+        // Prepare rendering of toruses.
+        torusConst.time = clock;
+        torus.drawPrep(torusConst);
 
         var across = 3;
         var half = (across - 1) / 2.0;
         for (var xx = 0; xx < across; ++xx) {
             for (var yy = 0; yy < across; ++yy) {
                 for (var zz = 0; zz < across; ++zz) {
-                    var ident = mat4.identity(spherePer.model);
+                    var ident = mat4.identity(torusPer.model);
                     mat4.rotate(ident,90* Math.PI / 180,[1, 0, 0]);
                     mat4.translate(ident, [xx - half, yy - half, zz - half]);
 
-                    spherePer.color[0] = xx / (across - 1);
-                    spherePer.color[1] = yy / (across - 1);
-                    spherePer.color[2] = zz / (across - 1);
+                    torusPer.color[0] = xx / (across - 1);
+                    torusPer.color[1] = yy / (across - 1);
+                    torusPer.color[2] = zz / (across - 1);
 
-                    // Actually render one sphere.
-                    sphere.draw(spherePer);
+                    // Actually render one torus.
+                    torus.draw(torusPer);
                 }
             }
         }
