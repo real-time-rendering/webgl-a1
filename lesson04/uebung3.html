@@ -1,25 +1,46 @@
 <h2>&Uuml;bung 2</h2>
 </br>
 <p><b>Aufgabe 3.1</b></p>
+<p>Modifizieren sie den Phong-Shader aus Beispiel 2 so, dass die berechnete Oberflächenintensität, wie im Bild zu sehen, in vier Abstufungen diskretisiert wird. Achten sie dabei besonders auf die korrekte Wiedergabe des Glanzlichts.
+</br>
+</br>
+Wählen sie zur Demonstration Ihrer Implementierung eine andere Geometrie aus dem TDL-Angebot als die im Beispiel verwendeten Kugeln. Toon-Shading auf Kugeln sieht nicht so toll aus.</p>
 </br>
 <p><b>Aufgabe 3.2</b></p>
+Modifizieren sie den Toon-Shader aus Aufgabe 3.1 so, dass die Szene von unabhägigen und verschiedenfarbigen Lichtquellen an unterschiedlichen Positionen beleuchtet wird. Intensität und Position der Lichtquellen soll von der Anwendung aus über <b>uniform</b> Variablen steuerbar sein. Wählen sie Geometrie und Farben so, dass der Effekt gut zur Geltung kommt.
+</br>
+</br>
+<p><b>Lösungsansatz</b></p>
 </br>
 <p><b>Ergebniss</b></p>
 <div class="btn" onclick="$('#uebung2-frame').attr('src','uebung3/index.html')">OpenGL canvas laden und anzeigen</div>
 <br>
 <iframe width="620" height="530" id="uebung2-frame"></iframe>
 </br>
-
-</br>
-<p><b>Lösungsansatz</b></p>
+<li><a href="uebung3/index.html">index.html</a></li>
+<li><a href="uebung3/uebung3.js">uebung3.js</a></li>
 </br>
 <p><b>Aufgabe 3.3</b></p>
+<p>Modifizieren sie Ihren Toon-Shader so, dass die Oberfläche nicht einfarbig erscheint, sondern mit gleichmäßig verteilten andersfarbigen Punkten übersät ist. Farbe, Dichte und Radius der Punkte sollen über drei Uniform-Variablen von geeignetem Typ aus der Anwendung heraus über die Tastatur steuerbar sein.
+<br>
+Zur Implementierung benötigen sie Zugriff auf die Texturkoordinaten für jedes Fragment . Dazu müssen diese im Vertex-Programm per <b>attribute</b> Variable von der Anwendung entgegen genommen, und mit einer <b>varying</b> Variable an das Fragment-Programm übergeben werden</p>
+</br>
+<p><b>Lösungsansatz</b></p>
 </br>
 <p><b>Ergebniss</b></p>
 <div class="btn" onclick="$('#uebung2_3-frame').attr('src','uebung3/index2.html')">OpenGL canvas laden und anzeigen</div>
 <br>
 <iframe width="620" height="530" id="uebung2_3-frame"></iframe>
 </br>
-
+</br>
+<p><b>Aufgabe 3.4</b></p>
+<p>Implementieren sie einen weiteren prozeduralen Shader ihrer Wahl. Lassen sie sich dabei von Beispielen aus dem Web inspirieren. Bedenken sie z.B., dass prozedurale Texturen nicht notwendigerweise statisch sind, sondern sich durch Übergabe der Uhrzeit per <b>uniform</b> Variable auch animieren lassen.</p>
 </br>
 <p><b>Lösungsansatz</b></p>
+</br>
+<p><b>Ergebniss</b></p>
+<div class="btn" onclick="$('#uebung2_4-frame').attr('src','uebung3/index2.html')">OpenGL canvas laden und anzeigen</div>
+<br>
+<iframe width="620" height="530" id="uebung2_4-frame"></iframe>
+</br>
+</br>

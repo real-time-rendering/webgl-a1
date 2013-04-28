@@ -6,6 +6,16 @@
 <p><b>Aufgabe 2.3</b></p>
 <p>Ersetzen sie den Würfel in dem Beispiel durch acht um 50% verkleinerte Kugeln. Platzieren sie eine der Kugeln an jedem der acht Eckpunkte des Würfels. Erzeugen sie dabei nur eine Instanz Ihrer Kugel und transformieren diese durch Angabe von geeigneten Transformationsmatrizen an die richtigen Positionen.</p>
 </br>
+<p><b>Lösungsansatz</b></p>
+Ausgehend von einem Tetraeder, werden die Koordinaten der die Kugel beschreibenden Dreiecke über einen rekursiven Funktionsaufruf berechnet. An die rekursive Funktion werden jeweils die Eckpunkte der das Tetraeder beschreibenden Dreiecke und der Wert der maximalen Rekursionstiefe (d>=0) übergeben. Ihr Algorithmus lässt sich wie folgt beschreiben:
+</br></br>
+So lange die Abbruchbedingung (d = 0) nicht erreicht ist, werden die Mittelpunkte (M1, M2, M3) der übergebenen Punkte (P1, P2, P3) berechnet. Die Eckpunkte der dadurch neu entstanden Dreiecke werden normalisiert, der Ergebnismenge hinzugefügt und erneut der rekursiven Funktion (mit d = d-1) übergeben. Dabei gilt:
+</br></br>
+<b>M1 = (P3 x,y - P1 x,y)/2+P1 x,y</b></br>
+<b>M2 = (P2 x,y - P1 x,y)/2+P1 x,y</b></br>
+<b>M3 = (P3 x,y – P2 x,y)/2+P2 x,y</b></br></br>
+<img src="uebung2/tetraeder.png"/>
+</br>
 <p><b>Ergebniss</b></p>
 <div class="btn" onclick="$('#uebung2-frame').attr('src','uebung2/index.html')">OpenGL canvas laden und anzeigen</div>
 <br>
@@ -16,12 +26,3 @@
 <li><a href="uebung2/webgl-utils.js">webgl-utils.js</a></li>
 <li><a href="uebung2/glMatrix-0.9.5.min.js">glMatrix-0.9.5.min.js</a></li>
 </br>
-<p><b>Lösungsansatz</b></p>
-Ausgehend von einem Tetraeder, werden die Koordinaten der die Kugel beschreibenden Dreiecke über einen rekursiven Funktionsaufruf berechnet. An die rekursive Funktion werden jeweils die Eckpunkte der das Tetraeder beschreibenden Dreiecke und der Wert der maximalen Rekursionstiefe (d>=0) übergeben. Ihr Algorithmus lässt sich wie folgt beschreiben:
-</br></br>
-So lange die Abbruchbedingung (d = 0) nicht erreicht ist, werden die Mittelpunkte (M1, M2, M3) der übergebenen Punkte (P1, P2, P3) berechnet. Die Eckpunkte der dadurch neu entstanden Dreiecke werden normalisiert, der Ergebnismenge hinzugefügt und erneut der rekursiven Funktion (mit d = d-1) übergeben. Dabei gilt:
-</br></br>
-<b>M1 = (P3 x,y - P1 x,y)/2+P1 x,y</b></br>
-<b>M2 = (P2 x,y - P1 x,y)/2+P1 x,y</b></br>
-<b>M3 = (P3 x,y – P2 x,y)/2+P2 x,y</b></br></br>
-<img src="uebung2/tetraeder.png"/>

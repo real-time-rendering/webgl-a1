@@ -39,6 +39,8 @@ function perFaceNormals(arrays) {
     return arrays;
 };
 
+
+
 // The main entry point.
 function initialize() {
     // Setup the canvas widget for WebGL.
@@ -67,10 +69,14 @@ function initialize() {
     // keys.
     window.onkeypress = function(event) {
         var n = String.fromCharCode(event.which);
+
+
         if (n == "s")
             animate = !animate;
-        else
-            torus.setProgram(programs[n % programs.length]);
+        else if (n == "1")
+            torusConst.showToon=true;
+        else if (n == "2")
+            torusConst.showToon=false;
     };
 
     // Create some matrices and vectors now to save time later.
@@ -80,15 +86,15 @@ function initialize() {
 
     // Uniforms for lighting.
     //var lightPosition = vec3.create([10, 10, 10]);
-    var LIGHT_NUM = 4;
+    var LIGHT_NUM = 3;
     //var lightPos = [10, 10, 10];
     var lightPositions = [];
     //var lightColors = [];
     for(var i=0; i<LIGHT_NUM; i++){
-        lightPositions = lightPositions.concat([10, 10, 10]);
+        lightPositions = lightPositions.concat([50, 50, 50]);
     }
-    var lightColors = [1.0,0.0,0.0, 0.0,1.0,0.0, 0.0,0.0,1.0, 1.0,1.0,1.0];
-    lightPositions = [10,10,10, 0,10,10, 10,0,10, 0,0,0];
+    var lightColors = [1.0,1.0,1.0, 1.0,1.0,1.0, 1.0,1.0,1.0];
+    lightPositions = [50,50,50, 50,50,-50, -50,50,-50];
     lightPositions = new Float32Array(lightPositions);
     
     /*var lightIntensity = vec3.create([0.5,
@@ -110,6 +116,7 @@ function initialize() {
     var elapsedTime = 0.0;
     var then = 0.0;
     var clock = 0.0;
+    var showToon = true;
 
     // Uniform variables that are the same for all sphere in one frame.
     var torusConst = {
@@ -118,7 +125,8 @@ function initialize() {
         eyePosition: eyePosition,
         lightPositions: lightPositions,
         lightColors: lightColors,
-        time: clock
+        time: clock,
+        showToon: showToon
     };
 
     // Uniform variables that change for each torus in a frame.
