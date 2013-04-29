@@ -66,10 +66,23 @@ function initialize() {
     // keys.
     window.onkeypress = function(event) {
         var n = String.fromCharCode(event.which);
-        if (n == "s")
+        var radiusdings = ['q', 'w', 'e', 'r', 't', 'z', 'u', 'i', 'o', 'p'];
+        var farbdings = ['y', 'x', 'c'];
+        if( n == "s"){
             animate = !animate;
-        else
-            torus.setProgram(programs[n % programs.length]);
+        } else if(n>='0' && n <= '9'){
+            torusConst.pointdensity = parseInt(n)*10;
+        } else if(radiusdings.indexOf(n)!=-1){
+            torusConst.pointradius = (radiusdings.indexOf(n)/radiusdings.length);
+        } else if(farbdings.indexOf(n) != -1){
+            if(farbdings.indexOf(n) == 0){
+                torusConst.pointcolor = vec3.create([1,0,0]);
+            } else if(farbdings.indexOf(n) == 1){
+                torusConst.pointcolor = vec3.create([0,1,0]);
+            } else if(farbdings.indexOf(n) == 2){
+                torusConst.pointcolor = vec3.create([0,0,1]);
+            }
+        }
     };
 
     // Create some matrices and vectors now to save time later.
@@ -117,7 +130,10 @@ function initialize() {
         eyePosition: eyePosition,
         lightPositions: lightPositions,
         lightColors: lightColors,
-        time: clock
+        time: clock,
+        pointdensity: 1.0,
+        pointradius: 0.5,
+        pointcolor: vec3.create([1,1,1])
     };
 
     // Uniform variables that change for each torus in a frame.
@@ -129,8 +145,8 @@ function initialize() {
     // Renders one frame and registers itself for the next frame.
     function render() {
         tdl.webgl.requestAnimationFrame(render, canvas);
-
         // Do the time keeping.
+
         var now = (new Date()).getTime() * 0.001;
         elapsedTime = (then == 0.0 ? 0.0 : now - then);
         then = now;
