@@ -93,7 +93,6 @@ function initialize() {
     for(var i=0; i<LIGHT_NUM; i++){
         lightPositions = lightPositions.concat([50, 50, 50]);
     }
-    var lightColors = [1.0,1.0,1.0, 1.0,1.0,1.0, 1.0,1.0,1.0];
     lightPositions = [50,50,50, 50,50,-50, -50,50,-50];
     lightPositions = new Float32Array(lightPositions);
     
@@ -124,7 +123,6 @@ function initialize() {
         projection: projection,
         eyePosition: eyePosition,
         lightPositions: lightPositions,
-        lightColors: lightColors,
         time: clock,
         showToon: showToon
     };
