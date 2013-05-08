@@ -96,9 +96,9 @@ author: Henrik Tramberend (tramberend@beuth-hochschule.de)
     }
 
     vec3 phong(vec3 normal, vec3 eye, vec3 light, vec3 intensity, vec3 reflectivity) {
-        float vdotn = dot(reflect(-eye, normal), light);
+       float vdotn = dot(reflect(-eye, normal), light);
 
-        float outline = dot(normal, eye);
+       float outline = dot(normal, eye);
        if((outline < 0.1 )){
             return vec3(0.0, 0.0, 0.0);
         }

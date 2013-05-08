@@ -108,7 +108,7 @@
         if(outline < 0.2){
             return vec3(0.0, 0.0, 0.0);
         }
-        vec3 specular = 0.6 * intensity * pow(max(0.0, vdotn), 1.0);
+        vec3 specular = 0.6 * intensity * pow(max(0.0, vdotn), 8.0);
         return lambert(normal, light, intensity, reflectivity) + specular;
     }
 
@@ -119,7 +119,7 @@
         float cpoints = pointdensity;
         vec2 tc = floor(texCoordI * cpoints);
 
-        vec3 tcolor = vec3(1.0,0.0,1.0);
+        vec3 tcolor = vec3(0.0,0.9,0.0);
 
         float funky_time = abs(sin(time));
 

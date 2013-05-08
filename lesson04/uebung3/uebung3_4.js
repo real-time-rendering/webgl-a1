@@ -68,7 +68,7 @@ function initialize() {
         var n = String.fromCharCode(event.which);
         var radiusdings = ['q', 'w', 'e', 'r', 't', 'z', 'u', 'i', 'o', 'p'];
         var farbdings = ['y', 'x', 'c'];
-        if( n == "s"){
+        if( n == "l"){
             animate = !animate;
         } else if(n>='0' && n <= '9'){
             torusConst.pointdensity = parseInt(n)*10;
@@ -78,7 +78,7 @@ function initialize() {
             if(farbdings.indexOf(n) == 0){
                 torusConst.pointcolor = vec3.create([1,0,0]);
             } else if(farbdings.indexOf(n) == 1){
-                torusConst.pointcolor = vec3.create([0,1,0]);
+                torusConst.pointcolor = vec3.create([1,0.2431,1]);
             } else if(farbdings.indexOf(n) == 2){
                 torusConst.pointcolor = vec3.create([0,0,1]);
             }
@@ -103,9 +103,6 @@ function initialize() {
     lightPositions = [10,10,10, 0,10,10, 10,0,10, 0,0,0];
     lightPositions = new Float32Array(lightPositions);
 
-    /*var lightIntensity = vec3.create([0.5,
-     0.5,
-     0.5]);  */
     var color = vec3.create();
 
     var eyePosition = vec3.create();
@@ -131,9 +128,9 @@ function initialize() {
         lightPositions: lightPositions,
         lightColors: lightColors,
         time: clock,
-        pointdensity: 1.0,
+        pointdensity: 50.0,
         pointradius: 0.5,
-        pointcolor: vec3.create([1,1,1])
+        pointcolor: vec3.create([1,0,0])
     };
 
     // Uniform variables that change for each torus in a frame.
