@@ -14,7 +14,7 @@
     <file path="/uebung3.js" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1367151221297" ignored="false" />
     <file path="/index2.html" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1367234664412" ignored="false" />
     <file path="/uebung3_3.js" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1368005905695" ignored="false" />
-    <file path="/uebung3.html" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1368009362047" ignored="false" />
+    <file path="/uebung3.html" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1368438858051" ignored="false" />
     <file path="/dummy.xml" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1368008591899" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -38,7 +38,7 @@
       <file leaf-file-name="index3.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/uebung3/index3.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="118" column="150" selection-start="3354" selection-end="3354" vertical-scroll-proportion="-7.0833335">
+            <state line="118" column="150" selection-start="3354" selection-end="3354" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -47,7 +47,25 @@
       <file leaf-file-name="uebung3.html" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/uebung3.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="85" column="0" selection-start="5762" selection-end="5762" vertical-scroll-proportion="0.38398358">
+            <state line="54" column="693" selection-start="4326" selection-end="4326" vertical-scroll-proportion="-0.26269957">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index2.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/uebung3/index2.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="139" column="9" selection-start="4154" selection-end="4154" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/uebung3/index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="79" column="4" selection-start="2187" selection-end="2280" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -56,7 +74,7 @@
       <file leaf-file-name="uebung3_4.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/uebung3/uebung3_4.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="70" column="19" selection-start="2164" selection-end="2164" vertical-scroll-proportion="1.04">
+            <state line="70" column="19" selection-start="2164" selection-end="2164" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -122,6 +140,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -156,19 +175,18 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="options.lastSelected" value="reference.settingsdialog.IDE.editor.colors" />
     <property name="recentsLimit" value="5" />
+    <property name="options.lastSelected" value="reference.settingsdialog.IDE.editor.colors" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="FullScreen" value="false" />
     <property name="DefaultHtmlFileTemplate" value="Html5" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -269,12 +287,12 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1440" height="874" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32891247" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14820042" sideWeight="0.7320955" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14820042" sideWeight="0.7320955" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26790452" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
@@ -397,23 +415,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/uebung2.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="23" column="0" selection-start="2346" selection-end="2449" vertical-scroll-proportion="-14.375">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/uebung3/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="103" column="9" selection-start="2854" selection-end="2966" vertical-scroll-proportion="-11.458333">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/uebung3/uebung3.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="148" column="22" selection-start="4234" selection-end="4234" vertical-scroll-proportion="-0.6889313">
-          <folding />
-        </state>
+        <state line="23" column="0" selection-start="2346" selection-end="2449" vertical-scroll-proportion="-14.375" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/uebung3/uebung3_3.js">
@@ -423,30 +425,44 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/uebung3/index2.html">
+    <entry file="file://$PROJECT_DIR$/uebung3/uebung3.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="139" column="9" selection-start="4154" selection-end="4154" vertical-scroll-proportion="0.99">
+        <state line="148" column="22" selection-start="4234" selection-end="4234" vertical-scroll-proportion="1.1570247">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/uebung3/uebung3_4.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="70" column="19" selection-start="2164" selection-end="2164" vertical-scroll-proportion="1.04">
+        <state line="70" column="19" selection-start="2164" selection-end="2164" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/uebung3/index3.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="118" column="150" selection-start="3354" selection-end="3354" vertical-scroll-proportion="-7.0833335">
+        <state line="118" column="150" selection-start="3354" selection-end="3354" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uebung3/index2.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="139" column="9" selection-start="4154" selection-end="4154" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uebung3/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="79" column="4" selection-start="2187" selection-end="2280" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/uebung3.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="85" column="0" selection-start="5762" selection-end="5762" vertical-scroll-proportion="0.38398358">
+        <state line="54" column="693" selection-start="4326" selection-end="4326" vertical-scroll-proportion="-0.26269957">
           <folding />
         </state>
       </provider>

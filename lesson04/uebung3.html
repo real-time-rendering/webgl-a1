@@ -10,9 +10,14 @@ Wählen sie zur Demonstration Ihrer Implementierung eine andere Geometrie aus de
 <p>Modifizieren sie den Toon-Shader aus Aufgabe 3.1 so, dass die Szene von unabhägigen und verschiedenfarbigen Lichtquellen an unterschiedlichen Positionen beleuchtet wird. Intensität und Position der Lichtquellen soll von der Anwendung aus über <b>uniform</b> Variablen steuerbar sein. Wählen sie Geometrie und Farben so, dass der Effekt gut zur Geltung kommt.</p>
 </br>
 <p><b>Lösungsansatz</b></p>
-<p>Um eine möglichst Comic-artige Darstellung zu erreichen, wird der Phong-Shader an zwei stellen angepasst. Zum einen wird der im Fragment Shader Programm durch die Phongfunktion berechnete Farbwert für den jeweiligen Pixel so diskretisier, dass ein möglichst kantiger (aus maximal 4 Farben bestehender) farbverlauf auf dem 3D-Körper entsteht:</p>
+<p>Um eine möglichst Comic-artige Darstellung zu erreichen, wird der Phong-Shader an zwei Stellen angepasst. Zum Einen wird der im Fragment Shader Programm durch die Phong-Funktion berechnete Farbwert für den jeweiligen Pixel so diskretisiert, dass ein möglichst kantiger (aus maximal 4 Farben bestehender) Farbverlauf auf dem 3D-Körper entsteht:</p>
 <p>
-    <b><i>vec3 discrete(vec3 c, float steps){
+    <b><i>
+    </br>float discrete(float f, float steps){
+    </br>&nbsp;return float(int(f*steps + 0.5)) / steps;
+    </br>}
+    </br>
+    </br>vec3 discrete(vec3 c, float steps){
     </br>return vec3(
     </br>&nbsp;&nbsp;discrete(c.r, steps),
     </br>&nbsp;&nbsp;discrete(c.g, steps),
@@ -21,12 +26,13 @@ Wählen sie zur Demonstration Ihrer Implementierung eine andere Geometrie aus de
     </br>
     </br>gl_FragColor.rgb = discrete(phongcolor, 3.0);
     </br></br></i></b></p>
-<p>Zum anderen wird ein schwarzer Rand um die 3D-Objekte gezeichnet. Hierfür wird das Punktprodukt zwischen Sicht(Kamera)-Vektor und dem Normalen-Vektor an der jeweiligen Position bestimmt. Ist das Ergebnis kleiner als 0.1, dann  ist der Winkel zwischen Normalen- und Sicht-Vektor nahe 90° und der Bereich wird schwarz gezeichnet:</p>
+<p>Zum Anderen wird ein schwarzer Rand um die 3D-Objekte gezeichnet. Hierfür wird das Punktprodukt zwischen Sicht(Kamera)-Vektor und dem Normalen-Vektor an der jeweiligen Position bestimmt. Ist das Ergebnis kleiner als 0.1, dann  ist der Winkel zwischen Normalen- und Sicht-Vektor nahe 90° und der Bereich wird schwarz gezeichnet:</p>
 <p><b><i>float outline = dot(normal, eye);
     </br>if((outline < 0.1 )){
     </br>&nbsp;&nbsp;return vec3(0.0, 0.0, 0.0);
-    </br>}</i></b></p></br></br>
-
+    </br>}</i></b></p>
+<p>Die die Lichtquellen bestimmenden Werte werden in Form von Gleitkomma-Arrays über den JavaScript-Code an das Shaderprogramm übergeben. Für die Bestimmung eines Farbwerts an einer bestimmten Stelle, wird über alle vorhandenen Lichtquellen iteriert und die errechnetten Farbeinzelwerte addiert.</p>
+</br></br>
 <p><b>Ergebniss</b></p>
 <div class="btn" onclick="$('#uebung2-frame').attr('src','uebung3/index.html'); $('#uebung2-frame').focus()">OpenGL canvas laden und anzeigen</div>
 <br>
@@ -46,7 +52,7 @@ Wählen sie zur Demonstration Ihrer Implementierung eine andere Geometrie aus de
 Zur Implementierung benötigen sie Zugriff auf die Texturkoordinaten für jedes Fragment . Dazu müssen diese im Vertex-Programm per <b>attribute</b> Variable von der Anwendung entgegen genommen, und mit einer <b>varying</b> Variable an das Fragment-Programm übergeben werden</p>
 </br>
 <p><b>Lösungsansatz</b></p>
-<p>Innerhalb des Fragment Shader Programms werden die die Koordianten der Texture repräsentierenden, als <b>varying Variable</b> übergebenen Werte zunächst mit einem die Anzahl der Punkte festlegendem Wert multipliziert und dann diskretisiert. Wendet man danach den Modulo-Operator auf die dikretisierten Werte mit 2 an, lässt sich die gesamte Oberfläche eines 3D-Objektes in ein Schachbrett-artiges Kachelmuster aufteilen. </br>In den Kacheln bei denen der Rest der Modulo-Operation 0.0 beträgt  müssen dann nur noch die Punkte gezeichnet werden. Die jeweils aktuellen Koordinaten sind Teil eines Punktes, wenn sofern sich ihr Abstand zum Mittelpunkt der aktuellen Kachel kleiner als ein bestimmter Wert ist. </p>
+<p>Innerhalb des Fragment Shader Programms werden die die Koordianten der Texture repräsentierenden, als <b>varying Variable</b> übergebenen Werte zunächst mit einem die Anzahl der Punkte festlegendem Wert multipliziert und dann diskretisiert. Wendet man danach den Modulo-Operator auf die dikretisierten Werte mit 2 an, lässt sich die gesamte Oberfläche eines 3D-Objektes in ein Schachbrett-artiges Kachelmuster aufteilen. </br>In den Kacheln bei denen der Rest der Modulo-Operation 0.0 beträgt  müssen dann nur noch die Punkte gezeichnet werden. Die jeweils aktuellen Koordinaten sind Teil eines Punktes, wenn sofern sich ihr Abstand zum Mittelpunkt der aktuellen Kachel (Radius des Kreises) kleiner als ein bestimmter Wert ist. </p>
 
 <p><b><i>void main() {</br>
     &nbsp;&nbsp;float cpoints = pointdensity; </br>
@@ -61,7 +67,6 @@ Zur Implementierung benötigen sie Zugriff auf die Texturkoordinaten für jedes 
     ... </br>
     }</b></i></br>
 </p>
-
 </br>
 <p><b>Ergebniss</b></p>
 <div class="btn" onclick="$('#uebung2_3-frame').attr('src','uebung3/index2.html'); $('#uebung2_3-frame').focus()">OpenGL canvas laden und anzeigen</div>
