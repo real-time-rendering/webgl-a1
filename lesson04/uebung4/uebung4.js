@@ -64,7 +64,7 @@ function initialize() {
             'cubemap/'+size+'/posy.jpg', //positive y
             'cubemap/'+size+'/negy.jpg', //negative y
             'cubemap/'+size+'/posz.jpg', //positive z
-            'cubemap/'+size+'/negz.jpg' //negative z
+            'cubemap/'+size+'/negz.jpg'  //negative z
             ]
         )
     };
@@ -76,10 +76,15 @@ function initialize() {
     // program.
     var torus = new tdl.models.Model(
         programs[pnum],
-
-        //tdl.primitives.createCube(1) ,textures);
-        //tdl.primitives.createTorus(0.28,0.15,30,20),textures);
-        tdl.primitives.createSphere(0.9,50,100),textures);
+        //tdl.primitives.createTorus(0.28,0.15,30,20),
+        tdl.primitives.createSphere(1, 20, 20),
+        textures);
+    
+    var skybox = new tdl.models.Model(
+        programs[pnum],
+        tdl.primitives.createCube(1),
+        textures
+    )
 
     // Register a keypress-handler for shader program switching using the number
     // keys.
@@ -104,10 +109,13 @@ function initialize() {
         /*
         if (n == "s")
             animate = !animate;
+<<<<<<< HEAD
         else if (n == "1")
             torusConst.showToon=true;
         else if (n == "2")
             torusConst.showToon=false;    */
+=======
+>>>>>>> 34ddc9e3c3505be2fc97e0d7a6e7a5228751cdf3
     };
 
     // Create some matrices and vectors now to save time later.
@@ -156,13 +164,17 @@ function initialize() {
         eyePosition: eyePosition,
         lightPositions: lightPositions,
         time: clock,
-        showToon: showToon
     };
 
     // Uniform variables that change for each torus in a frame.
     var torusPer = {
         model: model,
         color: color
+    };
+    
+    var skyboxPer = {
+        model: model,
+        color: vec3.create()
     };
 
     // Renders one frame and registers itself for the next frame.
@@ -212,12 +224,13 @@ function initialize() {
         //console.log();
 
         var ident = mat4.identity(torusPer.model);
-        //mat4.rotate(ident,,[1, 0, 0]);
-        //mat4.translate(ident, [0, 0, 0]);
-        torusPer.color[0] = 0;
-        torusPer.color[1] = 0;
-        torusPer.color[2] = 0;
+        //mat4.rotate(ident, 0 ,[0, 1, 0]);
+        mat4.translate(ident, [0, 0, 0]);
         torus.draw(torusPer);
+        gl.disable(gl.DEPTH_TEST);
+        gl.disable(gl.CULL_FACE);
+        //skybox.draw(skyboxPer);
+        
     }
 
     // Initial call to get the rendering started.
