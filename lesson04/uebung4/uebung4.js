@@ -51,7 +51,7 @@ function initialize() {
     // Create the shader programs.
     var programs = createProgramsFromTags();
 
-    var useSmallTextures = false;
+    var useSmallTextures = true;
     var size = (useSmallTextures)?"small":"large";
 
     // Load textures.
@@ -64,7 +64,7 @@ function initialize() {
             'cubemap/'+size+'/posy.jpg', //positive y
             'cubemap/'+size+'/negy.jpg', //negative y
             'cubemap/'+size+'/posz.jpg', //positive z
-            'cubemap/'+size+'/negz.jpg' //negative z
+            'cubemap/'+size+'/negz.jpg'  //negative z
             ]
         )
     };
@@ -82,7 +82,7 @@ function initialize() {
     
     var skybox = new tdl.models.Model(
         programs[pnum],
-        tdl.primitives.createCube(-10),
+        tdl.primitives.createCube(1),
         textures
     )
 
@@ -94,10 +94,6 @@ function initialize() {
 
         if (n == "s")
             animate = !animate;
-        else if (n == "1")
-            torusConst.showToon=true;
-        else if (n == "2")
-            torusConst.showToon=false;
     };
 
     // Create some matrices and vectors now to save time later.
@@ -145,13 +141,17 @@ function initialize() {
         eyePosition: eyePosition,
         lightPositions: lightPositions,
         time: clock,
-        showToon: showToon
     };
 
     // Uniform variables that change for each torus in a frame.
     var torusPer = {
         model: model,
         color: color
+    };
+    
+    var skyboxPer = {
+        model: model,
+        color: vec3.create()
     };
 
     // Renders one frame and registers itself for the next frame.
@@ -203,12 +203,11 @@ function initialize() {
         var ident = mat4.identity(torusPer.model);
         //mat4.rotate(ident, 0 ,[0, 1, 0]);
         mat4.translate(ident, [0, 0, 0]);
-        torusPer.color[0] = 0;
-        torusPer.color[1] = 0;
-        torusPer.color[2] = 0;
-        //torus.draw(torusPer);
+        torus.draw(torusPer);
         gl.disable(gl.DEPTH_TEST);
-        torus.draw(skybox);
+        gl.disable(gl.CULL_FACE);
+        //skybox.draw(skyboxPer);
+        
     }
 
     // Initial call to get the rendering started.

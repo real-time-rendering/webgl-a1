@@ -98,7 +98,7 @@
                 color
             );
         }
-        vec3 reflectedLightDir = normalize(reflect(eyeDirectionW, normalW));
+        vec3 reflectedLightDir = normalize(reflect(-eyeDirectionW, normalW));
         vec4 cubeMapColor = textureCube(cubemap, reflectedLightDir);
         gl_FragColor.rgb = cubeMapColor.rgb;
         gl_FragColor.a = 1.0;
