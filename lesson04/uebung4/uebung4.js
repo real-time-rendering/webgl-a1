@@ -51,7 +51,7 @@ function initialize() {
     // Create the shader programs.
     var programs = createProgramsFromTags();
 
-    var useSmallTextures = true;
+    var useSmallTextures = false;
     var size = (useSmallTextures)?"small":"large";
 
     // Load textures.
@@ -77,7 +77,7 @@ function initialize() {
     var torus = new tdl.models.Model(
         programs[pnum],
         //tdl.primitives.createTorus(0.28,0.15,30,20),
-        tdl.primitives.createSphere(1, 20, 20),
+        tdl.primitives.createSphere(1, 100, 100),
         textures);
     
     var skybox = new tdl.models.Model(
@@ -88,6 +88,22 @@ function initialize() {
 
     // Register a keypress-handler for shader program switching using the number
     // keys.
+
+    canvas.onmousemove = function(event){
+        var t = vec3.normalize(vec3.scale(eyePosition,-1));
+
+        var width = canvas.width/2;
+        var height = canvas.height/2;
+        var x = (event.x-(width))/width;
+        var y = (event.y-(height))/height;
+
+        var xx = -(((x>1)?1:x)* (t[2]));
+        var yy = -((y>1)?1:y);
+        var zz = ((x>1)?1:x)* (t[0]);
+
+        target = vec3.create([xx, yy, zz]);
+    }
+
     window.onkeypress = function(event) {
         var n = String.fromCharCode(event.which);
 
@@ -96,13 +112,13 @@ function initialize() {
                 eyeRadius -= 0.1;
                 break;
             case "a":
-                eyeRotated -= 0.1;
+                eyeRotated += 0.1;
                 break;
             case "s":
                 eyeRadius += 0.1;
                 break;
             case "d":
-                eyeRotated += 0.1;
+                eyeRotated -= 0.1;
                 break;
         }
     };
@@ -182,6 +198,8 @@ function initialize() {
         eyePosition[0] = Math.sin(eyeRotated * eyeSpeed) * eyeRadius;
         eyePosition[1] = eyeHeight;
         eyePosition[2] = Math.cos(eyeRotated * eyeSpeed) * eyeRadius;
+
+
 
         // Setup global WebGL rendering behavior.
         gl.viewport(0, 0, canvas.width, canvas.width * 0.9);
