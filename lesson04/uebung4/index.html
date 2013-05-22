@@ -7,7 +7,15 @@
     <script type="text/javascript" src="../tdl/base.js"></script>
     <script type="text/javascript" src="../tdl/gl-matrix.js"></script>
     <script src="../jquery-1.9.1.min.js"></script>
+
+    <style type="text/css">
+        #error { display: none; }
+        #canvas { border: 1px solid black; }
+    </style>
+
+    <script type="text/javascript" src="uebung4.js"></script>
 </head>
+
 <body>
 <div class="container">
     <pre id="error" class="alert alert-error"></pre>
@@ -17,4 +25,102 @@
     </div>
 </div>
 </body>
+
+<!-- Cell Shading -->
+
+<script id="vs0" type="x-shader/x-vertex">
+    uniform mat4 projection;
+    uniform mat4 view;
+    uniform mat4 model;
+
+    const int LIGHT_NUM = 4;
+
+    uniform float lightPositions[3 * LIGHT_NUM];
+    uniform vec3 eyePosition;
+
+    attribute vec4 position;
+    attribute vec3 normal;
+
+    varying vec3 normalW;
+    varying float lightDirectionW[3 * LIGHT_NUM];
+    varying vec3 eyeDirectionW;
+
+    void main() {
+    vec4 positionW = model * position;
+    normalW = (model * vec4(normal, 0.0)).xyz;
+    for(int i=0; i<3*LIGHT_NUM; i+=3){
+    lightDirectionW[i  ] = lightPositions[i  ] - positionW.x;
+    lightDirectionW[i+1] = lightPositions[i+1] - positionW.y;
+    lightDirectionW[i+2] = lightPositions[i+2] - positionW.z;
+    }
+    eyeDirectionW = eyePosition - positionW.xyz;
+    gl_Position = projection * view * positionW;
+    }
+</script>
+
+<script id="fs0" type="x-shader/x-fragment">
+    precision highp  float;
+
+    const int LIGHT_NUM = 4;
+
+    uniform vec3 color;
+    uniform vec3 lightIntensity;
+
+    varying vec3 normalW;
+    varying float lightDirectionW[LIGHT_NUM*3];
+    varying vec3 eyeDirectionW;
+    uniform bool showToon;
+
+    float discrete(float f, float steps){
+    return float(int(f*steps + 0.5)) / steps;
+    }
+
+    vec3 discrete(vec3 c, float steps){
+    return vec3(
+    discrete(c.r, steps),
+    discrete(c.g, steps),
+    discrete(c.b, steps)
+    );
+    }
+
+    vec3 lambert(vec3 normal, vec3 light, vec3 intensity, vec3 reflectivity) {
+    float ndotl = dot(normal, light);
+    return 0.1 * reflectivity * intensity +
+    0.6 * reflectivity * intensity * max(0.0, ndotl);
+    }
+
+    vec3 phong(vec3 normal, vec3 eye, vec3 light, vec3 intensity, vec3 reflectivity) {
+    float vdotn = dot(reflect(-eye, normal), light);
+
+    float outline = dot(normal, eye);
+    if((outline < 0.1 )){
+    return vec3(0.0, 0.0, 0.0);
+    }
+    vec3 specular =  intensity * pow(max(0.0, vdotn), 12.0);
+    return lambert(normal, light, intensity, reflectivity) + specular;
+    }
+
+    void main() {
+    vec3 outcolor = vec3(0.0,0.0,0.0);
+    for(int i=0; i<3*LIGHT_NUM; i+=3){
+    vec3 lightColor = vec3(1,1,1);
+    vec3 lightDirection = vec3(lightDirectionW[i],lightDirectionW[i+1],lightDirectionW[i+2]);
+    outcolor += phong(
+    normalize(normalW),
+    normalize(eyeDirectionW),
+    normalize(lightDirection),
+    lightColor, color
+    );
+    }
+
+    if(showToon){
+    gl_FragColor.rgb = discrete(outcolor, 3.0);
+    }else{
+    gl_FragColor.rgb = outcolor;
+    }
+
+    gl_FragColor.a = 1.0;
+    }
+</script>
+
 </html>
