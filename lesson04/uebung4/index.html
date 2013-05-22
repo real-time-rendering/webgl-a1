@@ -45,15 +45,15 @@
     varying vec3 eyeDirectionW;
 
     void main() {
-    vec4 positionW = model * position;
-    normalW = (model * vec4(normal, 0.0)).xyz;
-    for(int i=0; i<3*LIGHT_NUM; i+=3){
-    lightDirectionW[i  ] = lightPositions[i  ] - positionW.x;
-    lightDirectionW[i+1] = lightPositions[i+1] - positionW.y;
-    lightDirectionW[i+2] = lightPositions[i+2] - positionW.z;
-    }
-    eyeDirectionW = eyePosition - positionW.xyz;
-    gl_Position = projection * view * positionW;
+        vec4 positionW = model * position;
+        normalW = (model * vec4(normal, 0.0)).xyz;
+        for(int i=0; i<3*LIGHT_NUM; i+=3){
+            lightDirectionW[i  ] = lightPositions[i  ] - positionW.x;
+            lightDirectionW[i+1] = lightPositions[i+1] - positionW.y;
+            lightDirectionW[i+2] = lightPositions[i+2] - positionW.z;
+        }
+        eyeDirectionW = eyePosition - positionW.xyz;
+        gl_Position = projection * view * positionW;
     }
 </script>
 

@@ -73,8 +73,15 @@ function initialize() {
     // program.
     var torus = new tdl.models.Model(
         programs[pnum],
-
-        tdl.primitives.createTorus(0.28,0.15,30,20),textures);
+        //tdl.primitives.createTorus(0.28,0.15,30,20),
+        tdl.primitives.createSphere(1, 20, 20),
+        textures);
+    
+    var skybox = new tdl.models.Model(
+        programs[pnum],
+        tdl.primitives.createCube(-10),
+        textures
+    )
 
     // Register a keypress-handler for shader program switching using the number
     // keys.
@@ -191,12 +198,14 @@ function initialize() {
         //console.log();
 
         var ident = mat4.identity(torusPer.model);
-        mat4.rotate(ident,((clock*20)%360)* Math.PI / 180,[1, 0, 0]);
+        //mat4.rotate(ident, 0 ,[0, 1, 0]);
         mat4.translate(ident, [0, 0, 0]);
         torusPer.color[0] = 0;
         torusPer.color[1] = 1;
         torusPer.color[2] = 0;
-        torus.draw(torusPer);
+        //torus.draw(torusPer);
+        gl.disable(gl.DEPTH_TEST);
+        torus.draw(skybox);
     }
 
     // Initial call to get the rendering started.
