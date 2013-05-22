@@ -51,17 +51,20 @@ function initialize() {
     // Create the shader programs.
     var programs = createProgramsFromTags();
 
+    var useSmallTextures = false;
+    var size = (useSmallTextures)?"small":"large";
+
     // Load textures.
     var textures = {
         //earth: tdl.textures.loadTexture('earth-2k-land-ocean-noshade.png'),
         cubemap: tdl.textures.loadTexture(
             [
-            'cubemap/small/posx.jpg', //positive x
-            'cubemap/small/negx.jpg', //negative x
-            'cubemap/small/posy.jpg', //positive y
-            'cubemap/small/negy.jpg', //negative y
-            'cubemap/small/posz.jpg', //positive z
-            'cubemap/small/negz.jpg' //negative z
+            'cubemap/'+size+'/posx.jpg', //positive x
+            'cubemap/'+size+'/negx.jpg', //negative x
+            'cubemap/'+size+'/posy.jpg', //positive y
+            'cubemap/'+size+'/negy.jpg', //negative y
+            'cubemap/'+size+'/posz.jpg', //positive z
+            'cubemap/'+size+'/negz.jpg' //negative z
             ]
         )
     };
@@ -125,8 +128,8 @@ function initialize() {
 
     // Animation parameters for the rotating eye-point.
     var eyeSpeed = 0.2;
-    var eyeHeight = 2;
-    var eyeRadius = 0.5;
+    var eyeHeight = 0;
+    var eyeRadius = 2;
     var animate = true;
 
     // Animation needs accurate timing information.
@@ -201,7 +204,7 @@ function initialize() {
         //mat4.rotate(ident, 0 ,[0, 1, 0]);
         mat4.translate(ident, [0, 0, 0]);
         torusPer.color[0] = 0;
-        torusPer.color[1] = 1;
+        torusPer.color[1] = 0;
         torusPer.color[2] = 0;
         //torus.draw(torusPer);
         gl.disable(gl.DEPTH_TEST);
