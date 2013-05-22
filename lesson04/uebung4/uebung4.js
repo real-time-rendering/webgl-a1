@@ -42,7 +42,8 @@ function perFaceNormals(arrays) {
 
 
 // The main entry point.
-function initialize() {
+function initialize() {   
+    
     // Setup the canvas widget for WebGL.
     window.canvas = document.getElementById("canvas");
     window.gl = tdl.webgl.setupWebGL(canvas);
@@ -52,9 +53,19 @@ function initialize() {
 
     // Load textures.
     var textures = {
-        earth: tdl.textures.loadTexture('earth-2k-land-ocean-noshade.png')
+        //earth: tdl.textures.loadTexture('earth-2k-land-ocean-noshade.png'),
+        cubemap: tdl.textures.loadTexture(
+            [
+            'cubemap/small/posx.jpg', //positive x
+            'cubemap/small/negx.jpg', //negative x
+            'cubemap/small/posy.jpg', //positive y
+            'cubemap/small/negy.jpg', //negative y
+            'cubemap/small/posz.jpg', //positive z
+            'cubemap/small/negz.jpg' //negative z
+            ]
+        )
     };
-
+    
     var frag =  window.location.hash.substring(1);
     var pnum = frag ? parseInt(frag) : 0;
 
@@ -108,7 +119,7 @@ function initialize() {
     // Animation parameters for the rotating eye-point.
     var eyeSpeed = 0.2;
     var eyeHeight = 2;
-    var eyeRadius = 3.5;
+    var eyeRadius = 0.5;
     var animate = true;
 
     // Animation needs accurate timing information.
