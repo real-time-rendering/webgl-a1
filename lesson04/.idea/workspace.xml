@@ -40,25 +40,7 @@
       <file leaf-file-name="index.html" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/uebung4/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="27" column="40" selection-start="829" selection-end="829" vertical-scroll-proportion="0.204">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="uebung4.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/uebung4/uebung4.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="191" column="13" selection-start="5533" selection-end="5533" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="uebung3_3.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/uebung3/uebung3_3.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="146" column="2" selection-start="4581" selection-end="6301" vertical-scroll-proportion="0.0">
+            <state line="30" column="4" selection-start="857" selection-end="857" vertical-scroll-proportion="0.294">
               <folding />
             </state>
           </provider>
@@ -94,6 +76,7 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
+    <option name="x" value="3" />
     <option name="y" value="22" />
     <option name="width" value="1440" />
     <option name="height" value="874" />
@@ -166,7 +149,11 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="uebung3" />
+              <option name="myItemId" value="uebung4" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="cupemap" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -188,6 +175,8 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/uebung4/cupemap/small" />
+      <recent name="$PROJECT_DIR$/uebung4" />
       <recent name="$PROJECT_DIR$/" />
       <recent name="$PROJECT_DIR$" />
     </key>
@@ -285,13 +274,13 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="22" width="1440" height="874" extended-state="0" />
-    <editor active="true" />
+    <frame x="3" y="22" width="1440" height="874" extended-state="0" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32891247" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14820042" sideWeight="0.7320955" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14820042" sideWeight="0.7320955" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.26790452" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
@@ -452,14 +441,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/uebung4/uebung4.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="191" column="13" selection-start="5533" selection-end="5533" vertical-scroll-proportion="0.0">
+        <state line="191" column="13" selection-start="5533" selection-end="5533" vertical-scroll-proportion="0.9586777">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/uebung4/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="40" selection-start="829" selection-end="829" vertical-scroll-proportion="0.204">
+        <state line="30" column="4" selection-start="857" selection-end="857" vertical-scroll-proportion="0.294">
           <folding />
         </state>
       </provider>
