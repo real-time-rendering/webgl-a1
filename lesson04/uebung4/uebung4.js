@@ -105,17 +105,6 @@ function initialize() {
                 eyeRotated += 0.1;
                 break;
         }
-
-        /*
-        if (n == "s")
-            animate = !animate;
-<<<<<<< HEAD
-        else if (n == "1")
-            torusConst.showToon=true;
-        else if (n == "2")
-            torusConst.showToon=false;    */
-=======
->>>>>>> 34ddc9e3c3505be2fc97e0d7a6e7a5228751cdf3
     };
 
     // Create some matrices and vectors now to save time later.
@@ -163,7 +152,7 @@ function initialize() {
         projection: projection,
         eyePosition: eyePosition,
         lightPositions: lightPositions,
-        time: clock,
+        time: clock
     };
 
     // Uniform variables that change for each torus in a frame.
