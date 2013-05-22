@@ -51,7 +51,7 @@ function initialize() {
     // Create the shader programs.
     var programs = createProgramsFromTags();
 
-    var useSmallTextures = false;
+    var useSmallTextures = true;
     var size = (useSmallTextures)?"small":"large";
 
     // Load textures.
@@ -86,13 +86,28 @@ function initialize() {
     window.onkeypress = function(event) {
         var n = String.fromCharCode(event.which);
 
+        switch (n) {
+            case "w":
+                eyeRadius -= 0.1;
+                break;
+            case "a":
+                eyeRotated -= 0.1;
+                break;
+            case "s":
+                eyeRadius += 0.1;
+                break;
+            case "d":
+                eyeRotated += 0.1;
+                break;
+        }
 
+        /*
         if (n == "s")
             animate = !animate;
         else if (n == "1")
             torusConst.showToon=true;
         else if (n == "2")
-            torusConst.showToon=false;
+            torusConst.showToon=false;    */
     };
 
     // Create some matrices and vectors now to save time later.
@@ -122,9 +137,10 @@ function initialize() {
     var up = vec3.create([0, 1, 0]);
 
     // Animation parameters for the rotating eye-point.
-    var eyeSpeed = 0.2;
+    var eyeSpeed = 0.8;
     var eyeHeight = 0;
     var eyeRadius = 2;
+    var eyeRotated = 0;
     var animate = true;
 
     // Animation needs accurate timing information.
@@ -162,9 +178,9 @@ function initialize() {
         }
 
         // Calculate the current eye position.
-        eyePosition[0] = Math.sin(clock * eyeSpeed) * eyeRadius;
+        eyePosition[0] = Math.sin(eyeRotated * eyeSpeed) * eyeRadius;
         eyePosition[1] = eyeHeight;
-        eyePosition[2] = Math.cos(clock * eyeSpeed) * eyeRadius;
+        eyePosition[2] = Math.cos(eyeRotated * eyeSpeed) * eyeRadius;
 
         // Setup global WebGL rendering behavior.
         gl.viewport(0, 0, canvas.width, canvas.width * 0.9);

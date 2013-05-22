@@ -18,7 +18,7 @@
     <file path="/dummy.xml" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1368008591899" ignored="false" />
     <file path="/uebung4.html" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1369147671802" ignored="false" />
     <file path="/index3.html" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1369148573435" ignored="false" />
-    <file path="/uebung4.js" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1369232066875" ignored="false" />
+    <file path="/uebung4.js" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1369232663071" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,7 +50,7 @@
       <file leaf-file-name="uebung4.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/uebung4/uebung4.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="54" column="32" selection-start="1478" selection-end="1478" vertical-scroll-proportion="0.36072144">
+            <state line="139" column="22" selection-start="4069" selection-end="4069" vertical-scroll-proportion="-0.69138277">
               <folding />
             </state>
           </provider>
@@ -440,7 +440,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/uebung4/uebung4.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="54" column="32" selection-start="1478" selection-end="1478" vertical-scroll-proportion="0.36072144">
+        <state line="139" column="22" selection-start="4069" selection-end="4069" vertical-scroll-proportion="-0.69138277">
           <folding />
         </state>
       </provider>
