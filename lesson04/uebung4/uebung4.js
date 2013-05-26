@@ -51,7 +51,7 @@ function initialize() {
     // Create the shader programs.
     var programs = createProgramsFromTags();
 
-    var useSmallTextures = true;
+    var useSmallTextures = false;
     var size = (useSmallTextures)?"small":"large";
 
     // Load textures.
@@ -93,7 +93,8 @@ function initialize() {
     // keys.
 
     canvas.onmousemove = function(event){
-        var t = vec3.normalize(vec3.scale(eyePosition,-1));
+
+        var t = vec3.scale(eyePosition,-1);
 
         var width = canvas.width/2;
         var height = canvas.height/2;
@@ -105,7 +106,7 @@ function initialize() {
         var zz = ((x>1)?1:x)* (t[0]);
 
         target = vec3.create([xx, yy, zz]);
-        vec3.normalize(target);
+
     }
 
     window.onkeypress = function(event) {
@@ -116,13 +117,13 @@ function initialize() {
                 eyeRadius -= 0.1;
                 break;
             case "a":
-                eyeRotated += 0.1;
+                eyeRotated -= 0.1;
                 break;
             case "s":
                 eyeRadius += 0.1;
                 break;
             case "d":
-                eyeRotated -= 0.1;
+                eyeRotated += 0.1;
                 break;
         }
     };
