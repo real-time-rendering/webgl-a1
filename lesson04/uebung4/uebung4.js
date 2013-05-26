@@ -51,12 +51,13 @@ function initialize() {
     // Create the shader programs.
     var programs = createProgramsFromTags();
 
-    var useSmallTextures = false;
+    var useSmallTextures = true;
     var size = (useSmallTextures)?"small":"large";
 
     // Load textures.
     var textures = {
         //earth: tdl.textures.loadTexture('earth-2k-land-ocean-noshade.png'),
+        normalmap: tdl.textures.loadTexture('crossnrm.jpg'),
         cubemap: tdl.textures.loadTexture(
             [
             'cubemap/'+size+'/posx.jpg', //positive x
@@ -77,12 +78,14 @@ function initialize() {
     var torus = new tdl.models.Model(
         programs[pnum],
         //tdl.primitives.createTorus(0.28,0.15,30,20),
-        tdl.primitives.createSphere(1, 100, 100),
+        tdl.primitives.addTangentsAndBinormals(
+            tdl.primitives.createSphere(1, 30, 30)
+        ),
         textures);
     
     var skybox = new tdl.models.Model(
-        programs[pnum],
-        tdl.primitives.createCube(1),
+        programs[1],
+        tdl.primitives.createCube(-1),
         textures
     )
 
@@ -102,6 +105,7 @@ function initialize() {
         var zz = ((x>1)?1:x)* (t[0]);
 
         target = vec3.create([xx, yy, zz]);
+        vec3.normalize(target);
     }
 
     window.onkeypress = function(event) {
@@ -126,6 +130,7 @@ function initialize() {
     // Create some matrices and vectors now to save time later.
     var projection = mat4.create();
     var view = mat4.create();
+    var skyboxview = mat4.create();
     var model = mat4.create();
 
     // Uniforms for lighting.
@@ -170,6 +175,14 @@ function initialize() {
         lightPositions: lightPositions,
         time: clock
     };
+    
+    var skyboxConst = {
+        view: skyboxview,
+        projection: projection,
+        eyePosition: eyePosition,
+        lightPositions: lightPositions,
+        time: clock
+    };
 
     // Uniform variables that change for each torus in a frame.
     var torusPer = {
@@ -209,9 +222,6 @@ function initialize() {
         gl.clearDepth(1);
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT);
 
-        gl.enable(gl.CULL_FACE);
-        gl.enable(gl.DEPTH_TEST);
-
         // Calculate the perspective projection matrix.
         mat4.perspective(
             60,
@@ -224,6 +234,15 @@ function initialize() {
             eyePosition, target, up,
             view);
 
+        gl.depthMask(false);
+        gl.disable(gl.DEPTH_TEST);
+        //skybox.drawPrep(skyboxConst);
+        //skybox.draw(skyboxPer);
+        gl.depthMask(true);
+
+        gl.enable(gl.CULL_FACE);
+        gl.enable(gl.DEPTH_TEST);
+
         // Prepare rendering of toruses.
         torusConst.time = clock;
         torus.drawPrep(torusConst);
@@ -234,9 +253,7 @@ function initialize() {
         //mat4.rotate(ident, 0 ,[0, 1, 0]);
         mat4.translate(ident, [0, 0, 0]);
         torus.draw(torusPer);
-        gl.disable(gl.DEPTH_TEST);
-        gl.disable(gl.CULL_FACE);
-        //skybox.draw(skyboxPer);
+        
         
     }
 

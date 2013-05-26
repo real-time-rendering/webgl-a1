@@ -31,6 +31,110 @@
     uniform mat4 projection;
     uniform mat4 view;
     uniform mat4 model;
+    
+    const float twopi = 6.283185307179586;
+    const float pi = 3.141592653589793;
+    const int LIGHT_NUM = 4;
+
+    uniform float lightPositions[3 * LIGHT_NUM];
+    uniform vec3 eyePosition;
+
+    attribute vec4 position;
+    attribute vec3 normal;
+    attribute vec3 tangent;
+    attribute vec3 binormal;
+    attribute vec2 texCoord;
+    
+    varying vec2 v_texCoord;
+    varying vec3 normalW;
+    varying vec3 tangentW;
+    varying vec3 binormalW;
+    varying float lightDirectionW[3 * LIGHT_NUM];
+    varying vec3 eyeDirectionW;
+
+    void main() {
+        v_texCoord = texCoord;
+        vec4 positionW = model * position;
+        normalW = (model * vec4(normal, 0.0)).xyz;
+        tangentW = (model * vec4(tangent, 0.0)).xyz;
+        binormalW = (model * vec4(binormal, 0.0)).xyz;
+        for(int i=0; i<3*LIGHT_NUM; i+=3){
+            lightDirectionW[i  ] = lightPositions[i  ] - positionW.x;
+            lightDirectionW[i+1] = lightPositions[i+1] - positionW.y;
+            lightDirectionW[i+2] = lightPositions[i+2] - positionW.z;
+        }
+        eyeDirectionW = eyePosition - positionW.xyz;
+        //uvCoords.y = 0.5 + atan(position.z, position.y) / (twopi);
+        //uvCoords.x = 0.5 - 2.0 * asin(position.y) / (twopi);
+        gl_Position = projection * view * positionW;
+    }
+</script>
+
+<script id="fs0" type="x-shader/x-fragment">
+    precision highp  float;
+
+    const int LIGHT_NUM = 4;
+
+    uniform vec3 color;
+    uniform vec3 lightIntensity;
+    uniform samplerCube cubemap;
+    uniform sampler2D normalmap;
+
+    varying vec3 normalW;
+    varying vec3 tangentW;
+    varying vec3 binormalW;
+    varying vec2 v_texCoord;
+    varying float lightDirectionW[LIGHT_NUM*3];
+    varying vec3 eyeDirectionW;
+
+    vec3 lambert(vec3 normal, vec3 light, vec3 intensity, vec3 reflectivity) {
+        float ndotl = dot(normal, light);
+        return 0.1 * reflectivity * intensity + 0.6 * reflectivity * intensity * max(0.0, ndotl);
+    }
+
+    vec3 phong(vec3 normal, vec3 eye, vec3 light, vec3 intensity, vec3 reflectivity) {
+        float vdotn = dot(reflect(-eye, normal), light);
+        float outline = dot(normal, eye);
+        if((outline < 0.1 )){
+            return vec3(0.0, 0.0, 0.0);
+        }
+        vec3 specular =  intensity * pow(max(0.0, vdotn), 12.0);
+        return lambert(normal, light, intensity, reflectivity) + specular;
+    }
+
+    void main() {
+        vec3 outcolor = vec3(0.0,0.0,0.0);
+        /*
+        for(int i=0; i<3*LIGHT_NUM; i+=3){
+            vec3 lightColor = vec3(1,1,1);
+            vec3 lightDirection = vec3(lightDirectionW[i],lightDirectionW[i+1],lightDirectionW[i+2]);
+            outcolor += phong(
+                normalize(normalW),
+                normalize(eyeDirectionW),
+                normalize(lightDirection),
+                lightColor,
+                color
+            );
+        }*/
+        //vec3 normal_sample = texture2D(normalmap, mod(texCoord.xy * 10.0, 1.0) );
+        //normalW += normal_sample.x * tangentW;
+        //normalW += normal_sample.y * binormalW;
+        vec2 normal_sample = texture2D(normalmap, mod(v_texCoord.yx * 10.0, 1.0)).rg;
+        vec3 normal_v = normalize(normalW + 
+                             (normal_sample.y - 0.5) * binormalW +
+                             (normal_sample.x - 0.5) * tangentW );
+        vec3 reflectedLightDir = normalize(reflect(-eyeDirectionW, normal_v));
+        gl_FragColor.rgb += textureCube(cubemap, reflectedLightDir).rgb * 0.2;
+        
+        
+        gl_FragColor.a = 1.0;
+    }
+</script>
+
+<script id="vs1" type="x-shader/x-vertex">
+    uniform mat4 projection;
+    uniform mat4 view;
+    uniform mat4 model;
 
     const int LIGHT_NUM = 4;
 
@@ -57,7 +161,7 @@
     }
 </script>
 
-<script id="fs0" type="x-shader/x-fragment">
+<script id="fs1" type="x-shader/x-fragment">
     precision highp  float;
 
     const int LIGHT_NUM = 4;
@@ -86,20 +190,7 @@
     }
 
     void main() {
-        vec3 outcolor = vec3(0.0,0.0,0.0);
-        for(int i=0; i<3*LIGHT_NUM; i+=3){
-            vec3 lightColor = vec3(1,1,1);
-            vec3 lightDirection = vec3(lightDirectionW[i],lightDirectionW[i+1],lightDirectionW[i+2]);
-            outcolor += phong(
-                normalize(normalW),
-                normalize(eyeDirectionW),
-                normalize(lightDirection),
-                lightColor,
-                color
-            );
-        }
-        vec3 reflectedLightDir = normalize(reflect(-eyeDirectionW, normalW));
-        vec4 cubeMapColor = textureCube(cubemap, reflectedLightDir);
+        vec4 cubeMapColor = textureCube(cubemap, -eyeDirectionW);
         gl_FragColor.rgb = cubeMapColor.rgb;
         gl_FragColor.a = 1.0;
     }
