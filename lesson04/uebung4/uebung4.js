@@ -76,7 +76,7 @@ function initialize() {
     // Create a torus mesh that initialy is renderd using the first shader
     // program.
     var torus = new tdl.models.Model(
-        programs[pnum],
+        programs[0],
         //tdl.primitives.createTorus(0.28,0.15,30,20),
         tdl.primitives.addTangentsAndBinormals(
             tdl.primitives.createSphere(1, 30, 30)
@@ -85,7 +85,7 @@ function initialize() {
     
     var skybox = new tdl.models.Model(
         programs[1],
-        tdl.primitives.createCube(-1),
+        tdl.primitives.createCube(-10),
         textures
     )
 
@@ -177,7 +177,7 @@ function initialize() {
     };
     
     var skyboxConst = {
-        view: skyboxview,
+        view: view,
         projection: projection,
         eyePosition: eyePosition,
         lightPositions: lightPositions,
@@ -226,7 +226,7 @@ function initialize() {
         mat4.perspective(
             60,
             canvas.clientWidth / canvas.clientHeight,
-            0.1, 10,
+            0.1, 100,
             projection);
 
         // Calculate the viewing transfomation.
@@ -236,8 +236,8 @@ function initialize() {
 
         gl.depthMask(false);
         gl.disable(gl.DEPTH_TEST);
-        //skybox.drawPrep(skyboxConst);
-        //skybox.draw(skyboxPer);
+        skybox.drawPrep(skyboxConst);
+        skybox.draw(skyboxPer);
         gl.depthMask(true);
 
         gl.enable(gl.CULL_FACE);
