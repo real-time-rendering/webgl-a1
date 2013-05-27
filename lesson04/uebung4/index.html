@@ -41,17 +41,16 @@
     
     varying vec2 v_texCoord;
     varying vec3 normalW;
-    varying vec3 tangentW;
-    varying vec3 binormalW;
     varying vec3 eyeDirectionW;
+    varying mat3 v2w;
 
     void main() {
         v_texCoord = texCoord;
         vec4 positionW = model * position;
         normalW = (model * vec4(normal, 0.0)).xyz;
-        tangentW = (model * vec4(tangent, 0.0)).xyz;
-        binormalW = (model * vec4(binormal, 0.0)).xyz;
-
+        vec3 tangentW = (model * vec4(tangent, 0.0)).xyz;
+        vec3 binormalW = (model * vec4(binormal, 0.0)).xyz;
+        v2w = mat3(tangentW, binormalW, normalW);
         eyeDirectionW = eyePosition - positionW.xyz;
         gl_Position = projection * view * positionW;
     }
@@ -67,18 +66,18 @@
     uniform float texCount;
 
     varying vec3 normalW;
-    varying vec3 tangentW;
-    varying vec3 binormalW;
     varying vec2 v_texCoord;
     varying vec3 eyeDirectionW;
+    varying mat3 v2w;
+    
+    vec3 norm(vec3 v){
+        return (v - vec3(0.5,0.5,0.5)) * 2.0;
+    }
 
     void main() {
-        vec2 normal_sample = texture2D(normalmap, mod(v_texCoord.yx * texCount, 1.0)).rg;
-
-        vec3 normal_v = normalize(normalW + (normal_sample.y - 0.5)*2.0 * tangentW + (normal_sample.x - 0.5)*2.0 * binormalW );
-
-        vec3 reflectedLightDir = normalize(reflect(-eyeDirectionW, normal_v));
-
+        vec3 normal_sample = norm(texture2D(normalmap, mod(v_texCoord.yx * texCount, 1.0)).xyz);
+        normal_sample = normalize(normal_sample);
+        vec3 reflectedLightDir = normalize(reflect(-eyeDirectionW, v2w * normal_sample));
         gl_FragColor.rgb = textureCube(cubemap, reflectedLightDir).rgb;
         gl_FragColor.a = 1.0;
     }
