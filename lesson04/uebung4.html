@@ -39,24 +39,39 @@ Hierbei wird die Blickrichtung im Weltkoordinatensystem ebenfalls per "textureCu
 <p><b>Lösungsansatz</b></p>
 <p>
 Um eine Normalmap zu verwenden, müssen die reflektierenden Objekte zusätzlich zu den Normalen noch Tangenten und Binormalen erhalten.
-Dies kann bei den tdl-primitives mit dem Aufruf "tdl.primitives.addTangentsAndBinormals" erreicht werden. Diese Tangenten und Binormalen
-stellen die Richtung dar, in welche die Normalmap die Normalen verschiebt. Die Normalmap beinhält im roten und grünen Farbkanal
-die jeweiligen Faktoren für die Tangenten und Binormalen. Die Normalmap muss allerdings vor der Benutzung auf den Zahlenbereich zwischen
--1.0 und +1.0 normalisiert werden.
-Nach der skalierung der Tangente und der Binormale durch die Normalmap, kännen diese auf den Normalenvektor addiert werden, welcher zum
-Schluss noch einmal normalisiert wird.
+Dies kann bei den tdl-primitives mit dem Aufruf "tdl.primitives.addTangentsAndBinormals" erreicht werden. Diese Tangenten und Binormalen spannen zusammen mit der Normalen das
+Koordinatensystem für die Normalmap auf. Diese müssen in Weltkoordinaten umgeformt werden und in eine Transformationsmatrix gesetzt werden:
 </p>
 <code>
-//das Texel Sample aus der Normalmap
-vec2 normal_sample = texture2D(normalmap, mod(v_texCoord.yx * texCount, 1.0)).rg;
-//Die Normale wird durch die Tangente und Binormale verändert.
-//Dabei werden die texturwerte auf den Zahlenbereich -1 bis +1 normalisiert.
-vec3 normal_v = normalize(normalW + (normal_sample.y - 0.5)*2.0 * tangentW + (normal_sample.x - 0.5)*2.0 * binormalW );
-vec3 reflectedLightDir = normalize(reflect(-eyeDirectionW, normal_v));
-gl_FragColor.rgb = textureCube(cubemap, reflectedLightDir).rgb;
+vec3 normalW = (model * vec4(normal, 0.0)).xyz;<br/>
+vec3 tangentW = (model * vec4(tangent, 0.0)).xyz;<br/>
+vec3 binormalW = (model * vec4(binormal, 0.0)).xyz;<br/>
+mat3 v2w = mat3(tangentW, binormalW, normalW);<br/>
 </code>
+<p>
+Die Normalmap enkodiert in den Farbkanälen die Vektoren der Normalen. Die Normalmap muss allerdings vor der Benutzung auf
+den Zahlenbereich zwischen -1.0 und +1.0 normalisiert werden.
+Die Normale aus der Normalmap muss dann durch die eben erzeugte Matrix transformiert werden um im Weltkoordinatensystem anhand der 
+Oberfläche des Objektes ausgerichtet zu werden:
+</p>
+
+<pre>
+vec3 norm(vec3 v){
+    return (v - vec3(0.5,0.5,0.5)) * 2.0;
+}
+
+void main() {
+    //normal map sample anhand der texturekoordinaten holen und normalisieren
+    vec3 normal_sample = norm(texture2D(normalmap, mod(v_texCoord.yx * texCount, 1.0)).xyz);
+    normal_sample = normalize(normal_sample);
+    //hier wird die normale aus der normalmap mit der eben erzeugten matrix multipliziert
+    vec3 reflectedLightDir = normalize(reflect(-eyeDirectionW, v2w * normal_sample));
+    gl_FragColor.rgb = textureCube(cubemap, reflectedLightDir).rgb;
+    gl_FragColor.a = 1.0;
+}
+</pre>
 </br>
-<p><b>Ergebniss</b></p>
+<p><b>Ergebnis</b></p>
 <div class="btn" onclick="$('#uebung4-frame').attr('src','uebung4/index.html'); $('#uebung4-frame').focus();">OpenGL canvas laden und anzeigen</div>
 <br>
 <iframe width="620" height="520" id="uebung4-frame"></iframe>
