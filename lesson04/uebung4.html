@@ -2,6 +2,16 @@
 </br>
 <p><b>Aufgabe 4.1</b></p>
 <p>Entwickeln sie Vertex- und Fragement-Shader für kubisches Reflection-Mapping. Entwickeln sie eine geeignete interaktive Beispielszene (z.B. mit WASD-Steuerung), die geeignet ist die Korrektheit ihrer Implementierung zu demonstrieren, und gut aussieht.</p>
+<p><b>Lösungsansatz</b></p>
+<p>Um das Reflectionmapping zu realisieren, haben wir die normalen der reflektierenden Objekte in Weltkoordinaten überführt.
+Diese Normale stellt dann die Normale der Ebene dar über welche der Sehstrahl reflektiert werden muss. Die GLSL methode "reflect"
+stellt diese Funktionalität bereit. (Wichtig: Bei der Reflektion zeigen dann beide Vektoren von der reflektierenden Ebene weg!)
+Der sich daraus ergebende Vektor wird verwendet um den korrekten Texel in unserer Cubemap zu finden (GLSL Methode "textureCube")
+<code>
+vec3 reflectedLightDir = normalize(reflect(-eyeDirectionW, normal_v));
+gl_FragColor.rgb = textureCube(cubemap, reflectedLightDir).rgb;
+</code>
+</p>
 <p><b>Aufgabe 4.2</b></p>
 <p>Entwickeln sie eine Skybox für ihre Anwendung aus Aufgabe 4.1. Die Skybox soll den passenden Hintergrund zu den reflektierenden Objekten liefern und verwendet idealerweise dieselbe Cube-Map.</p>
 <p><b>Aufgabe 4.3</b></p>
@@ -10,9 +20,9 @@
 
 </br>
 <p><b>Ergebniss</b></p>
-<div class="btn" onclick="$('#uebung2-frame').attr('src','uebung4/index.html')">OpenGL canvas laden und anzeigen</div>
+<div class="btn" onclick="$('#uebung4-frame').attr('src','uebung4/index.html'); $('#uebung4-frame').focus();">OpenGL canvas laden und anzeigen</div>
 <br>
-<iframe width="620" height="520" id="uebung2-frame"></iframe>
+<iframe width="620" height="520" id="uebung4-frame"></iframe>
 <p><b>Tastenkürzel:</b></p>
 <b>space : stop/restart animation</b></br>
 <b>enter : enable/disable highress textures</b></br>
