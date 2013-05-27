@@ -16,6 +16,16 @@ gl_FragColor.rgb = textureCube(cubemap, reflectedLightDir).rgb;
 </p>
 <p><b>Aufgabe 4.2</b></p>
 <p>Entwickeln sie eine Skybox für ihre Anwendung aus Aufgabe 4.1. Die Skybox soll den passenden Hintergrund zu den reflektierenden Objekten liefern und verwendet idealerweise dieselbe Cube-Map.</p>
+<p><b>Lösungsansatz</b></p>
+<p>Die Skybox wurde realisiert, indem wir einen Würfel mit nach innen zeigenden Normalen erzeugt haben.
+Die Richtung der Normalen ist allerdings nur für das Backface-Culling wichtig, sodass die Wände des Würfels von innen sichtbar sind.
+Dieser Würfel wird immer in den den Ursprung des Auges transliert; Der rotationale Anteil der Matrix wird unverändert gelassen.
+Der Fragmentshader ist sehr simpel:
+<code>
+gl_FragColor.rgb = textureCube(cubemap, -eyeDirectionW).rgb;
+</code>
+Hierbei wird die Blickrichtung im Weltkoordinatensystem ebenfalls per "textureCube" auf die Texel der Cubemap gemappt. 
+</p>
 <p><b>Aufgabe 4.3</b></p>
 <p>Erweitern sie ihre Implementierung aus Aufgabe 4.2 so, dass die Oberflächennormale für das Reflection-Mapping aus einer Normal-Map ausgelesen wird, und die reflektierende Oberfläche so mehr Struktur erhält. </p>
 <p><b>Lösungsansatz</b></p>
