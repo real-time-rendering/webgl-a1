@@ -37,7 +37,24 @@ Hierbei wird die Blickrichtung im Weltkoordinatensystem ebenfalls per "textureCu
 <p><b>Aufgabe 4.3</b></p>
 <p>Erweitern sie ihre Implementierung aus Aufgabe 4.2 so, dass die Oberflächennormale für das Reflection-Mapping aus einer Normal-Map ausgelesen wird, und die reflektierende Oberfläche so mehr Struktur erhält. </p>
 <p><b>Lösungsansatz</b></p>
-
+<p>
+Um eine Normalmap zu verwenden, müssen die reflektierenden Objekte zusätzlich zu den Normalen noch Tangenten und Binormalen erhalten.
+Dies kann bei den tdl-primitives mit dem Aufruf "tdl.primitives.addTangentsAndBinormals" erreicht werden. Diese Tangenten und Binormalen
+stellen die Richtung dar, in welche die Normalmap die Normalen verschiebt. Die Normalmap beinhält im roten und grünen Farbkanal
+die jeweiligen Faktoren für die Tangenten und Binormalen. Die Normalmap muss allerdings vor der Benutzung auf den Zahlenbereich zwischen
+-1.0 und +1.0 normalisiert werden.
+Nach der skalierung der Tangente und der Binormale durch die Normalmap, kännen diese auf den Normalenvektor addiert werden, welcher zum
+Schluss noch einmal normalisiert wird.
+</p>
+<code>
+//das Texel Sample aus der Normalmap
+vec2 normal_sample = texture2D(normalmap, mod(v_texCoord.yx * texCount, 1.0)).rg;
+//Die Normale wird durch die Tangente und Binormale verändert.
+//Dabei werden die texturwerte auf den Zahlenbereich -1 bis +1 normalisiert.
+vec3 normal_v = normalize(normalW + (normal_sample.y - 0.5)*2.0 * tangentW + (normal_sample.x - 0.5)*2.0 * binormalW );
+vec3 reflectedLightDir = normalize(reflect(-eyeDirectionW, normal_v));
+gl_FragColor.rgb = textureCube(cubemap, reflectedLightDir).rgb;
+</code>
 </br>
 <p><b>Ergebniss</b></p>
 <div class="btn" onclick="$('#uebung4-frame').attr('src','uebung4/index.html'); $('#uebung4-frame').focus();">OpenGL canvas laden und anzeigen</div>
