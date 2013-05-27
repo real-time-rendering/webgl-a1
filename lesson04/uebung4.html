@@ -3,14 +3,16 @@
 <p><b>Aufgabe 4.1</b></p>
 <p>Entwickeln sie Vertex- und Fragement-Shader für kubisches Reflection-Mapping. Entwickeln sie eine geeignete interaktive Beispielszene (z.B. mit WASD-Steuerung), die geeignet ist die Korrektheit ihrer Implementierung zu demonstrieren, und gut aussieht.</p>
 <p><b>Lösungsansatz</b></p>
-<p>Um das Reflectionmapping zu realisieren, haben wir die normalen der reflektierenden Objekte in Weltkoordinaten überführt.
-Diese Normale stellt dann die Normale der Ebene dar über welche der Sehstrahl reflektiert werden muss. Die GLSL methode "reflect"
+<p>Um das Reflection-Mapping zu realisieren, werden die Normalen der reflektierenden Objekte in das Weltkoordinatensystem überführt.
+Eine solche Normale stellt dann die Normale der Ebene dar über welche der Sehstrahl reflektiert werden muss. Die GLSL methode "reflect"
 stellt diese Funktionalität bereit. (Wichtig: Bei der Reflektion zeigen dann beide Vektoren von der reflektierenden Ebene weg!)
-Der sich daraus ergebende Vektor wird verwendet um den korrekten Texel in unserer Cubemap zu finden (GLSL Methode "textureCube")
+Der sich daraus ergebende Vektor wird verwendet um den korrekten Texel in unserer Cubemap zu finden (GLSL Methode "textureCube").
+</br></br>
 <code>
-vec3 reflectedLightDir = normalize(reflect(-eyeDirectionW, normal_v));
+vec3 reflectedLightDir = normalize(reflect(-eyeDirectionW, normal_v));</br>
 gl_FragColor.rgb = textureCube(cubemap, reflectedLightDir).rgb;
 </code>
+</br></br>
 </p>
 <p><b>Aufgabe 4.2</b></p>
 <p>Entwickeln sie eine Skybox für ihre Anwendung aus Aufgabe 4.1. Die Skybox soll den passenden Hintergrund zu den reflektierenden Objekten liefern und verwendet idealerweise dieselbe Cube-Map.</p>
