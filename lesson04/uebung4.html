@@ -1,61 +1,62 @@
+
 <h2>&Uuml;bung 4</h2>
 </br>
 <p><b>Aufgabe 4.1</b></p>
-<p>Entwickeln sie Vertex- und Fragement-Shader für kubisches Reflection-Mapping. Entwickeln sie eine geeignete interaktive Beispielszene (z.B. mit WASD-Steuerung), die geeignet ist die Korrektheit ihrer Implementierung zu demonstrieren, und gut aussieht.</p>
-<p><b>Lösungsansatz</b></p>
-<p>Um das Reflection-Mapping zu realisieren, werden die Normalen der reflektierenden Objekte in das Weltkoordinatensystem überführt.
-Eine solche Normale stellt dann die Normale der Ebene dar über welche der Sehstrahl reflektiert werden muss. Die GLSL methode "reflect"
-stellt diese Funktionalität bereit. (Wichtig: Bei der Reflektion zeigen dann beide Vektoren von der reflektierenden Ebene weg!)
-Der sich daraus ergebende Vektor wird verwendet um den korrekten Texel in unserer Cubemap zu finden (GLSL Methode "textureCube").
-</br></br>
-<code>
-vec3 reflectedLightDir = normalize(reflect(-eyeDirectionW, normal_v));</br>
+<p>Entwickeln sie Vertex- und Fragement-Shader fÃ¼r kubisches Reflection-Mapping. Entwickeln sie eine geeignete interaktive Beispielszene (z.B. mit WASD-Steuerung), die geeignet ist die Korrektheit ihrer Implementierung zu demonstrieren, und gut aussieht.</p>
+<p><b>LÃ¶sungsansatz</b></p>
+<p>Um das Reflection-Mapping zu realisieren, werden die Normalen der reflektierenden Objekte in das Weltkoordinatensystem Ã¼berfÃ¼hrt.
+    Eine solche Normale stellt dann die Normale der Ebene dar Ã¼ber welche der Sehstrahl reflektiert werden muss. Die GLSL methode "reflect"
+    stellt diese FunktionalitÃ¤t bereit. (Wichtig: Bei der Reflektion zeigen dann beide Vektoren von der reflektierenden Ebene weg!)
+    Der sich daraus ergebende Vektor wird verwendet um den korrekten Texel in unserer Cubemap zu finden (GLSL Methode "textureCube").
+    </br></br>
+<pre>
+vec3 reflectedLightDir = normalize(reflect(-eyeDirectionW, normal_v));
 gl_FragColor.rgb = textureCube(cubemap, reflectedLightDir).rgb;
-</code>
-</br></br>
+</pre>
+</br>
 </p>
 <p><b>Aufgabe 4.2</b></p>
-<p>Entwickeln sie eine Skybox für ihre Anwendung aus Aufgabe 4.1. Die Skybox soll den passenden Hintergrund zu den reflektierenden Objekten liefern und verwendet idealerweise dieselbe Cube-Map.</p>
-<p><b>Lösungsansatz</b></p>
-<p>Die Skybox wurde mit Hilfe eines Würfels mit nach innen zeigenden Normalen realisiert. Dieser wurde die angabe einer negativen Kantenlänge erzeugt.
+<p>Entwickeln sie eine Skybox fÃ¼r ihre Anwendung aus Aufgabe 4.1. Die Skybox soll den passenden Hintergrund zu den reflektierenden Objekten liefern und verwendet idealerweise dieselbe Cube-Map.</p>
+<p><b>LÃ¶sungsansatz</b></p>
+<p>Die Skybox wurde mit Hilfe eines WÃ¼rfels mit nach innen zeigenden Normalen realisiert. Dieser wurde die angabe einer negativen KantenlÃ¤nge erzeugt. </p>
 </br></br>
-<code>
+<pre>
 tdl.primitives.createCube(-10);
-</code>
- </br></br>
-Die Richtung der Normalen ist allerdings nur für das Backface-Culling wichtig, sodass die Wände des Würfels von innen sichtbar sind.
-Die Position des Würfels wird immer in den Ursprung des Auges transliert; Der rotationale Anteil der Matrix wird unverändert gelassen.
+</pre>
+</br>
+Die Richtung der Normalen ist allerdings nur fÃ¼r das Backface-Culling wichtig, sodass die WÃ¤nde des WÃ¼rfels von innen sichtbar sind.
+Die Position des WÃ¼rfels wird immer in den Ursprung des Auges transliert; Der rotationale Anteil der Matrix wird unverÃ¤ndert gelassen.
 Der Fragmentshader ist sehr simpel:
 </br></br>
-<code>
+<pre>
 gl_FragColor.rgb = textureCube(cubemap, -eyeDirectionW).rgb;
-</code>
+</pre>
 </br></br>
 Hierbei wird die Blickrichtung im Weltkoordinatensystem ebenfalls per "textureCube" auf die Texel der Cubemap gemappt.
 </br></br>
 </p>
 <p><b>Aufgabe 4.3</b></p>
-<p>Erweitern sie ihre Implementierung aus Aufgabe 4.2 so, dass die Oberflächennormale für das Reflection-Mapping aus einer Normal-Map ausgelesen wird, und die reflektierende Oberfläche so mehr Struktur erhält. </p>
-<p><b>Lösungsansatz</b></p>
+<p>Erweitern sie ihre Implementierung aus Aufgabe 4.2 so, dass die OberflÃ¤chennormale fÃ¼r das Reflection-Mapping aus einer Normal-Map ausgelesen wird, und die reflektierende OberflÃ¤che so mehr Struktur erhÃ¤lt. </p>
+<p><b>LÃ¶sungsansatz</b></p>
 <p>
-Um eine Normalmap zu verwenden, müssen die reflektierenden Objekte zusätzlich zu den Normalen noch Tangenten und Binormalen erhalten.
-Dies kann bei den tdl-primitives mit dem Aufruf "tdl.primitives.addTangentsAndBinormals" erreicht werden. Diese Tangenten und Binormalen spannen zusammen mit der Normalen das
-Koordinatensystem für die Normalmap auf. Diese müssen in Weltkoordinaten umgeformt werden und in eine Transformationsmatrix gesetzt werden:
+    Um eine Normalmap zu verwenden, mÃ¼ssen die reflektierenden Objekte zusÃ¤tzlich zu den Normalen noch Tangenten und Binormalen erhalten.
+    Dies kann bei den tdl-primitives mit dem Aufruf "tdl.primitives.addTangentsAndBinormals" erreicht werden. Diese Tangenten und Binormalen spannen zusammen mit der Normalen das
+    Koordinatensystem fÃ¼r die Normalmap auf. Diese mÃ¼ssen in Weltkoordinaten umgeformt werden und in eine Transformationsmatrix gesetzt werden:
 </p>
-<code>
-vec3 normalW = (model * vec4(normal, 0.0)).xyz;<br/>
-vec3 tangentW = (model * vec4(tangent, 0.0)).xyz;<br/>
-vec3 binormalW = (model * vec4(binormal, 0.0)).xyz;<br/>
-mat3 v2w = mat3(tangentW, binormalW, normalW);<br/>
-</code>
-<p>
-Die Normalmap enkodiert in den Farbkanälen die Vektoren der Normalen. Die Normalmap muss allerdings vor der Benutzung auf
-den Zahlenbereich zwischen -1.0 und +1.0 normalisiert werden.
-Die Normale aus der Normalmap muss dann durch die eben erzeugte Matrix transformiert werden um im Weltkoordinatensystem anhand der 
-Oberfläche des Objektes ausgerichtet zu werden:
-</p>
-
+</br>
 <pre>
+vec3 normalW = (model * vec4(normal, 0.0)).xyz;
+vec3 tangentW = (model * vec4(tangent, 0.0)).xyz;
+vec3 binormalW = (model * vec4(binormal, 0.0)).xyz;
+mat3 v2w = mat3(tangentW, binormalW, normalW);
+</pre></br>
+<p>
+    Die Normalmap enkodiert in den FarbkanÃ¤len die Vektoren der Normalen. Die Normalmap muss allerdings vor der Benutzung auf
+    den Zahlenbereich zwischen -1.0 und +1.0 normalisiert werden.
+    Die Normale aus der Normalmap muss dann durch die eben erzeugte Matrix transformiert werden um im Weltkoordinatensystem anhand der
+    OberflÃ¤che des Objektes ausgerichtet zu werden:
+</p>
+</br><pre>
 vec3 norm(vec3 v){
     return (v - vec3(0.5,0.5,0.5)) * 2.0;
 }
@@ -69,13 +70,13 @@ void main() {
     gl_FragColor.rgb = textureCube(cubemap, reflectedLightDir).rgb;
     gl_FragColor.a = 1.0;
 }
-</pre>
+</pre></br>
 </br>
 <p><b>Ergebnis</b></p>
 <div class="btn" onclick="$('#uebung4-frame').attr('src','uebung4/index.html'); $('#uebung4-frame').focus();">OpenGL canvas laden und anzeigen</div>
 <br>
 <iframe width="620" height="520" id="uebung4-frame"></iframe>
-<p><b>Tastenkürzel:</b></p>
+<p><b>TastenkÃ¼rzel:</b></p>
 <b>space : stop/restart animation</b></br>
 <b>enter : enable/disable highress textures</b></br>
 <b>'1','2','3' : cube maps</b></br>

@@ -50,8 +50,8 @@ var useSmallTextures = true;
 var normalmapVal = 1;
 
 // The main entry point.
-function initialize() {   
-    
+function initialize() {
+
     // Setup the canvas widget for WebGL.
     window.canvas = document.getElementById("canvas");
     window.gl = tdl.webgl.setupWebGL(canvas);
@@ -63,7 +63,7 @@ function initialize() {
 
     // Load textures.
     var textures = makeTextures(textureVal,useSmallTextures,normalmapVal);
-    
+
     var frag =  window.location.hash.substring(1);
 
     // Create a torus mesh that initialy is renderd using the first shader
@@ -74,7 +74,7 @@ function initialize() {
             tdl.primitives.createSphere(1, 100, 100)
         ),
         textures);
-    
+
     var skybox = new tdl.models.Model(
         programs[1],
         tdl.primitives.createCube(-10),
@@ -84,19 +84,14 @@ function initialize() {
     // Register a keypress-handler for shader program switching using the number
     // keys.
     canvas.onmousemove = function(event){
-
-        var t = vec3.scale(eyePosition,-1);
+        var t = vec3.create([-eyePosition[0], -eyePosition[1], -eyePosition[2]]);
 
         var width = canvas.width/2;
         var height = canvas.height/2;
-        var x = (event.x-(width))/width;
-        var y = (event.y-(height))/height;
+        var x = (((event.x==undefined)?event.pageX:event.x)-(width))/width;
+        var y = (((event.y==undefined)?event.pageY:event.y)-(height))/height;
 
-        var xx = -(((x>1)?1:x)* (t[2]));
-        var yy = -((y>1)?1:y);
-        var zz = ((x>1)?1:x)* (t[0]);
-
-        target = vec3.create([xx * (1+eyeRadius), yy * (1+eyeRadius), zz * (1+eyeRadius)]);
+        target = vec3.create([(-(((x>1)?1:x)* (t[2]))) * (1+eyeRadius), (-((y>1)?1:y)) * (1+eyeRadius), (((x>1)?1:x)* (t[0])) * (1+eyeRadius)]);
     }
 
     function resetTexture(){
@@ -146,14 +141,14 @@ function initialize() {
             case "d":
                 eyeRotated += 0.1;
                 break;
-             case "e":
+            case "e":
                 eyeHeight += 0.1;
-             break;
-             case "q":
+                break;
+            case "q":
                 eyeHeight -= 0.1;
-             break;
-             case "r":
-                 torusConst.texCount += 1;
+                break;
+            case "r":
+                torusConst.texCount += 1;
                 break;
             case "f":
                 var newTexCount = torusConst.texCount -= 1;
@@ -204,7 +199,7 @@ function initialize() {
         eyePosition: eyePosition,
         texCount: 1
     };
-    
+
     var skyboxConst = {
         view: view,
         projection: projection,
@@ -216,7 +211,7 @@ function initialize() {
         model: model,
         color: color
     };
-    
+
     var skyboxPer = {
         model: model,
         color: vec3.create()
