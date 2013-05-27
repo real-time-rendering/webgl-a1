@@ -24,22 +24,30 @@ window.onload = function() {
     }
 }
 
-// Recalculate per face normals for a triangle mesh.
-function perFaceNormals(arrays) {
-    var n = arrays.indices.numElements;
-    var idx = arrays.indices;
-    //var pos = arrays.position;
-    var nrm = arrays.normal;
-    for (var ti = 0; ti != n; ti++) {
-        var i = idx.getElement(ti);
-        var normal = nrm.getElement(i[0]);
-        nrm.setElement(i[1], normal);
-        nrm.setElement(i[2], normal);
-    }
-    return arrays;
-};
+function makeTextures(textureVal,useSmallTextures,normalmapVal){
 
+    var size = (useSmallTextures)?"small":"large";
 
+    var textures = {
+        //earth: tdl.textures.loadTexture('earth-2k-land-ocean-noshade.png'),
+        normalmap: tdl.textures.loadTexture('normalmap'+normalmapVal+'.jpg'),
+        cubemap: tdl.textures.loadTexture(
+            [
+                'cubemap/'+textureVal+'/'+size+'/posx.jpg', //positive x
+                'cubemap/'+textureVal+'/'+size+'/negx.jpg', //negative x
+                'cubemap/'+textureVal+'/'+size+'/posy.jpg', //positive y
+                'cubemap/'+textureVal+'/'+size+'/negy.jpg', //negative y
+                'cubemap/'+textureVal+'/'+size+'/posz.jpg', //positive z
+                'cubemap/'+textureVal+'/'+size+'/negz.jpg'  //negative z
+            ]
+        )
+    };
+    return textures;
+}
+
+var textureVal = 1;
+var useSmallTextures = true;
+var normalmapVal = 1;
 
 // The main entry point.
 function initialize() {   
@@ -51,35 +59,19 @@ function initialize() {
     // Create the shader programs.
     var programs = createProgramsFromTags();
 
-    var useSmallTextures = false;
-    var size = (useSmallTextures)?"small":"large";
+
 
     // Load textures.
-    var textures = {
-        //earth: tdl.textures.loadTexture('earth-2k-land-ocean-noshade.png'),
-        normalmap: tdl.textures.loadTexture('crossnrm.jpg'),
-        cubemap: tdl.textures.loadTexture(
-            [
-            'cubemap/'+size+'/posx.jpg', //positive x
-            'cubemap/'+size+'/negx.jpg', //negative x
-            'cubemap/'+size+'/posy.jpg', //positive y
-            'cubemap/'+size+'/negy.jpg', //negative y
-            'cubemap/'+size+'/posz.jpg', //positive z
-            'cubemap/'+size+'/negz.jpg'  //negative z
-            ]
-        )
-    };
+    var textures = makeTextures(textureVal,useSmallTextures,normalmapVal);
     
     var frag =  window.location.hash.substring(1);
-    var pnum = frag ? parseInt(frag) : 0;
 
     // Create a torus mesh that initialy is renderd using the first shader
     // program.
     var torus = new tdl.models.Model(
         programs[0],
-        //tdl.primitives.createTorus(0.28,0.15,30,20),
         tdl.primitives.addTangentsAndBinormals(
-            tdl.primitives.createSphere(1, 30, 30)
+            tdl.primitives.createSphere(1, 100, 100)
         ),
         textures);
     
@@ -91,7 +83,6 @@ function initialize() {
 
     // Register a keypress-handler for shader program switching using the number
     // keys.
-
     canvas.onmousemove = function(event){
 
         var t = vec3.scale(eyePosition,-1);
@@ -108,10 +99,41 @@ function initialize() {
         target = vec3.create([xx * (1+eyeRadius), yy * (1+eyeRadius), zz * (1+eyeRadius)]);
     }
 
+    function resetTexture(){
+        var tex = makeTextures(textureVal, useSmallTextures, normalmapVal);
+        torus.textures =  tex;
+        skybox.textures = tex;
+    }
+
     window.onkeypress = function(event) {
         var n = String.fromCharCode(event.which);
+        var normalmapKey = ['z','u', 'i', 'o', 'p'];
+        var bitmapKey = ['1', '2', '3'];
+
+        if(event.which==13){
+            useSmallTextures = !useSmallTextures;
+            resetTexture();
+            return;
+        }
+
+        var pos = normalmapKey.indexOf(n);
+        if(pos!=-1){
+            normalmapVal = pos;
+            resetTexture();
+            return;
+        }
+
+        var pos = bitmapKey.indexOf(n);
+        if(pos!=-1){
+            textureVal = pos+1;
+            resetTexture();
+            return;
+        }
 
         switch (n) {
+            case " ":
+                animate = !animate;
+                break;
             case "w":
                 eyeRadius -= 0.1;
                 break;
@@ -124,6 +146,19 @@ function initialize() {
             case "d":
                 eyeRotated += 0.1;
                 break;
+             case "e":
+                eyeHeight += 0.1;
+             break;
+             case "q":
+                eyeHeight -= 0.1;
+             break;
+             case "r":
+                 torusConst.texCount += 1;
+                break;
+            case "f":
+                var newTexCount = torusConst.texCount -= 1;
+                torusConst.texCount = (newTexCount>=1)?newTexCount:torusConst.texCount;
+                break;
         }
     };
 
@@ -135,9 +170,8 @@ function initialize() {
     // Uniforms for lighting.
     //var lightPosition = vec3.create([10, 10, 10]);
     var LIGHT_NUM = 3;
-    //var lightPos = [10, 10, 10];
     var lightPositions = [];
-    //var lightColors = [];
+
     for(var i=0; i<LIGHT_NUM; i++){
         lightPositions = lightPositions.concat([50, 50, 50]);
     }
@@ -153,7 +187,7 @@ function initialize() {
     // Animation parameters for the rotating eye-point.
     var eyeSpeed = 0.8;
     var eyeHeight = 0;
-    var eyeRadius = 2;
+    var eyeRadius = 3;
     var eyeRotated = 0;
     var animate = true;
 
@@ -161,23 +195,20 @@ function initialize() {
     var elapsedTime = 0.0;
     var then = 0.0;
     var clock = 0.0;
-    var showToon = true;
+
 
     // Uniform variables that are the same for all sphere in one frame.
     var torusConst = {
         view: view,
         projection: projection,
         eyePosition: eyePosition,
-        lightPositions: lightPositions,
-        time: clock
+        texCount: 1
     };
     
     var skyboxConst = {
         view: view,
         projection: projection,
         eyePosition: eyePosition,
-        lightPositions: lightPositions,
-        time: clock
     };
 
     // Uniform variables that change for each torus in a frame.
@@ -246,7 +277,8 @@ function initialize() {
         var ident = mat4.identity(torusPer.model);
         mat4.translate(ident, [0, 0, 0]);
 
-        mat4.rotate(ident, Math.sin(clock) * 90* Math.PI / 180,[0, 1, 0]);
+        mat4.rotate(ident, Math.sin(clock/2) * 90* Math.PI / 180,[0, 1, 0]);
+        mat4.rotate(ident, Math.sin(clock/2*-1) * 90* Math.PI / 180,[1, 0, 0]);
         torus.draw(torusPer);
     }
 
