@@ -118,7 +118,8 @@
                              (normal_sample.y - 0.5) * binormalW +
                              (normal_sample.x - 0.5) * tangentW );
         vec3 reflectedLightDir = normalize(reflect(-eyeDirectionW, normal_v));
-        gl_FragColor.rgb = textureCube(cubemap, reflectedLightDir).rgb;        
+
+        gl_FragColor.rgb = textureCube(cubemap, reflectedLightDir).rgb;
         gl_FragColor.a = 1.0;
     }
 </script>
@@ -136,8 +137,8 @@
     varying vec3 eyeDirectionW;
 
     void main() {
-        vec4 positionW = position * 10.0;
-        eyeDirectionW = - positionW.xyz;
+        vec4 positionW = model * position * 10.0;
+        eyeDirectionW = - position.xyz;
         gl_Position = projection * view * positionW;
     }
 </script>

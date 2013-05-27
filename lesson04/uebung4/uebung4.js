@@ -105,8 +105,7 @@ function initialize() {
         var yy = -((y>1)?1:y);
         var zz = ((x>1)?1:x)* (t[0]);
 
-        target = vec3.create([xx, yy, zz]);
-
+        target = vec3.create([xx * (1+eyeRadius), yy * (1+eyeRadius), zz * (1+eyeRadius)]);
     }
 
     window.onkeypress = function(event) {
@@ -131,7 +130,6 @@ function initialize() {
     // Create some matrices and vectors now to save time later.
     var projection = mat4.create();
     var view = mat4.create();
-    var skyboxview = mat4.create();
     var model = mat4.create();
 
     // Uniforms for lighting.
@@ -146,9 +144,6 @@ function initialize() {
     lightPositions = [50,50,50, 50,50,-50, -50,50,-50];
     lightPositions = new Float32Array(lightPositions);
 
-    /*var lightIntensity = vec3.create([0.5,
-     0.5,
-     0.5]);  */
     var color = vec3.create();
 
     var eyePosition = vec3.create();
@@ -213,8 +208,6 @@ function initialize() {
         eyePosition[1] = eyeHeight;
         eyePosition[2] = Math.cos(eyeRotated * eyeSpeed) * eyeRadius;
 
-
-
         // Setup global WebGL rendering behavior.
         gl.viewport(0, 0, canvas.width, canvas.width * 0.9);
         gl.colorMask(true, true, true, true);
@@ -237,25 +230,24 @@ function initialize() {
 
         gl.depthMask(false);
         gl.disable(gl.DEPTH_TEST);
+
         skybox.drawPrep(skyboxConst);
+        mat4.translate(mat4.identity(skyboxPer.model),eyePosition);
         skybox.draw(skyboxPer);
+
         gl.depthMask(true);
 
         gl.enable(gl.CULL_FACE);
         gl.enable(gl.DEPTH_TEST);
 
         // Prepare rendering of toruses.
-        torusConst.time = clock;
         torus.drawPrep(torusConst);
 
-        //console.log();
-
         var ident = mat4.identity(torusPer.model);
-        //mat4.rotate(ident, 0 ,[0, 1, 0]);
         mat4.translate(ident, [0, 0, 0]);
+
+        mat4.rotate(ident, Math.sin(clock) * 90* Math.PI / 180,[0, 1, 0]);
         torus.draw(torusPer);
-        
-        
     }
 
     // Initial call to get the rendering started.
