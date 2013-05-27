@@ -16,7 +16,7 @@
     <file path="/uebung3_3.js" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1368005905695" ignored="false" />
     <file path="/uebung3.html" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1368438858051" ignored="false" />
     <file path="/dummy.xml" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1368008591899" ignored="false" />
-    <file path="/uebung4.html" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1369657702226" ignored="false" />
+    <file path="/uebung4.html" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1369658267622" ignored="false" />
     <file path="/index3.html" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1369148573435" ignored="false" />
     <file path="/uebung4.js" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1369653570871" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -41,7 +41,7 @@
       <file leaf-file-name="uebung4.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/uebung4/uebung4.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="112" column="10" selection-start="3374" selection-end="3374" vertical-scroll-proportion="-11.4">
+            <state line="79" column="8" selection-start="2396" selection-end="2426" vertical-scroll-proportion="-27.0">
               <folding />
             </state>
           </provider>
@@ -50,7 +50,7 @@
       <file leaf-file-name="uebung4.html" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/uebung4.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="14" column="0" selection-start="1034" selection-end="1034" vertical-scroll-proportion="0.42769858">
+            <state line="26" column="38" selection-start="1694" selection-end="1694" vertical-scroll-proportion="0.48879838">
               <folding />
             </state>
           </provider>
@@ -186,20 +186,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="1" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lesson04" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lesson04" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="uebung3" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -418,11 +404,6 @@
         <state line="13" column="25" selection-start="1977" selection-end="1977" vertical-scroll-proportion="0.28301886" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/uebung3/index3.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="0" selection-start="618" selection-end="830" vertical-scroll-proportion="0.12" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/uebung3/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state line="29" column="33" selection-start="0" selection-end="3639" vertical-scroll-proportion="0.4017094" />
@@ -453,13 +434,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/uebung3/index2.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="43" selection-start="344" selection-end="344" vertical-scroll-proportion="0.15873016">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/uebung3/uebung3_3.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="74" column="51" selection-start="2301" selection-end="2339" vertical-scroll-proportion="0.0">
@@ -474,13 +448,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/uebung4/uebung4.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="112" column="10" selection-start="3374" selection-end="3374" vertical-scroll-proportion="-11.4">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/uebung3.html">
       <provider selected="true" editor-type-id="text-editor">
         <state line="70" column="21" selection-start="4892" selection-end="4892" vertical-scroll-proportion="-9.583333">
@@ -488,9 +455,30 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/uebung3/index3.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="23" column="36" selection-start="766" selection-end="771" vertical-scroll-proportion="0.27579364">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uebung3/index2.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="7" column="43" selection-start="344" selection-end="344" vertical-scroll-proportion="-0.14880952">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uebung4/uebung4.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="79" column="8" selection-start="2396" selection-end="2426" vertical-scroll-proportion="-27.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/uebung4.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="0" selection-start="1034" selection-end="1034" vertical-scroll-proportion="0.42769858">
+        <state line="26" column="38" selection-start="1694" selection-end="1694" vertical-scroll-proportion="0.48879838">
           <folding />
         </state>
       </provider>
