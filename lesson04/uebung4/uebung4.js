@@ -100,8 +100,49 @@ function initialize() {
         skybox.textures = tex;
     }
 
+    var walkW = false;
+    var walkA = false;
+    var walkS = false;
+    var walkD = false;
+    var walkQ = false;
+    var walkE = false;
+
+    function setSwitch(key,val){
+        switch (key) {
+            case "W":
+                walkW = val;
+                break;
+            case "A":
+                walkA = val;
+                break;
+            case "S":
+                walkS = val;
+                break;
+            case "D":
+                walkD = val;
+                break;
+            case "Q":
+                walkQ = val;
+                break;
+            case "E":
+                walkE = val;
+                break;
+        }
+    }
+
+    window.onkeydown = function(event) {
+        setSwitch(String.fromCharCode(event.which),true);
+    }
+
+    window.onkeyup = function(event) {
+        setSwitch(String.fromCharCode(event.which),false);
+    }
+
+    // Register a keypress-handler for shader program switching using the number
+    // keys.
     window.onkeypress = function(event) {
         var n = String.fromCharCode(event.which);
+
         var normalmapKey = ['z','u', 'i', 'o', 'p'];
         var bitmapKey = ['1', '2', '3'];
 
@@ -128,24 +169,6 @@ function initialize() {
         switch (n) {
             case " ":
                 animate = !animate;
-                break;
-            case "w":
-                eyeRadius -= 0.1;
-                break;
-            case "a":
-                eyeRotated -= 0.1;
-                break;
-            case "s":
-                eyeRadius += 0.1;
-                break;
-            case "d":
-                eyeRotated += 0.1;
-                break;
-            case "e":
-                eyeHeight += 0.1;
-                break;
-            case "q":
-                eyeHeight -= 0.1;
                 break;
             case "r":
                 torusConst.texCount += 1;
@@ -219,6 +242,22 @@ function initialize() {
 
     // Renders one frame and registers itself for the next frame.
     function render() {
+        if(walkW){
+            eyeRadius -= 0.05;
+        }else if(walkS){
+            eyeRadius += 0.05;
+        }
+        if(walkA){
+            eyeRotated -= 0.05;
+        }else if(walkD){
+            eyeRotated += 0.05;
+        }
+        if(walkQ){
+            eyeHeight += 0.05;
+        }else if(walkE){
+            eyeHeight -= 0.05;
+        }
+
         tdl.webgl.requestAnimationFrame(render, canvas);
 
         // Do the time keeping.
