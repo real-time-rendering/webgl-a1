@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>WebGL using tdl.js</title>
+    <script type="text/javascript" src="../tdl/base.js"></script>
+    <script type="text/javascript" src="../tdl/gl-matrix.js"></script>
+    <script src="../jquery-1.9.1.min.js"></script>
+
+    <style type="text/css">
+        #error { display: none; }
+        #canvas { border: 1px solid black; }
+    </style>
+
+    <script type="text/javascript" src="entity.js"></script>
+    <script type="text/javascript" src="uebung5.js"></script>
+</head>
+
+<body>
+<div class="container">
+    <pre id="error" class="alert alert-error"></pre>
+
+    <div id="canvas-container">
+        <p><canvas id="canvas" width="600" height="500"></canvas></p>
+    </div>
+</div>
+</body>
+
+<!-- Cell Shading -->
+
+<script id="vs0" type="x-shader/x-vertex">
+    uniform mat4 projection;
+    uniform mat4 view;
+    uniform mat4 model;
+
+    const int LIGHT_NUM = 4;
+
+    uniform float lightPositions[3 * LIGHT_NUM];
+    uniform float lightColors[3 * LIGHT_NUM];
+    uniform vec3 eyePosition;
+
+    attribute vec2 texCoord;
+    attribute vec4 position;
+    attribute vec3 normal;
+
+    varying vec3 normalW;
+    varying float lightDirectionW[3 * LIGHT_NUM];
+    varying vec3 eyeDirectionW;
+
+    varying vec2 texCoordI;
+
+    void main() {
+        vec4 positionW = model * position;
+        normalW = (model * vec4(normal, 0.0)).xyz;
+        for(int i=0; i<3*LIGHT_NUM; i+=3){
+            lightDirectionW[i  ] = lightPositions[i  ] - positionW.x;
+            lightDirectionW[i+1] = lightPositions[i+1] - positionW.y;
+            lightDirectionW[i+2] = lightPositions[i+2] - positionW.z;
+        }
+        eyeDirectionW = eyePosition - positionW.xyz;
+
+        texCoordI = texCoord;
+        gl_Position = projection * view * positionW;
+    }
+</script>
+
+<script id="fs0" type="x-shader/x-fragment">
+    precision highp  float;
+
+    const int LIGHT_NUM = 4;
+
+    uniform vec3 color;
+    uniform vec3 lightIntensity;
+
+
+    varying vec3 normalW;
+    varying float lightDirectionW[LIGHT_NUM*3];
+    uniform float lightColors[3 * LIGHT_NUM];
+    varying vec3 eyeDirectionW;
+
+    varying vec2 texCoordI;
+
+    vec3 lambert(vec3 normal, vec3 light, vec3 intensity, vec3 reflectivity) {
+        float ndotl = dot(normal, light);
+        return 0.1 * reflectivity * intensity + 0.6 * reflectivity * intensity * max(0.0, ndotl);
+    }
+
+    vec3 phong(vec3 normal, vec3 eye, vec3 light, vec3 intensity, vec3 reflectivity) {
+        float vdotn = dot(reflect(-eye, normal), light);
+
+        vec3 specular = 0.6 * intensity * pow(max(0.0, vdotn), 1.0);
+        return lambert(normal, light, intensity, reflectivity) + specular;
+    }
+
+    uniform float time;
+
+    void main() {
+        //for cellshader
+        vec3 outcolor = vec3(0.0,0.0,0.0);
+        for(int i=0; i<3*LIGHT_NUM; i+=3){
+            vec3 lightColor = vec3(lightColors[i],lightColors[i+1],lightColors[i+2]);
+            vec3 lightDirection = vec3(lightDirectionW[i],lightDirectionW[i+1],lightDirectionW[i+2]);
+            outcolor += phong(
+                normalize(normalW),
+                normalize(eyeDirectionW),
+                normalize(lightDirection),
+                lightColor, color);
+        }
+
+        gl_FragColor.rgb = outcolor;
+        gl_FragColor.a = 1.0;
+    }
+</script>
+
+<script id="vs1" type="x-shader/x-vertex">
+    attribute vec4 position;
+    varying vec2 texCoordI;
+
+    void main() {
+    texCoordI = (position.xy + 1.0) / 2.0;
+    gl_Position = position;
+    }
+</script>
+
+<script id="fs1" type="x-shader/x-fragment">
+    precision highp float;
+
+    varying vec2 texCoordI;
+    uniform sampler2D colorBuffer;
+
+    uniform float blurSize;
+    const int samples = 5;
+    const float center = (float(samples) - 1.0) / 2.0;
+
+    void main() {
+    vec3 color = vec3(0.0);
+    for (int x = 0; x < samples; x++) {
+    for (int y = 0; y < samples; y++) {
+    vec2 tc = texCoordI + (vec2(x, y) - center) * blurSize;
+    color += texture2D(colorBuffer, tc).rgb;
+    }
+    }
+
+    gl_FragColor.rgb = color / float(samples * samples);
+    gl_FragColor.a = 1.0;
+    }
+</script>
+
+</html>

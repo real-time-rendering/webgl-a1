@@ -50,17 +50,17 @@
     varying vec2 texCoordI;
 
     void main() {
-        vec4 positionW = model * position;
-        normalW = (model * vec4(normal, 0.0)).xyz;
-        for(int i=0; i<3*LIGHT_NUM; i+=3){
-            lightDirectionW[i  ] = lightPositions[i  ] - positionW.x;
-            lightDirectionW[i+1] = lightPositions[i+1] - positionW.y;
-            lightDirectionW[i+2] = lightPositions[i+2] - positionW.z;
-        }
-        eyeDirectionW = eyePosition - positionW.xyz;
+    vec4 positionW = model * position;
+    normalW = (model * vec4(normal, 0.0)).xyz;
+    for(int i=0; i<3*LIGHT_NUM; i+=3){
+    lightDirectionW[i  ] = lightPositions[i  ] - positionW.x;
+    lightDirectionW[i+1] = lightPositions[i+1] - positionW.y;
+    lightDirectionW[i+2] = lightPositions[i+2] - positionW.z;
+    }
+    eyeDirectionW = eyePosition - positionW.xyz;
 
-        texCoordI = texCoord;
-        gl_Position = projection * view * positionW;
+    texCoordI = texCoord;
+    gl_Position = projection * view * positionW;
     }
 </script>
 
@@ -81,34 +81,34 @@
     varying vec2 texCoordI;
 
     vec3 lambert(vec3 normal, vec3 light, vec3 intensity, vec3 reflectivity) {
-        float ndotl = dot(normal, light);
-        return 0.1 * reflectivity * intensity + 0.6 * reflectivity * intensity * max(0.0, ndotl);
+    float ndotl = dot(normal, light);
+    return 0.1 * reflectivity * intensity + 0.6 * reflectivity * intensity * max(0.0, ndotl);
     }
 
     vec3 phong(vec3 normal, vec3 eye, vec3 light, vec3 intensity, vec3 reflectivity) {
-        float vdotn = dot(reflect(-eye, normal), light);
+    float vdotn = dot(reflect(-eye, normal), light);
 
-        vec3 specular = 0.6 * intensity * pow(max(0.0, vdotn), 1.0);
-        return lambert(normal, light, intensity, reflectivity) + specular;
+    vec3 specular = 0.6 * intensity * pow(max(0.0, vdotn), 1.0);
+    return lambert(normal, light, intensity, reflectivity) + specular;
     }
 
     uniform float time;
 
     void main() {
-        //for cellshader
-        vec3 outcolor = vec3(0.0,0.0,0.0);
-        for(int i=0; i<3*LIGHT_NUM; i+=3){
-            vec3 lightColor = vec3(lightColors[i],lightColors[i+1],lightColors[i+2]);
-            vec3 lightDirection = vec3(lightDirectionW[i],lightDirectionW[i+1],lightDirectionW[i+2]);
-            outcolor += phong(
-                normalize(normalW),
-                normalize(eyeDirectionW),
-                normalize(lightDirection),
-                lightColor, color);
-        }
+    //for cellshader
+    vec3 outcolor = vec3(0.0,0.0,0.0);
+    for(int i=0; i<3*LIGHT_NUM; i+=3){
+    vec3 lightColor = vec3(lightColors[i],lightColors[i+1],lightColors[i+2]);
+    vec3 lightDirection = vec3(lightDirectionW[i],lightDirectionW[i+1],lightDirectionW[i+2]);
+    outcolor += phong(
+    normalize(normalW),
+    normalize(eyeDirectionW),
+    normalize(lightDirection),
+    lightColor, color);
+    }
 
-        gl_FragColor.rgb = outcolor;
-        gl_FragColor.a = 1.0;
+    gl_FragColor.rgb = outcolor;
+    gl_FragColor.a = 1.0;
     }
 </script>
 </html>
