@@ -47,7 +47,6 @@
     varying float lightDirectionW[3 * LIGHT_NUM];
     varying vec3 eyeDirectionW;
 
-
     varying vec2 texCoordI;
 
     void main() {
@@ -72,9 +71,7 @@
 
     uniform vec3 color;
     uniform vec3 lightIntensity;
-    uniform float pointdensity;
-    uniform float pointradius;
-    uniform vec3 pointcolor;
+
 
     varying vec3 normalW;
     varying float lightDirectionW[LIGHT_NUM*3];
@@ -83,17 +80,6 @@
 
     varying vec2 texCoordI;
 
-    float discrete(float f, float steps){
-        return float(int(f*steps + 0.5)) / steps;
-    }
-
-    vec3 discrete(vec3 c, float steps){
-    return vec3(
-        discrete(c.r, steps),
-        discrete(c.g, steps),
-        discrete(c.b, steps));
-    }
-
     vec3 lambert(vec3 normal, vec3 light, vec3 intensity, vec3 reflectivity) {
         float ndotl = dot(normal, light);
         return 0.1 * reflectivity * intensity + 0.6 * reflectivity * intensity * max(0.0, ndotl);
@@ -101,10 +87,7 @@
 
     vec3 phong(vec3 normal, vec3 eye, vec3 light, vec3 intensity, vec3 reflectivity) {
         float vdotn = dot(reflect(-eye, normal), light);
-        float outline = dot(normal, eye);
-        if(outline < 0.1){
-            return vec3(0.0, 0.0, 0.0);
-        }
+
         vec3 specular = 0.6 * intensity * pow(max(0.0, vdotn), 1.0);
         return lambert(normal, light, intensity, reflectivity) + specular;
     }
@@ -112,12 +95,6 @@
     uniform float time;
 
     void main() {
-        float cpoints = pointdensity;
-        vec2 tc = floor(texCoordI * cpoints);
-
-        vec3 tcolor = color;
-
-
         //for cellshader
         vec3 outcolor = vec3(0.0,0.0,0.0);
         for(int i=0; i<3*LIGHT_NUM; i+=3){
@@ -127,7 +104,7 @@
                 normalize(normalW),
                 normalize(eyeDirectionW),
                 normalize(lightDirection),
-                lightColor, tcolor);
+                lightColor, color);
         }
 
         gl_FragColor.rgb = outcolor;

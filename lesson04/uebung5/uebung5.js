@@ -24,7 +24,6 @@ window.onload = function() {
     }
 }
 
-
 // The main entry point.
 function initialize() {
     // Setup the canvas widget for WebGL.
@@ -156,11 +155,7 @@ function initialize() {
         projection: projection,
         eyePosition: eyePosition,
         lightPositions: lightPositions,
-        lightColors: lightColors,
-        time: clock,
-        pointdensity: 100.0,
-        pointradius: 0.5,
-        pointcolor: vec3.create([1,1,1])
+        lightColors: lightColors
     };
 
     // Uniform variables that change for each torus in a frame.
@@ -181,11 +176,7 @@ function initialize() {
         projection: projection,
         eyePosition: eyePosition,
         lightPositions: lightPositions,
-        lightColors: lightColors,
-        time: clock,
-        pointdensity: 100.0,
-        pointradius: 0.5,
-        pointcolor: vec3.create([1,1,1])
+        lightColors: lightColors
     };
 
     // Renders one frame and registers itself for the next frame.
