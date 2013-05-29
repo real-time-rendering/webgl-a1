@@ -39,19 +39,19 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="index.html" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/uebung5/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="15" column="47" selection-start="592" selection-end="592" vertical-scroll-proportion="18.67347">
+            <state line="132" column="35" selection-start="3906" selection-end="3906" vertical-scroll-proportion="0.65450644">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="uebung5.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="uebung5.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/uebung5/uebung5.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="202" column="20" selection-start="6341" selection-end="6341" vertical-scroll-proportion="0.6938776">
+            <state line="229" column="29" selection-start="7181" selection-end="7181" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -89,9 +89,9 @@
         <option value="$PROJECT_DIR$/uebung3/index3.html" />
         <option value="$PROJECT_DIR$/uebung4/index.html" />
         <option value="$PROJECT_DIR$/uebung4.html" />
-        <option value="$PROJECT_DIR$/uebung5/index.html" />
         <option value="$PROJECT_DIR$/uebung4/uebung4.js" />
         <option value="$PROJECT_DIR$/uebung5/uebung5.js" />
+        <option value="$PROJECT_DIR$/uebung5/index.html" />
       </list>
     </option>
   </component>
@@ -181,13 +181,13 @@
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="options.lastSelected" value="reference.settingsdialog.IDE.editor.colors" />
     <property name="recentsLimit" value="5" />
+    <property name="options.lastSelected" value="reference.settingsdialog.IDE.editor.colors" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="FullScreen" value="false" />
     <property name="DefaultHtmlFileTemplate" value="Html5" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -399,10 +399,10 @@
       </provider>
     </entry>
     <entry file="http://localhost:63342/lesson04/uebung4/1/cubemap/large/posz.jpg">
-      <provider selected="true" editor-type-id="images">
+      <provider editor-type-id="httpFileEditor">
         <state />
       </provider>
-      <provider editor-type-id="httpFileEditor">
+      <provider selected="true" editor-type-id="images">
         <state />
       </provider>
     </entry>
@@ -428,16 +428,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/uebung4/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="77" column="112" selection-start="2187" selection-end="2187" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="77" column="112" selection-start="2187" selection-end="2187" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/uebung4.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="88" column="0" selection-start="4651" selection-end="4651" vertical-scroll-proportion="0.9056604">
-          <folding />
-        </state>
+        <state line="88" column="0" selection-start="4651" selection-end="4651" vertical-scroll-proportion="0.9056604" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/uebung4/uebung4.js">
@@ -447,18 +443,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/uebung5/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="47" selection-start="592" selection-end="592" vertical-scroll-proportion="18.67347">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/glMatrix-0.9.5.min.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="5" selection-start="6375" selection-end="6375" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="17" column="5" selection-start="6375" selection-end="6375" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/uebung4/tdl/primitives.js">
@@ -470,7 +457,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/uebung5/uebung5.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="202" column="20" selection-start="6341" selection-end="6341" vertical-scroll-proportion="0.6938776">
+        <state line="229" column="29" selection-start="7181" selection-end="7181" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uebung5/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="132" column="35" selection-start="3906" selection-end="3906" vertical-scroll-proportion="0.65450644">
           <folding />
         </state>
       </provider>

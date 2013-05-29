@@ -225,9 +225,9 @@ function initialize() {
         cube.drawPrep(cubeConst);
         var ident = mat4.identity(cubePer.model);
         mat4.translate(ident,[0, -52, 0])
-        cubePer.color[0] = 0;
-        cubePer.color[1] = 1;
-        cubePer.color[2] = 0;
+        torusPer.color[0] = 0;
+        torusPer.color[1] = 0;
+        torusPer.color[2] = 1;
         cube.draw(cubePer)
     }
 
