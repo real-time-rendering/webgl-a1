@@ -291,14 +291,14 @@ function initialize() {
         //gl.disable(gl.DEPTH_TEST);
 
 
-       gl.viewport(0, 0, canvas.width, canvas.width * 0.9)  ;
+       gl.viewport(0, 0, canvas.width, canvas.width * 0.9);
        gl.colorMask(true, true, true, true);
        gl.depthMask(false);
        gl.clearColor(1.0, 0.0, 0.0, 1);
        gl.clearDepth(1);
        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT);
 
-        quad.draw({blurSize: 0.0});
+        quad.draw({blurSize: 0.01});
     }
 
   /* function render() {
