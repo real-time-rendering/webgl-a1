@@ -35,13 +35,14 @@ function initialize() {
 
     //console.log(tdl.framebuffers);
     var framebuffer = tdl.framebuffers.createFramebuffer(canvas.width, canvas.height, true);
-
     var backBuffer = new tdl.framebuffers.BackBuffer(canvas);
 
     var quadTextures = {
         colorBuffer: framebuffer.texture,
         depthBuffer: framebuffer.depthTexture
     };
+
+
 
     // Create the shader programs.
     var programs = createProgramsFromTags();
@@ -193,12 +194,11 @@ function initialize() {
     };
 
     var quad = Entity.createQuad(programs[0], quadTextures);
-
     Entity.loadProgramFromUrl('pass2.vs', 'pass2.fs', [quad]);
 
     // Renders one frame and registers itself for the next frame.
    function render() {
-       //tdl.webgl.requestAnimationFrame(render, canvas);
+        tdl.webgl.requestAnimationFrame(render, canvas);
         if(walkW){
             eyeRadius -= 0.05;
         }else if(walkS){
@@ -215,7 +215,7 @@ function initialize() {
             eyeHeight -= 0.05;
         }
 
-        tdl.webgl.requestAnimationFrame(render, canvas);
+
 
         // Do the time keeping.
         var now = (new Date()).getTime() * 0.001;
@@ -229,18 +229,6 @@ function initialize() {
         eyePosition[0] = Math.sin(eyeRotated * eyeSpeed) * eyeRadius;
         eyePosition[1] = eyeHeight;
         eyePosition[2] = Math.cos(eyeRotated * eyeSpeed) * eyeRadius;
-
-        // Setup global WebGL rendering behavior.
-        //gl.viewport(0, 0, canvas.width, canvas.width * 0.9);
-
-        gl.colorMask(true, true, true, true);
-        gl.depthMask(true);
-        gl.clearColor(1.0, 0.0, 0.0, 1);
-        gl.clearDepth(1);
-        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT);
-
-        gl.enable(gl.CULL_FACE);
-        gl.enable(gl.DEPTH_TEST);
 
         // Calculate the perspective projection matrix.
         mat4.perspective(
@@ -257,14 +245,15 @@ function initialize() {
         // Prepare rendering of toruses.
         torusConst.time = clock;
 
-        framebuffer.bind();
-        gl.depthMask(true);
-        gl.clear(gl.DEPTH_BUFFER_BIT);
+       framebuffer.bind();
+       gl.depthMask(true);
 
-        gl.enable(gl.CULL_FACE);
-        gl.enable(gl.DEPTH_TEST);
+       gl.clearColor(1.0,1.0,1.0,1.0);
+       gl.clearDepth(1);
 
-        gl.depthMask(false);
+       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+       gl.enable(gl.CULL_FACE);
+       gl.enable(gl.DEPTH_TEST);
 
         torus.drawPrep(torusConst);
         var ident = mat4.identity(torusPer.model);
@@ -275,92 +264,23 @@ function initialize() {
         torusPer.color[2] = 0;
         torus.draw(torusPer);
 
-      //  cube.drawPrep(cubeConst);
-      //  var ident = mat4.identity(cubePer.model);
-      //  mat4.translate(ident,[0, -52, 0])
-      //  torusPer.color[0] = 0;
-      ///  torusPer.color[1] = 0;
-      ///  torusPer.color[2] = 1;
-      //  cube.draw(cubePer)
-
-        gl.depthMask(true);
-
-
-        backBuffer.bind();
-        //gl.depthMask(false);
-        //gl.disable(gl.DEPTH_TEST);
-
-
-       gl.viewport(0, 0, canvas.width, canvas.width * 0.9);
-       gl.colorMask(true, true, true, true);
-       gl.depthMask(false);
-       gl.clearColor(1.0, 0.0, 0.0, 1);
-       gl.clearDepth(1);
-       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT);
-
-        quad.draw({blurSize: 0.01});
-    }
-
-  /* function render() {
-        tdl.webgl.requestAnimationFrame(render, canvas);
-
-       // Calculate the current eye position.
-       eyePosition[0] = Math.sin(eyeRotated * eyeSpeed) * eyeRadius;
-       eyePosition[1] = eyeHeight;
-       eyePosition[2] = Math.cos(eyeRotated * eyeSpeed) * eyeRadius;
-
-
-
-
-        // Calculate the perspective projection matrix.
-        mat4.perspective(60,canvas.clientWidth / canvas.clientHeight, 0.1, 100,projection);
-
-        // Calculate the viewing transfomation.
-        mat4.lookAt(eyePosition, target, up, view);
-
-        // Setup global WebGL rendering behavior.
-        framebuffer.bind();
-        gl.depthMask(true);
-        gl.clear(gl.DEPTH_BUFFER_BIT);
-       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT );
-
-
-       gl.enable(gl.CULL_FACE);
-        gl.enable(gl.DEPTH_TEST);
-
-       gl.depthMask(false);
-
-       // skybox.draw(uniforms);
-        gl.depthMask(true);
-
-        //******
-
-        torus.drawPrep(torusConst);
-        //var ident = mat4.identity(torusPer.model);
-       // mat4.rotate(ident, Math.sin(clock/2) * 90* Math.PI / 180,[0, 1, 0]);
-       // mat4.rotate(ident, Math.sin(clock/2*-1) * 90* Math.PI / 180,[1, 0, 0]);
+        cube.drawPrep(cubeConst);
+        var ident = mat4.identity(cubePer.model);
+        mat4.translate(ident,[0, -52, 0])
         torusPer.color[0] = 0;
-        torusPer.color[1] = 1;
-        torusPer.color[2] = 0;
-        torus.draw(torusPer);
+        torusPer.color[1] = 0;
+        torusPer.color[2] = 1;
+        cube.draw(cubePer)
 
-        //******
+       gl.depthMask(true);
+       backBuffer.bind();
 
-       // for (var e in entities)
-         //   entities[e].draw(uniforms);
+       gl.depthMask(false);
+       gl.disable(gl.DEPTH_TEST);
 
-        backBuffer.bind();
 
-       // Setup global WebGL rendering behavior.
-       gl.viewport(0, 0, canvas.width, canvas.width * 0.9);
-        gl.depthMask(false);
-        gl.disable(gl.DEPTH_TEST);
-
-        quad.draw({
-            blurSize: 0.0
-        });
-
-    }  */
+       quad.draw({blurSize: 0.005});
+    }
 
     // Initial call to get the rendering started.
     render();
