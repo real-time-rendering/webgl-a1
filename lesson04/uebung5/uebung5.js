@@ -35,6 +35,7 @@ function initialize() {
 
     // Create a new framebuffer linked to a texture whenever the
     var framebuffer = tdl.framebuffers.createFramebuffer(canvas.width, canvas.height, true);
+    var smallFramebuffer = tdl.framebuffers.createFramebuffer(GLOWMAP_SIZE, GLOWMAP_SIZE, true);
     var glowmap = tdl.framebuffers.createFramebuffer(GLOWMAP_SIZE, GLOWMAP_SIZE, true);
     var backBuffer = new tdl.framebuffers.BackBuffer(canvas);
 
@@ -164,7 +165,7 @@ function initialize() {
     };
 
     var postProcessQuad = createPostProcessingQuad(programs[1], framebuffer, glowmap);
-    var quadGlowMapBlur = createQuad(programs[2], glowmap);
+    var quadGlowMapBlur = createQuad(programs[2], smallFramebuffer);
 
     // Renders one frame and registers itself for the next frame.
    function render() {
@@ -180,11 +181,12 @@ function initialize() {
             clock += elapsedTime;
         }
 
-        glowmap.bind();
+        smallFramebuffer.bind();
         gl.depthMask(true);
         gl.enable(gl.DEPTH_TEST);
         renderScene();
         
+        glowmap.bind();
         gl.depthMask(false);
         gl.disable(gl.DEPTH_TEST);
         var quadModel = quadGlowMapBlur.model;
