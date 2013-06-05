@@ -11,6 +11,8 @@ class MyHandler(BaseHTTPRequestHandler):
 		try:
 			if(self.path == '/'):
 				self.path = '/index.html'
+			if '?' in self.path:
+				self.path = self.path.split('?')[0]
 			if self.path.endswith(".html"):
 				f = open(curdir + sep + self.path)
 				self.send_response(200)

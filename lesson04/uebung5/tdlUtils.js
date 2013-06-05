@@ -49,6 +49,32 @@ DrawableCube.prototype = new DrawableObject();
 
 DrawableCube.prototype.drawObject = DrawableTorus.prototype.drawObject;
 
+function createPostProcessingQuad(program, framebuffer, glowmap) {
+    var positions = new tdl.primitives.AttribBuffer(3, 4);
+    var texCoord = new tdl.primitives.AttribBuffer(2, 4);
+    var indices = new tdl.primitives.AttribBuffer(3, 2, 'Uint16Array');
+    positions.push([-1, -1, 0]);
+    positions.push([1, -1, 0]);
+    positions.push([1, 1, 0]);
+    positions.push([-1, 1, 0]);
+    texCoord.push([0, 0]);
+    texCoord.push([1, 0]);
+    texCoord.push([1, 1]);
+    texCoord.push([0, 1]);
+    indices.push([0, 1, 2]);
+    indices.push([2, 3, 0]);
+
+    return new DrawableObject(new tdl.models.Model( program, {
+        position: positions,
+        texCoord: texCoord,
+        indices: indices
+    }, {
+        colorBuffer: framebuffer.texture,
+        glowMap: glowmap.texture,
+        depthBuffer: framebuffer.depthTexture
+    }),mat4.identity(mat4.create()));
+};
+
 function createQuad(program, framebuffer) {
     var positions = new tdl.primitives.AttribBuffer(3, 4);
     var texCoord = new tdl.primitives.AttribBuffer(2, 4);

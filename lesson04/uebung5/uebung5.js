@@ -25,6 +25,8 @@ window.onload = function() {
     }
 }
 
+GLOWMAP_SIZE = 32;
+
 // The main entry point.
 function initialize() {
     // Setup the canvas widget for WebGL.
@@ -33,6 +35,7 @@ function initialize() {
 
     // Create a new framebuffer linked to a texture whenever the
     var framebuffer = tdl.framebuffers.createFramebuffer(canvas.width, canvas.height, true);
+    var glowmap = tdl.framebuffers.createFramebuffer(GLOWMAP_SIZE, GLOWMAP_SIZE, true);
     var backBuffer = new tdl.framebuffers.BackBuffer(canvas);
 
     // Create the shader programs.
@@ -106,11 +109,11 @@ function initialize() {
                 animate = !animate;
                 break;
             case "r":
-                torusConst.texCount += 1;
+                drawObjectConst.texCount += 1;
                 break;
             case "f":
-                var newTexCount = torusConst.texCount -= 1;
-                torusConst.texCount = (newTexCount>=1)?newTexCount:torusConst.texCount;
+                var newTexCount = drawObjectConst.texCount -= 1;
+                drawObjectConst.texCount = (newTexCount>=1)?newTexCount:drawObjectConst.texCount;
                 break;
         }
     };
@@ -160,13 +163,14 @@ function initialize() {
         lightColors: lightColors
     };
 
-    var quad = createQuad(programs[1], framebuffer);
+    var postProcessQuad = createPostProcessingQuad(programs[1], framebuffer, glowmap);
+    var quadGlowMapBlur = createQuad(programs[2], glowmap);
 
     // Renders one frame and registers itself for the next frame.
    function render() {
         tdl.webgl.requestAnimationFrame(render, canvas);
 
-       playerMovement();
+        playerMovement();
 
         // Do the time keeping.
         var now = (new Date()).getTime() * 0.001;
@@ -176,34 +180,47 @@ function initialize() {
             clock += elapsedTime;
         }
 
-       framebuffer.bind();
-       gl.depthMask(true);
-
-       gl.clearColor(0.0,0.0,0.0,1.0);
-       gl.clearDepth(1);
-
-       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-       gl.enable(gl.CULL_FACE);
-       gl.enable(gl.DEPTH_TEST);
-
-       torus.rotate(Math.sin(clock/2) * 90* Math.PI / 180, Math.sin(clock/2*-1) * 90* Math.PI / 180,0);
-       cube.translate([0, -52, 0]);
-
-       for (var i=0;i<drawableObjects.length;i++){
-           drawableObjects[i].drawObject(drawObjectConst);
-       }
-
-       gl.depthMask(true);
-       backBuffer.bind();
-
-       gl.depthMask(false);
-       gl.disable(gl.DEPTH_TEST);
-
-       var quadModel = quad.model;
-       quadModel.drawPrep({blurSize: 0.005});
-       quadModel.draw({ model: quad.transform });
+        glowmap.bind();
+        gl.depthMask(true);
+        gl.enable(gl.DEPTH_TEST);
+        renderScene();
+        
+        gl.depthMask(false);
+        gl.disable(gl.DEPTH_TEST);
+        var quadModel = quadGlowMapBlur.model;
+        quadModel.drawPrep({blurSize: 0.005});
+        quadModel.draw({ model: quadGlowMapBlur.transform });
+        
+        framebuffer.bind();
+        gl.depthMask(true);
+        gl.enable(gl.DEPTH_TEST);
+        renderScene();
+        
+        backBuffer.bind();
+        gl.depthMask(false);
+        gl.disable(gl.DEPTH_TEST);
+        
+        var quadModel = postProcessQuad.model;
+        quadModel.drawPrep({blurSize: 0.005});
+        quadModel.draw({ model: postProcessQuad.transform });
     }
 
+    function renderScene(){
+        gl.clearColor(0.0,0.0,0.0,1.0);
+        gl.clearDepth(1);
+     
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+        gl.enable(gl.CULL_FACE);
+        gl.enable(gl.DEPTH_TEST);
+     
+        torus.rotate(Math.sin(clock/2) * 90* Math.PI / 180, Math.sin(clock/2*-1) * 90* Math.PI / 180,0);
+        cube.translate([0, -52, 0]);
+     
+        for (var i=0;i<drawableObjects.length;i++){
+            drawableObjects[i].drawObject(drawObjectConst);
+        }
+    }
+    
     //-----------------------------------------------
 
     function playerMovement(){

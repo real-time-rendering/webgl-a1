@@ -128,22 +128,47 @@
 
     varying vec2 texCoordI;
     uniform sampler2D colorBuffer;
+    uniform sampler2D glowMap;
+
+    void main() {
+        vec3 glowmapPixel = texture2D(glowMap, texCoordI).rgb;
+        vec3 origPixel = texture2D(colorBuffer, texCoordI).rgb;
+        gl_FragColor.rgb = origPixel + glowmapPixel;
+        gl_FragColor.a = 1.0;
+    }
+</script>
+
+<script id="vs2" type="x-shader/x-vertex">
+    attribute vec4 position;
+    varying vec2 texCoordI;
+
+    void main() {
+        texCoordI = (position.xy + 1.0) / 2.0;
+        gl_Position = position;
+    }
+</script>
+
+<script id="fs2" type="x-shader/x-fragment">
+    precision highp float;
+
+    varying vec2 texCoordI;
+    uniform sampler2D colorBuffer;
 
     uniform float blurSize;
     const int samples = 5;
     const float center = (float(samples) - 1.0) / 2.0;
 
     void main() {
-    vec3 color = vec3(0.0);
-    for (int x = 0; x < samples; x++) {
-    for (int y = 0; y < samples; y++) {
-    vec2 tc = texCoordI + (vec2(x, y) - center) * blurSize;
-    color += texture2D(colorBuffer, tc).rgb;
-    }
-    }
+        vec3 color = vec3(0.0);
+        for (int x = 0; x < samples; x++) {
+            for (int y = 0; y < samples; y++) {
+                vec2 tc = texCoordI + (vec2(x, y) - center) * blurSize;
+                color += texture2D(colorBuffer, tc).rgb;
+            }
+        }
 
-    gl_FragColor.rgb = color / float(samples * samples);
-    gl_FragColor.a = 1.0;
+        gl_FragColor.rgb = (color / float(samples * samples));
+        gl_FragColor.a = 1.0;
     }
 </script>
 
