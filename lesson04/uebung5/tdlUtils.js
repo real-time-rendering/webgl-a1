@@ -94,7 +94,8 @@ var DrawablePillar = function(program, size, color, sphereColor){
     for (var i=0;i<15;i++){
         this.elements.push(new DrawableCube(program, size, color));
     }
-    this.elements.push(new DrawableSphere(program,size*4,sphereColor));
+    this.sphere = new DrawableSphere(program,size*4,sphereColor); 
+    this.elements.push(this.sphere);
 }
 
 DrawablePillar.prototype.drawObject = function(uniforms){
@@ -111,9 +112,10 @@ DrawablePillar.prototype.drawObject = function(uniforms){
 
 DrawablePillar.prototype.translate = function(to){
     this.translations.push(to);
-    /*for (var i=0;i<this.elements.length;i++){
-        mat4.translate(mat4.identity(this.elements[i].transform),to);
-    } */
+}
+
+DrawablePillar.prototype.setSphereColor = function(color){
+    this.sphere.color = color;
 }
 
 

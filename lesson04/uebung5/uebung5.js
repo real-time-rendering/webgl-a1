@@ -201,6 +201,7 @@ function initialize() {
         framebuffer.bind();
         gl.depthMask(true);
         gl.enable(gl.DEPTH_TEST);
+        animateScene();
         renderScene();
         
         backBuffer.bind();
@@ -210,6 +211,13 @@ function initialize() {
         var quadModel = postProcessQuad.model;
         quadModel.drawPrep({blurSize: 0.005});
         quadModel.draw({ model: postProcessQuad.transform });
+    }
+
+    function animateScene(){
+        var colval = (Math.sin(clock)/2)+0.5;
+        pillar.setSphereColor([colval,0,0]);
+        pillar2.setSphereColor([0,colval,0]);
+        pillar3.setSphereColor([0,0,colval]);
     }
 
     function renderScene(){
