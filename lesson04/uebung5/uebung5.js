@@ -48,8 +48,13 @@ function initialize() {
     // Create a torus mesh that initialy is renderd using the first shader
     // program.
     var torus = new DrawableTorus(programs[pnum], 0.88,0.65,80,600, [0,1,0]);
-    var cube  = new DrawableCube(programs[pnum], 100, [0,0,1]);
-    var drawableObjects = [torus, cube];
+
+    var pillar = new DrawablePillar(programs[pnum],0.2,[1,1,1],[1,0,0]);
+    var pillar2 = new DrawablePillar(programs[pnum],0.2,[1,1,1],[0,1,0]);
+    var pillar3 = new DrawablePillar(programs[pnum],0.2,[1,1,1],[0,0,1]);
+
+
+    var drawableObjects = [pillar, pillar2, pillar3]; //, cube];
 
 
     canvas.onmousemove = function(event){
@@ -214,10 +219,10 @@ function initialize() {
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
         gl.enable(gl.CULL_FACE);
         gl.enable(gl.DEPTH_TEST);
-     
-        torus.rotate(Math.sin(clock/2) * 90* Math.PI / 180, Math.sin(clock/2*-1) * 90* Math.PI / 180,0);
-        cube.translate([0, -52, 0]);
-     
+
+        pillar2.translate([2,0,0]);
+        pillar3.translate([-2,0,0]);
+
         for (var i=0;i<drawableObjects.length;i++){
             drawableObjects[i].drawObject(drawObjectConst);
         }

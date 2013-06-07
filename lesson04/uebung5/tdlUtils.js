@@ -5,6 +5,10 @@ tdl.require('tdl.primitives');
 tdl.require('tdl.textures');
 tdl.require('tdl.framebuffers');
 
+//--------------------------------------------------
+// ------------- DrawableObject --------------------
+//--------------------------------------------------
+
 var DrawableObject = function(model, transform) {
     this.model = model || null;
     this.transform = transform || mat4.identity(mat4.create());
@@ -28,6 +32,9 @@ DrawableObject.prototype.translate = function(to){
     mat4.translate(mat4.identity(this.transform),to);
 }
 
+//--------------------------------------------------
+// ------------- DrawableTorus --------------------
+//--------------------------------------------------
 
 var DrawableTorus = function(program, radius, thickness, radialSubdivisions, bodySubdivisions, color){
     this.model = new tdl.models.Model(program,tdl.primitives.createTorus(radius, thickness, radialSubdivisions, bodySubdivisions),null);
@@ -40,14 +47,80 @@ DrawableTorus.prototype.drawObject = function(uniforms){
     this.draw(uniforms,{ model: this.transform , color: this.color});
 }
 
+//--------------------------------------------------
+// ------------- DrawableCube --------------------
+//--------------------------------------------------
+
 var DrawableCube = function(program, size, color){
     this.model = new tdl.models.Model(program,tdl.primitives.createCube(size),null);
     this.color = color || null;
 }
 
 DrawableCube.prototype = new DrawableObject();
-
 DrawableCube.prototype.drawObject = DrawableTorus.prototype.drawObject;
+
+//--------------------------------------------------
+// ------------- DrawableSphere --------------------
+//--------------------------------------------------
+
+var DrawableSphere = function(program, size, color){
+    this.model = new tdl.models.Model(program,tdl.primitives.createSphere(size, size*50, size*60),null);
+    this.color = color || null;
+}
+
+DrawableSphere.prototype = new DrawableObject();
+DrawableSphere.prototype.drawObject = DrawableTorus.prototype.drawObject;
+
+//--------------------------------------------------
+// ------------- DrawableFlaredCube --------------------
+//--------------------------------------------------
+
+var DrawableFlaredCube = function(program, size, color){
+    this.model = new tdl.models.Model(program,tdl.primitives.createFlaredCube(size * 3, size ,60),null);
+    this.color = color || null;
+}
+
+DrawableFlaredCube.prototype = new DrawableObject();
+DrawableFlaredCube.prototype.drawObject = DrawableTorus.prototype.drawObject;
+
+//--------------------------------------------------
+// ------------- DrawablePillar --------------------
+//--------------------------------------------------
+
+var DrawablePillar = function(program, size, color, sphereColor){
+    this.size = size;
+    this.elements = [];
+    this.translations = [];
+    for (var i=0;i<15;i++){
+        this.elements.push(new DrawableCube(program, size, color));
+    }
+    this.elements.push(new DrawableSphere(program,size*4,sphereColor));
+}
+
+DrawablePillar.prototype.drawObject = function(uniforms){
+    for (var i=0;i<this.elements.length;i++){
+        var ident = mat4.identity(this.elements[i].transform);
+        for (var e=0;e<this.translations.length;e++){
+            mat4.translate(ident,this.translations[e]);
+        }
+        mat4.translate(ident,[0,i*this.size,0]);
+        this.elements[i].drawObject(uniforms);
+    }
+    this.translations = [];
+}
+
+DrawablePillar.prototype.translate = function(to){
+    this.translations.push(to);
+    /*for (var i=0;i<this.elements.length;i++){
+        mat4.translate(mat4.identity(this.elements[i].transform),to);
+    } */
+}
+
+
+
+//--------------------------------------------------
+// ------------- Quads -----------------------------
+//--------------------------------------------------
 
 function createPostProcessingQuad(program, framebuffer, glowmap) {
     var positions = new tdl.primitives.AttribBuffer(3, 4);
