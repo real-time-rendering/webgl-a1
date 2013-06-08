@@ -25,7 +25,7 @@ window.onload = function() {
     }
 }
 
-GLOWMAP_SIZE = 32;
+GLOWMAP_SIZE = 256;
 
 // The main entry point.
 function initialize() {
@@ -47,11 +47,13 @@ function initialize() {
 
     // Create a torus mesh that initialy is renderd using the first shader
     // program.
-    var torus = new DrawableTorus(programs[pnum], 0.88,0.65,80,600, [0,1,0]);
+    var torus = new DrawableTorus(programs[pnum], 0.88,0.65,20,80, [0,1,0]);
 
     var pillar = new DrawablePillar(programs[pnum],0.2,[1,1,1],[1,0,0]);
     var pillar2 = new DrawablePillar(programs[pnum],0.2,[1,1,1],[0,1,0]);
+    pillar2.translate([2,0,0]);
     var pillar3 = new DrawablePillar(programs[pnum],0.2,[1,1,1],[0,0,1]);
+    pillar3.translate([-2,0,0]);
 
 
     var drawableObjects = [pillar, pillar2, pillar3]; //, cube];
@@ -228,8 +230,7 @@ function initialize() {
         gl.enable(gl.CULL_FACE);
         gl.enable(gl.DEPTH_TEST);
 
-        pillar2.translate([2,0,0]);
-        pillar3.translate([-2,0,0]);
+        
 
         for (var i=0;i<drawableObjects.length;i++){
             drawableObjects[i].drawObject(drawObjectConst);
