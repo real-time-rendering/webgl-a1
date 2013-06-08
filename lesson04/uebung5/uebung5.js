@@ -25,7 +25,7 @@ window.onload = function() {
     }
 }
 
-GLOWMAP_SIZE = 128;
+var GLOWMAP_SIZE = 128;
 
 // The main entry point.
 function initialize() {
@@ -168,7 +168,8 @@ function initialize() {
         projection: projection,
         eyePosition: eyePosition,
         lightPositions: lightPositions,
-        lightColors: lightColors
+        lightColors: lightColors,
+        brightpass: 0.5,
     };
 
     var postProcessQuad = createPostProcessingQuad(programs[1], framebuffer, glowmap);
@@ -188,10 +189,13 @@ function initialize() {
             clock += elapsedTime;
         }
 
+        drawObjectConst.brightpass = 0.5;
         smallFramebuffer.bind();
         gl.depthMask(true);
         gl.enable(gl.DEPTH_TEST);
         renderScene();
+        
+        drawObjectConst.brightpass = 0.0;
         
         glowmap.bind();
         gl.depthMask(false);

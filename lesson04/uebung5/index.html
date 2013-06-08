@@ -72,6 +72,7 @@
 
     uniform vec3 color;
     uniform vec3 lightIntensity;
+    uniform float brightpass;
 
 
     varying vec3 normalW;
@@ -92,6 +93,13 @@
         vec3 specular = 0.6 * intensity * pow(max(0.0, vdotn), 1.0);
         return lambert(normal, light, intensity, reflectivity) + specular;
     }
+    
+    vec3 brightpass_filter(vec3 color){
+        if((color.r + color.g + color.b)/3.0 < brightpass){
+            return vec3(0.0,0.0,0.0);
+        }
+        return color;
+    }
 
     uniform float time;
 
@@ -108,7 +116,7 @@
                 lightColor, color);
         }
 
-        gl_FragColor.rgb = outcolor;
+        gl_FragColor.rgb = brightpass_filter(outcolor);
         gl_FragColor.a = 1.0;
     }
 </script>
