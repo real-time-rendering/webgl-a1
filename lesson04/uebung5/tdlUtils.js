@@ -117,6 +117,12 @@ DrawablePillar.prototype.setSphereColor = function(color){
     this.sphere.color = color;
 }
 
+var DrawableQuad = function(program, width, depth, color){
+    this.model = new tdl.models.Model(program,tdl.primitives.createPlane(width, depth, 1, 1),null);
+    this.color = color || null;
+}
+DrawableQuad.prototype = new DrawableObject();
+DrawableQuad.prototype.drawObject = DrawableTorus.prototype.drawObject;
 
 
 //--------------------------------------------------

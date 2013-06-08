@@ -184,4 +184,52 @@
     }
 </script>
 
+<script id="vs3" type="x-shader/x-vertex">
+    uniform mat4 projection;
+    uniform mat4 view;
+    uniform mat4 model;
+    uniform vec3 eyePosition;
+
+    attribute vec2 texCoord;
+    attribute vec4 position;
+    attribute vec3 normal;
+
+    varying vec3 normalW;
+    varying vec3 eyeDirectionW;
+
+    varying vec2 texCoordI;
+
+    void main() {
+        vec4 positionW = model * position;
+        normalW = (model * vec4(normal, 0.0)).xyz;
+        eyeDirectionW = eyePosition - positionW.xyz;
+        texCoordI = texCoord;
+        gl_Position = projection * view * positionW;
+    }
+</script>
+
+<script id="fs3" type="x-shader/x-fragment">
+    precision highp float;
+
+    varying vec2 texCoordI;
+    uniform float time;
+
+    vec2 makeWave(float time, vec2 coord){
+        return vec2(
+            ((
+                sin(cos(time*0.65+coord.y)*11.0 + sin(time*0.12+coord.x))
+            ) +1.0 ) / 2.0,
+            ((
+                cos(sin(time*0.1+coord.x)*12.0 + cos(time * 0.43 + coord.y))
+            ) +1.0 ) / 2.0
+        );
+    }
+
+    void main() {
+        gl_FragColor.b = makeWave(time, texCoordI.xy).x + makeWave(time, texCoordI.xy).y;
+        gl_FragColor.rg = vec2(0.0, 0.0);
+        gl_FragColor.a = 1.0;
+    }
+</script>
+
 </html>

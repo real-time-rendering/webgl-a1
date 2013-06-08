@@ -26,6 +26,7 @@ window.onload = function() {
 }
 
 var GLOWMAP_SIZE = 128;
+var WATERMAP_SIZE = 128;
 
 // The main entry point.
 function initialize() {
@@ -37,6 +38,7 @@ function initialize() {
     var framebuffer = tdl.framebuffers.createFramebuffer(canvas.width, canvas.height, true);
     var smallFramebuffer = tdl.framebuffers.createFramebuffer(GLOWMAP_SIZE, GLOWMAP_SIZE, true);
     var glowmap = tdl.framebuffers.createFramebuffer(GLOWMAP_SIZE, GLOWMAP_SIZE, true);
+    var watermap = tdl.framebuffers.createFramebuffer(WATERMAP_SIZE, WATERMAP_SIZE, true);
     var backBuffer = new tdl.framebuffers.BackBuffer(canvas);
 
     // Create the shader programs.
@@ -47,16 +49,17 @@ function initialize() {
 
     // Create a torus mesh that initialy is renderd using the first shader
     // program.
-    var torus = new DrawableTorus(programs[pnum], 0.88,0.65,20,80, [0,1,0]);
+    var torus = new DrawableTorus(programs[0], 0.88,0.65,20,80, [0,1,0]);
 
-    var pillar = new DrawablePillar(programs[pnum],0.2,[1,1,1],[1,0,0]);
-    var pillar2 = new DrawablePillar(programs[pnum],0.2,[1,1,1],[0,1,0]);
+    var pillar = new DrawablePillar(programs[0],0.2,[1,1,1],[1,0,0]);
+    var pillar2 = new DrawablePillar(programs[0],0.2,[1,1,1],[0,1,0]);
     pillar2.translate([2,0,0]);
-    var pillar3 = new DrawablePillar(programs[pnum],0.2,[1,1,1],[0,0,1]);
+    var pillar3 = new DrawablePillar(programs[0],0.2,[1,1,1],[0,0,1]);
     pillar3.translate([-2,0,0]);
-
-
-    var drawableObjects = [pillar, pillar2, pillar3]; //, cube];
+    
+    waterPlane = new DrawableQuad(programs[3], 10.0, 10.0, [1,1,1] );
+    
+    var drawableObjects = [pillar, pillar2, pillar3, waterPlane]; //, cube];
 
 
     canvas.onmousemove = function(event){
@@ -170,6 +173,7 @@ function initialize() {
         lightPositions: lightPositions,
         lightColors: lightColors,
         brightpass: 0.5,
+        time: clock,
     };
 
     var postProcessQuad = createPostProcessingQuad(programs[1], framebuffer, glowmap);
@@ -189,7 +193,7 @@ function initialize() {
             clock += elapsedTime;
         }
 
-        drawObjectConst.brightpass = 0.5;
+        drawObjectConst.brightpass = 0.4;
         smallFramebuffer.bind();
         gl.depthMask(true);
         gl.enable(gl.DEPTH_TEST);
@@ -215,11 +219,12 @@ function initialize() {
         gl.disable(gl.DEPTH_TEST);
         
         var quadModel = postProcessQuad.model;
-        quadModel.drawPrep({blurSize: 0.005, glowStrengh: 4.0});
+        quadModel.drawPrep({blurSize: 0.02, glowStrengh: 2.0});
         quadModel.draw({ model: postProcessQuad.transform });
     }
 
     function animateScene(){
+        drawObjectConst.time = clock;
         var colval = (Math.sin(clock)/2)+0.5;
         pillar.setSphereColor([colval,0,0]);
         pillar2.setSphereColor([0,colval,0]);
