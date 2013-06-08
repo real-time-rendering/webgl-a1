@@ -129,11 +129,13 @@
     varying vec2 texCoordI;
     uniform sampler2D colorBuffer;
     uniform sampler2D glowMap;
+    
+    uniform float glowStrengh;
 
     void main() {
         vec3 glowmapPixel = texture2D(glowMap, texCoordI).rgb;
         vec3 origPixel = texture2D(colorBuffer, texCoordI).rgb;
-        gl_FragColor.rgb = origPixel + glowmapPixel;
+        gl_FragColor.rgb = glowmapPixel * glowStrengh + origPixel;
         gl_FragColor.a = 1.0;
     }
 </script>
@@ -154,15 +156,17 @@
     varying vec2 texCoordI;
     uniform sampler2D colorBuffer;
 
-    uniform float blurSize;
+    uniform float glowBlurSize;
     const int samples = 5;
-    const float center = (float(samples) - 1.0) / 2.0;
-
+    const float center = (float(samples)-1.0)/2.0;
+    
     void main() {
         vec3 color = vec3(0.0);
         for (int x = 0; x < samples; x++) {
             for (int y = 0; y < samples; y++) {
-                vec2 tc = texCoordI + (vec2(x, y) - center) * blurSize;
+                float xx = (float(x) - center)*glowBlurSize;
+                float yy = (float(y) - center)*glowBlurSize;
+                vec2 tc = texCoordI + vec2(xx, yy);
                 color += texture2D(colorBuffer, tc).rgb;
             }
         }

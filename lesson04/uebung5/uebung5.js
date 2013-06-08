@@ -25,7 +25,7 @@ window.onload = function() {
     }
 }
 
-GLOWMAP_SIZE = 256;
+GLOWMAP_SIZE = 128;
 
 // The main entry point.
 function initialize() {
@@ -196,9 +196,9 @@ function initialize() {
         glowmap.bind();
         gl.depthMask(false);
         gl.disable(gl.DEPTH_TEST);
-        var quadModel = quadGlowMapBlur.model;
-        quadModel.drawPrep({blurSize: 0.005});
-        quadModel.draw({ model: quadGlowMapBlur.transform });
+        var quadGlowMapBlurModel = quadGlowMapBlur.model;
+        quadGlowMapBlurModel.drawPrep();
+        quadGlowMapBlurModel.draw({ model: quadGlowMapBlur.transform, glowBlurSize: 0.01});
         
         framebuffer.bind();
         gl.depthMask(true);
@@ -211,7 +211,7 @@ function initialize() {
         gl.disable(gl.DEPTH_TEST);
         
         var quadModel = postProcessQuad.model;
-        quadModel.drawPrep({blurSize: 0.005});
+        quadModel.drawPrep({blurSize: 0.005, glowStrengh: 4.0});
         quadModel.draw({ model: postProcessQuad.transform });
     }
 
