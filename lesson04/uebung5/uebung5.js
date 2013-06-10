@@ -25,6 +25,7 @@ window.onload = function() {
     }
 }
 
+var GLOWMAP_SIZE = 128;
 var WATERMAP_SIZE = 128;
 
 // The main entry point.
@@ -52,7 +53,6 @@ function initialize() {
     // program.
     var torus = new DrawableTorus(programs[0], 0.88,0.65,20,80, [0,1,0]);
 
-<<<<<<< HEAD
     var lollies = [];
     var max =5;
     var n = 0;
@@ -62,19 +62,11 @@ function initialize() {
             n++;
         }
     }
-=======
-    var pillar = new DrawablePillar(programs[0],0.2,[1,1,1],[1,0,0]);
-    var pillar2 = new DrawablePillar(programs[0],0.2,[1,1,1],[0,1,0]);
-    pillar2.translate([2,0,0]);
-    var pillar3 = new DrawablePillar(programs[0],0.2,[1,1,1],[0,0,1]);
-    pillar3.translate([-2,0,0]);
+
     
     waterPlane = new DrawableQuad(programs[3], 10.0, 10.0, [1,1,1] );
-    
-    var drawableObjects = [pillar, pillar2, pillar3, waterPlane]; //, cube];
->>>>>>> c949ecc10f59a73b724f01efcd35cf055d63e8d1
-
-    var drawableObjects = [].concat(lollies);
+   
+    var drawableObjects = [waterPlane].concat(lollies);
 
     canvas.onmousemove = function(event){
         var t = vec3.create([-eyePosition[0], -eyePosition[1], -eyePosition[2]]);
@@ -235,20 +227,19 @@ function initialize() {
     }
 
     function animateScene(){
-<<<<<<< HEAD
         var colval = (Math.abs(Math.sin(clock/2)));
         var len = lollies.length;
 
         for (var i=0;i<len;i++){
             lollies[i].setSphereBrightness(colval);
         }
-=======
+/*=======
         drawObjectConst.time = clock;
         var colval = (Math.sin(clock)/2)+0.5;
         pillar.setSphereColor([colval,0,0]);
         pillar2.setSphereColor([0,colval,0]);
         pillar3.setSphereColor([0,0,colval]);
->>>>>>> c949ecc10f59a73b724f01efcd35cf055d63e8d1
+>>>>>>> c949ecc10f59a73b724f01efcd35cf055d63e8d1*/
     }
 
     function renderScene(){
@@ -259,7 +250,6 @@ function initialize() {
         gl.enable(gl.CULL_FACE);
         gl.enable(gl.DEPTH_TEST);
 
-<<<<<<< HEAD
         //reposition
         var counter = 0;
         for (var i=0;i<max;i++){
@@ -268,10 +258,6 @@ function initialize() {
                 counter++;
             }
         }
-
-=======
-        
->>>>>>> c949ecc10f59a73b724f01efcd35cf055d63e8d1
 
         for (var i=0;i<drawableObjects.length;i++){
             drawableObjects[i].drawObject(drawObjectConst);
