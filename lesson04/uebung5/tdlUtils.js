@@ -119,7 +119,9 @@ DrawablePillar.prototype.drawObject = function(uniforms){
             mat4.translate(ident,this.translations[e]);
         }
         mat4.translate(ident,[0,i*this.size,0]);
+        this.translations = [];
         this.elements[i].drawObject(uniforms);
+
     }
 }
 

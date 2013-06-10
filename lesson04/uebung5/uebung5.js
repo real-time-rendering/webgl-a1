@@ -65,7 +65,7 @@ function initialize() {
 
     
     waterPlane = new DrawableQuad(programs[3], 10.0, 10.0, [1,1,1] );
-   
+
     var drawableObjects = [waterPlane].concat(lollies);
 
     canvas.onmousemove = function(event){
@@ -176,7 +176,7 @@ function initialize() {
         lightPositions: lightPositions,
         lightColors: lightColors,
         brightpass: 0.5,
-        time: clock,
+        time: clock
     };
 
     var postProcessQuad = createPostProcessingQuad(programs[1], framebuffer, glowmap);
@@ -222,7 +222,7 @@ function initialize() {
         gl.disable(gl.DEPTH_TEST);
         
         var quadModel = postProcessQuad.model;
-        quadModel.drawPrep({blurSize: 0.02, glowStrengh: 2.0});
+        quadModel.drawPrep({blurSize: 0.04, glowStrengh: 2.0});
         quadModel.draw({ model: postProcessQuad.transform });
     }
 
@@ -254,6 +254,7 @@ function initialize() {
         var counter = 0;
         for (var i=0;i<max;i++){
             for (var e=0;e<max;e++){
+               // lollies[counter].translate([1,0,0]);
                 lollies[counter].translate([(i-max/2)*5,((max-e)+(max-i))-3,(e-max/2)*5]);
                 counter++;
             }
