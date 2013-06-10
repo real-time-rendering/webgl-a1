@@ -35,7 +35,6 @@
  */
 
 tdl.provide('tdl.primitives');
-
 tdl.require('tdl.math');
 tdl.require('tdl.log');
 

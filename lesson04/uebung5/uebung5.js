@@ -29,6 +29,8 @@ GLOWMAP_SIZE = 32;
 
 // The main entry point.
 function initialize() {
+
+
     // Setup the canvas widget for WebGL.
     window.canvas = document.getElementById("canvas");
     window.gl = tdl.webgl.setupWebGL(canvas);
@@ -49,22 +51,24 @@ function initialize() {
     // program.
     var torus = new DrawableTorus(programs[pnum], 0.88,0.65,80,600, [0,1,0]);
 
-    var pillar = new DrawablePillar(programs[pnum],0.2,[1,1,1],[1,0,0]);
-    var pillar2 = new DrawablePillar(programs[pnum],0.2,[1,1,1],[0,1,0]);
-    var pillar3 = new DrawablePillar(programs[pnum],0.2,[1,1,1],[0,0,1]);
+    var lollies = [];
+    var max =5;
+    var n = 0;
+    for (var i=0;i<max;i++){
+        for (var e=0;e<max;e++){
+            lollies.push(new DrawablePillar(programs[pnum],0.2,[1,1,1],HSBtoRGB(1-(n/(max*max)),1,1)));
+            n++;
+        }
+    }
 
-
-    var drawableObjects = [pillar, pillar2, pillar3]; //, cube];
-
+    var drawableObjects = [].concat(lollies);
 
     canvas.onmousemove = function(event){
         var t = vec3.create([-eyePosition[0], -eyePosition[1], -eyePosition[2]]);
-
         var width = canvas.width/2;
         var height = canvas.height/2;
         var x = (((event.x==undefined)?event.pageX:event.x)-(width))/width;
         var y = (((event.y==undefined)?event.pageY:event.y)-(height))/height;
-
         target = vec3.create([(-(((x>1)?1:x)* (t[2]))) * (1+eyeRadius), (-((y>1)?1:y)) * (1+eyeRadius), (((x>1)?1:x)* (t[0])) * (1+eyeRadius)]);
     }
 
@@ -139,10 +143,9 @@ function initialize() {
         lightPositions = lightPositions.concat([10, 10, 10]);
     }
     var lightColors = [1.0,0.0,0.0, 0.0,1.0,0.0, 0.0,0.0,1.0, 1.0,1.0,1.0];
+    //var lightColors = [1.0,1.0,1.0, 1.0,1.0,1.0, 1.0,1.0,1.0, 1.0,1.0,1.0];
     lightPositions = [10,10,10, 0,10,10, 10,0,10, 0,0,0];
     lightPositions = new Float32Array(lightPositions);
-
-    var color = vec3.create();
 
     var eyePosition = vec3.create();
     var target = vec3.create();
@@ -150,9 +153,9 @@ function initialize() {
 
     // Animation parameters for the rotating eye-point.
     var eyeSpeed = 0.2;
-    var eyeHeight = 2;
-    var eyeRadius = 5.5;
-    var eyeRotated = 0;
+    var eyeHeight = 10;
+    var eyeRadius = 20;
+    var eyeRotated = 4;
     var animate = true;
 
     // Animation needs accurate timing information.
@@ -214,10 +217,12 @@ function initialize() {
     }
 
     function animateScene(){
-        var colval = (Math.sin(clock)/2)+0.5;
-        pillar.setSphereColor([colval,0,0]);
-        pillar2.setSphereColor([0,colval,0]);
-        pillar3.setSphereColor([0,0,colval]);
+        var colval = (Math.abs(Math.sin(clock/2)));
+        var len = lollies.length;
+
+        for (var i=0;i<len;i++){
+            lollies[i].setSphereBrightness(colval);
+        }
     }
 
     function renderScene(){
@@ -228,8 +233,15 @@ function initialize() {
         gl.enable(gl.CULL_FACE);
         gl.enable(gl.DEPTH_TEST);
 
-        pillar2.translate([2,0,0]);
-        pillar3.translate([-2,0,0]);
+        //reposition
+        var counter = 0;
+        for (var i=0;i<max;i++){
+            for (var e=0;e<max;e++){
+                lollies[counter].translate([(i-max/2)*5,((max-e)+(max-i))-3,(e-max/2)*5]);
+                counter++;
+            }
+        }
+
 
         for (var i=0;i<drawableObjects.length;i++){
             drawableObjects[i].drawObject(drawObjectConst);

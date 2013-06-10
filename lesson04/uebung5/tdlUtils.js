@@ -12,6 +12,7 @@ tdl.require('tdl.framebuffers');
 var DrawableObject = function(model, transform) {
     this.model = model || null;
     this.transform = transform || mat4.identity(mat4.create());
+    this.brightness = 1;
 };
 
 DrawableObject.prototype.draw = function(uniforms, per) {
@@ -44,7 +45,8 @@ var DrawableTorus = function(program, radius, thickness, radialSubdivisions, bod
 DrawableTorus.prototype = new DrawableObject();
 
 DrawableTorus.prototype.drawObject = function(uniforms){
-    this.draw(uniforms,{ model: this.transform , color: this.color});
+    var drawColor = [this.color[0]*this.brightness,this.color[1]*this.brightness,this.color[2]*this.brightness];
+    this.draw(uniforms,{ model: this.transform , color: drawColor});
 }
 
 //--------------------------------------------------
@@ -70,6 +72,18 @@ var DrawableSphere = function(program, size, color){
 
 DrawableSphere.prototype = new DrawableObject();
 DrawableSphere.prototype.drawObject = DrawableTorus.prototype.drawObject;
+
+//--------------------------------------------------
+// ------------- DrawableSphere --------------------
+//--------------------------------------------------
+
+var DrawableTruncatedCone = function(program, size, color){
+    this.model = new tdl.models.Model(program,tdl.primitives.createTruncatedCone(2, 1, 1,30,30),null);
+    this.color = color || null;
+}
+
+DrawableTruncatedCone.prototype = new DrawableObject();
+DrawableTruncatedCone.prototype.drawObject = DrawableTorus.prototype.drawObject;
 
 //--------------------------------------------------
 // ------------- DrawableFlaredCube --------------------
@@ -114,8 +128,8 @@ DrawablePillar.prototype.translate = function(to){
     this.translations.push(to);
 }
 
-DrawablePillar.prototype.setSphereColor = function(color){
-    this.sphere.color = color;
+DrawablePillar.prototype.setSphereBrightness = function(brightness){
+    this.sphere.brightness = brightness;
 }
 
 
@@ -175,6 +189,67 @@ function createQuad(program, framebuffer) {
     }),mat4.identity(mat4.create()));
 };
 
+//--------------------------------------------------
+// ------------- HSBtoRGB --------------------------
+//--------------------------------------------------
+
+function HSBtoRGB( hue, saturation, brightness )
+{
+    var r = 0;
+    var g = 0;
+    var b = 0;
+    if( saturation == 0.0 )
+    {
+        r = g = b = Math.floor(brightness * 255.0 + 0.5);
+    }
+    else {
+        var h = (hue - Math.floor(hue)) * 6.0;
+        var f = h - Math.floor(h);
+        var p = brightness * (1.0 - saturation);
+        var q = brightness * (1.0 - saturation * f);
+        var t = brightness * (1.0 - (saturation * (1.0 - f)));
+
+        switch (Math.floor(h))
+        {
+            case 0:
+                r = Math.floor(brightness * 255.0 + 0.5);
+                g = Math.floor(t * 255.0 + 0.5);
+                b = Math.floor(p * 255.0 + 0.5);
+                break;
+
+            case 1:
+                r = Math.floor(q * 255.0 + 0.5);
+                g = Math.floor(brightness * 255.0 + 0.5);
+                b = Math.floor(p * 255.0 + 0.5);
+                break;
+
+            case 2:
+                r = Math.floor(p * 255.0 + 0.5);
+                g = Math.floor(brightness * 255.0 + 0.5);
+                b = Math.floor(t * 255.0 + 0.5);
+                break;
+
+            case 3:
+                r = Math.floor(p * 255.0 + 0.5);
+                g = Math.floor(q * 255.0 + 0.5);
+                b = Math.floor(brightness * 255.0 + 0.5);
+                break;
+
+            case 4:
+                r = Math.floor(t * 255.0 + 0.5);
+                g = Math.floor(p * 255.0 + 0.5);
+                b = Math.floor(brightness * 255.0 + 0.5);
+                break;
+
+            case 5:
+                r = Math.floor(brightness * 255.0 + 0.5);
+                g = Math.floor(p * 255.0 + 0.5);
+                b = Math.floor(q * 255.0 + 0.5);
+                break;
+        }
+    }
+    return [r/255,g/255,b/255];
+}
 
 
 
