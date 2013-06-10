@@ -1,3 +1,5 @@
+#!/usr/bin/python2 
+
 #Copyright Jon Berg , turtlemeat.com
 
 import string,cgi,time

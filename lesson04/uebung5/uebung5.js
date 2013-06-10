@@ -25,7 +25,7 @@ window.onload = function() {
     }
 }
 
-GLOWMAP_SIZE = 32;
+var WATERMAP_SIZE = 128;
 
 // The main entry point.
 function initialize() {
@@ -39,6 +39,7 @@ function initialize() {
     var framebuffer = tdl.framebuffers.createFramebuffer(canvas.width, canvas.height, true);
     var smallFramebuffer = tdl.framebuffers.createFramebuffer(GLOWMAP_SIZE, GLOWMAP_SIZE, true);
     var glowmap = tdl.framebuffers.createFramebuffer(GLOWMAP_SIZE, GLOWMAP_SIZE, true);
+    var watermap = tdl.framebuffers.createFramebuffer(WATERMAP_SIZE, WATERMAP_SIZE, true);
     var backBuffer = new tdl.framebuffers.BackBuffer(canvas);
 
     // Create the shader programs.
@@ -49,8 +50,9 @@ function initialize() {
 
     // Create a torus mesh that initialy is renderd using the first shader
     // program.
-    var torus = new DrawableTorus(programs[pnum], 0.88,0.65,80,600, [0,1,0]);
+    var torus = new DrawableTorus(programs[0], 0.88,0.65,20,80, [0,1,0]);
 
+<<<<<<< HEAD
     var lollies = [];
     var max =5;
     var n = 0;
@@ -60,6 +62,17 @@ function initialize() {
             n++;
         }
     }
+=======
+    var pillar = new DrawablePillar(programs[0],0.2,[1,1,1],[1,0,0]);
+    var pillar2 = new DrawablePillar(programs[0],0.2,[1,1,1],[0,1,0]);
+    pillar2.translate([2,0,0]);
+    var pillar3 = new DrawablePillar(programs[0],0.2,[1,1,1],[0,0,1]);
+    pillar3.translate([-2,0,0]);
+    
+    waterPlane = new DrawableQuad(programs[3], 10.0, 10.0, [1,1,1] );
+    
+    var drawableObjects = [pillar, pillar2, pillar3, waterPlane]; //, cube];
+>>>>>>> c949ecc10f59a73b724f01efcd35cf055d63e8d1
 
     var drawableObjects = [].concat(lollies);
 
@@ -169,7 +182,9 @@ function initialize() {
         projection: projection,
         eyePosition: eyePosition,
         lightPositions: lightPositions,
-        lightColors: lightColors
+        lightColors: lightColors,
+        brightpass: 0.5,
+        time: clock,
     };
 
     var postProcessQuad = createPostProcessingQuad(programs[1], framebuffer, glowmap);
@@ -189,17 +204,20 @@ function initialize() {
             clock += elapsedTime;
         }
 
+        drawObjectConst.brightpass = 0.4;
         smallFramebuffer.bind();
         gl.depthMask(true);
         gl.enable(gl.DEPTH_TEST);
         renderScene();
         
+        drawObjectConst.brightpass = 0.0;
+        
         glowmap.bind();
         gl.depthMask(false);
         gl.disable(gl.DEPTH_TEST);
-        var quadModel = quadGlowMapBlur.model;
-        quadModel.drawPrep({blurSize: 0.005});
-        quadModel.draw({ model: quadGlowMapBlur.transform });
+        var quadGlowMapBlurModel = quadGlowMapBlur.model;
+        quadGlowMapBlurModel.drawPrep();
+        quadGlowMapBlurModel.draw({ model: quadGlowMapBlur.transform, glowBlurSize: 0.01});
         
         framebuffer.bind();
         gl.depthMask(true);
@@ -212,17 +230,25 @@ function initialize() {
         gl.disable(gl.DEPTH_TEST);
         
         var quadModel = postProcessQuad.model;
-        quadModel.drawPrep({blurSize: 0.005});
+        quadModel.drawPrep({blurSize: 0.02, glowStrengh: 2.0});
         quadModel.draw({ model: postProcessQuad.transform });
     }
 
     function animateScene(){
+<<<<<<< HEAD
         var colval = (Math.abs(Math.sin(clock/2)));
         var len = lollies.length;
 
         for (var i=0;i<len;i++){
             lollies[i].setSphereBrightness(colval);
         }
+=======
+        drawObjectConst.time = clock;
+        var colval = (Math.sin(clock)/2)+0.5;
+        pillar.setSphereColor([colval,0,0]);
+        pillar2.setSphereColor([0,colval,0]);
+        pillar3.setSphereColor([0,0,colval]);
+>>>>>>> c949ecc10f59a73b724f01efcd35cf055d63e8d1
     }
 
     function renderScene(){
@@ -233,6 +259,7 @@ function initialize() {
         gl.enable(gl.CULL_FACE);
         gl.enable(gl.DEPTH_TEST);
 
+<<<<<<< HEAD
         //reposition
         var counter = 0;
         for (var i=0;i<max;i++){
@@ -242,6 +269,9 @@ function initialize() {
             }
         }
 
+=======
+        
+>>>>>>> c949ecc10f59a73b724f01efcd35cf055d63e8d1
 
         for (var i=0;i<drawableObjects.length;i++){
             drawableObjects[i].drawObject(drawObjectConst);

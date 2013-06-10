@@ -66,7 +66,7 @@ DrawableCube.prototype.drawObject = DrawableTorus.prototype.drawObject;
 //--------------------------------------------------
 
 var DrawableSphere = function(program, size, color){
-    this.model = new tdl.models.Model(program,tdl.primitives.createSphere(size, size*50, size*60),null);
+    this.model = new tdl.models.Model(program,tdl.primitives.createSphere(size, 30, 20),null);
     this.color = color || null;
 }
 
@@ -106,9 +106,9 @@ var DrawablePillar = function(program, size, color, sphereColor){
     this.elements = [];
     this.translations = [];
     for (var i=0;i<15;i++){
-        this.elements.push(new DrawableCube(program, size, color));
+        //this.elements.push(new DrawableCube(program, size, color));
     }
-    this.sphere = new DrawableSphere(program,size*4,sphereColor); 
+    this.sphere = new DrawableSphere(program,size*3,sphereColor); 
     this.elements.push(this.sphere);
 }
 
@@ -121,7 +121,6 @@ DrawablePillar.prototype.drawObject = function(uniforms){
         mat4.translate(ident,[0,i*this.size,0]);
         this.elements[i].drawObject(uniforms);
     }
-    this.translations = [];
 }
 
 DrawablePillar.prototype.translate = function(to){
@@ -132,6 +131,12 @@ DrawablePillar.prototype.setSphereBrightness = function(brightness){
     this.sphere.brightness = brightness;
 }
 
+var DrawableQuad = function(program, width, depth, color){
+    this.model = new tdl.models.Model(program,tdl.primitives.createPlane(width, depth, 1, 1),null);
+    this.color = color || null;
+}
+DrawableQuad.prototype = new DrawableObject();
+DrawableQuad.prototype.drawObject = DrawableTorus.prototype.drawObject;
 
 
 //--------------------------------------------------

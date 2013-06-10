@@ -22,7 +22,7 @@
     <pre id="error" class="alert alert-error"></pre>
 
     <div id="canvas-container">
-        <p><canvas id="canvas" width="600" height="500"></canvas></p>
+        <p><canvas id="canvas" width="600" height="600"></canvas></p>
     </div>
 </div>
 </body>
@@ -72,6 +72,7 @@
 
     uniform vec3 color;
     uniform vec3 lightIntensity;
+    uniform float brightpass;
 
 
     varying vec3 normalW;
@@ -92,6 +93,13 @@
         vec3 specular = 0.6 * intensity * pow(max(0.0, vdotn), 1.0);
         return lambert(normal, light, intensity, reflectivity) + specular;
     }
+    
+    vec3 brightpass_filter(vec3 color){
+        if((color.r + color.g + color.b)/3.0 < brightpass){
+            return vec3(0.0,0.0,0.0);
+        }
+        return color;
+    }
 
     uniform float time;
 
@@ -108,7 +116,7 @@
                 lightColor, color);
         }
 
-        gl_FragColor.rgb = outcolor;
+        gl_FragColor.rgb = brightpass_filter(outcolor);
         gl_FragColor.a = 1.0;
     }
 </script>
@@ -129,11 +137,13 @@
     varying vec2 texCoordI;
     uniform sampler2D colorBuffer;
     uniform sampler2D glowMap;
+    
+    uniform float glowStrengh;
 
     void main() {
         vec3 glowmapPixel = texture2D(glowMap, texCoordI).rgb;
         vec3 origPixel = texture2D(colorBuffer, texCoordI).rgb;
-        gl_FragColor.rgb = origPixel + glowmapPixel;
+        gl_FragColor.rgb = glowmapPixel * glowStrengh + origPixel;
         gl_FragColor.a = 1.0;
     }
 </script>
@@ -154,20 +164,70 @@
     varying vec2 texCoordI;
     uniform sampler2D colorBuffer;
 
-    uniform float blurSize;
+    uniform float glowBlurSize;
     const int samples = 5;
-    const float center = (float(samples) - 1.0) / 2.0;
-
+    const float center = (float(samples)-1.0)/2.0;
+    
     void main() {
         vec3 color = vec3(0.0);
         for (int x = 0; x < samples; x++) {
             for (int y = 0; y < samples; y++) {
-                vec2 tc = texCoordI + (vec2(x, y) - center) * blurSize;
+                float xx = (float(x) - center)*glowBlurSize;
+                float yy = (float(y) - center)*glowBlurSize;
+                vec2 tc = texCoordI + vec2(xx, yy);
                 color += texture2D(colorBuffer, tc).rgb;
             }
         }
 
         gl_FragColor.rgb = (color / float(samples * samples));
+        gl_FragColor.a = 1.0;
+    }
+</script>
+
+<script id="vs3" type="x-shader/x-vertex">
+    uniform mat4 projection;
+    uniform mat4 view;
+    uniform mat4 model;
+    uniform vec3 eyePosition;
+
+    attribute vec2 texCoord;
+    attribute vec4 position;
+    attribute vec3 normal;
+
+    varying vec3 normalW;
+    varying vec3 eyeDirectionW;
+
+    varying vec2 texCoordI;
+
+    void main() {
+        vec4 positionW = model * position;
+        normalW = (model * vec4(normal, 0.0)).xyz;
+        eyeDirectionW = eyePosition - positionW.xyz;
+        texCoordI = texCoord;
+        gl_Position = projection * view * positionW;
+    }
+</script>
+
+<script id="fs3" type="x-shader/x-fragment">
+    precision highp float;
+
+    varying vec2 texCoordI;
+    uniform float time;
+
+    vec2 makeWave(float time, vec2 coord){
+        return vec2(
+            ((
+                sin(cos(time*0.65+coord.y)*11.0 + sin(time*0.12+coord.x))
+            ) +1.0 ) / 2.0,
+            ((
+                cos(sin(time*0.1+coord.x)*12.0 + cos(time * 0.43 + coord.y))
+            ) +1.0 ) / 2.0
+        );
+    }
+
+    void main() {
+        gl_FragColor.b = makeWave(time, texCoordI.xy).x + makeWave(time, texCoordI.xy).y;
+        gl_FragColor.rg = vec2(0.0, 0.0);
         gl_FragColor.a = 1.0;
     }
 </script>
