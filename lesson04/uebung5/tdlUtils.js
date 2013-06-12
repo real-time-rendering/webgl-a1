@@ -133,6 +133,10 @@ DrawablePillar.prototype.setSphereBrightness = function(brightness){
     this.sphere.brightness = brightness;
 }
 
+DrawablePillar.prototype.setSphereColor = function(color){
+    this.sphere.color = color;
+}
+
 var DrawableQuad = function(program, width, depth, texture){
     this.model = new tdl.models.Model(program,
                                       tdl.primitives.createPlane(width, depth, 20, 20),

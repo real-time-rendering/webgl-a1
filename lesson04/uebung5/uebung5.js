@@ -49,24 +49,21 @@ function initialize() {
     var frag =  window.location.hash.substring(1);
     var pnum = frag ? parseInt(frag) : 0;
 
-    // Create a torus mesh that initialy is renderd using the first shader
-    // program.
-    var torus = new DrawableTorus(programs[0], 0.88,0.65,20,80, [0,1,0]);
+    var pillar = new DrawablePillar(programs[0], 0.2, [0,0,0] ,[0,1,0]);
+    var pillarSphereColors = [];
+    var pillarPositions = [];
 
-    var lollies = [];
     var max =5;
     var n = 0;
     for (var i=0;i<max;i++){
         for (var e=0;e<max;e++){
-            lollies.push(new DrawablePillar(programs[pnum],0.2,[1,1,1],HSBtoRGB(1-(n/(max*max)),1,1)));
+            pillarPositions.push([(i-max/2)*5,((max-e)+(max-i))-3,(e-max/2)*5]);
+            pillarSphereColors.push(HSBtoRGB(1-(n/(max*max)),1,1));
             n++;
         }
     }
 
-    
     var waterPlane = new DrawableQuad(programs[3], 30.0, 30.0, watermap );
-
-    var drawableObjects = lollies;
 
     canvas.onmousemove = function(event){
         var t = vec3.create([-eyePosition[0], -eyePosition[1], -eyePosition[2]]);
@@ -218,7 +215,6 @@ function initialize() {
         }
         
         animateScene();
-        
         //render scene from under water perspective
         drawObjectConst.waterview = 1;
         watermap.bind();
@@ -261,22 +257,6 @@ function initialize() {
         quadModel.draw({ model: postProcessQuad.transform });
     }
 
-    function animateScene(){
-        var colval = (Math.abs(Math.sin(clock/2)));
-        var len = lollies.length;
-
-        for (var i=0;i<len;i++){
-            lollies[i].setSphereBrightness(colval);
-        }
-        drawObjectConst.time = clock;
-/*=======
-        var colval = (Math.sin(clock)/2)+0.5;
-        pillar.setSphereColor([colval,0,0]);
-        pillar2.setSphereColor([0,colval,0]);
-        pillar3.setSphereColor([0,0,colval]);
->>>>>>> c949ecc10f59a73b724f01efcd35cf055d63e8d1*/
-    }
-
     function renderScene(){
         gl.clearColor(0.0,0.0,0.0,1.0);
         gl.clearDepth(1);
@@ -285,19 +265,16 @@ function initialize() {
         gl.enable(gl.CULL_FACE);
         gl.enable(gl.DEPTH_TEST);
 
-        //reposition
-        var counter = 0;
-        for (var i=0;i<max;i++){
-            for (var e=0;e<max;e++){
-               // lollies[counter].translate([1,0,0]);
-                lollies[counter].translate([(i-max/2)*5,((max-e)+(max-i))-3,(e-max/2)*5]);
-                counter++;
-            }
+        drawObjectConst.time = clock;
+        var colval = (Math.abs(Math.sin(clock/2)));
+
+        for (var i=0;i<max*max;i++){
+            pillar.setSphereBrightness(colval);
+            pillar.setSphereColor(pillarSphereColors[i]);
+            pillar.translate(pillarPositions[i]);
+            pillar.drawObject(drawObjectConst);
         }
 
-        for (var i=0;i<drawableObjects.length;i++){
-            drawableObjects[i].drawObject(drawObjectConst);
-        }
         if(drawObjectConst.waterview == 0){
             waterPlane.drawObject(drawObjectConst);
         }
