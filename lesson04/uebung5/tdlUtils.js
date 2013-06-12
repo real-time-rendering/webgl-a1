@@ -145,7 +145,7 @@ DrawableQuad.prototype.drawObject = DrawableTorus.prototype.drawObject;
 // ------------- Quads -----------------------------
 //--------------------------------------------------
 
-function createPostProcessingQuad(program, framebuffer, glowmap) {
+function createPostProcessingQuad(program, framebuffer, glowmap, watermap) {
     var positions = new tdl.primitives.AttribBuffer(3, 4);
     var texCoord = new tdl.primitives.AttribBuffer(2, 4);
     var indices = new tdl.primitives.AttribBuffer(3, 2, 'Uint16Array');
@@ -167,6 +167,7 @@ function createPostProcessingQuad(program, framebuffer, glowmap) {
     }, {
         colorBuffer: framebuffer.texture,
         glowMap: glowmap.texture,
+        waterMap: watermap.texture,
         depthBuffer: framebuffer.depthTexture
     }),mat4.identity(mat4.create()));
 };

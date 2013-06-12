@@ -115,6 +115,10 @@ function initialize() {
         setSwitch(String.fromCharCode(event.which),false);
     }
 
+    var animate = true;
+    var renderActivated = true;
+    var showReflectionTex = false;
+
     // Register a keypress-handler for shader program switching using the number
     // keys.
     window.onkeypress = function(event) {
@@ -130,6 +134,18 @@ function initialize() {
                 var newTexCount = drawObjectConst.texCount -= 1;
                 drawObjectConst.texCount = (newTexCount>=1)?newTexCount:drawObjectConst.texCount;
                 break;
+            case "c":
+                renderActivated = !renderActivated;
+                if(renderActivated){
+                    render();
+                }
+                break;
+            case "l":
+                showReflectionTex = !showReflectionTex;
+                if(showReflectionTex){
+                    drawObjectConst.showReflectiveTex = showReflectionTex;
+                }
+                break;
         }
     };
 
@@ -137,6 +153,7 @@ function initialize() {
     var projection = mat4.create();
     var view = mat4.create();
     var model = mat4.create();
+    var invModelView = mat4.create();
 
     // Uniforms for lighting.
     //var lightPosition = vec3.create([10, 10, 10]);
@@ -161,7 +178,6 @@ function initialize() {
     var eyeHeight = 10;
     var eyeRadius = 20;
     var eyeRotated = 4;
-    var animate = true;
 
     // Animation needs accurate timing information.
     var elapsedTime = 0.0;
@@ -176,15 +192,20 @@ function initialize() {
         lightPositions: lightPositions,
         lightColors: lightColors,
         brightpass: 0.5,
-        time: clock
+        time: clock,
+        waterview: 0,
+        showReflectiveTex: showReflectionTex ? 1 : 0,
+        invModelView: invModelView,
     };
 
-    var postProcessQuad = createPostProcessingQuad(programs[1], framebuffer, glowmap);
+    var postProcessQuad = createPostProcessingQuad(programs[1], framebuffer, glowmap, watermap);
     var quadGlowMapBlur = createQuad(programs[2], smallFramebuffer);
 
     // Renders one frame and registers itself for the next frame.
    function render() {
-        tdl.webgl.requestAnimationFrame(render, canvas);
+        if(renderActivated){
+            tdl.webgl.requestAnimationFrame(render, canvas);
+        }
 
         playerMovement();
 
@@ -195,8 +216,17 @@ function initialize() {
         if (animate) {
             clock += elapsedTime;
         }
+        
+        //render scene from under water perspective
+        drawObjectConst.waterview = 1;
+        watermap.bind();
+        gl.depthMask(true);
+        gl.enable(gl.DEPTH_TEST);
+        renderScene();
 
         drawObjectConst.brightpass = 0.4;
+        drawObjectConst.waterview = 0;
+        // draw scene in small framebuffer for glowmap
         smallFramebuffer.bind();
         gl.depthMask(true);
         gl.enable(gl.DEPTH_TEST);
@@ -204,6 +234,7 @@ function initialize() {
         
         drawObjectConst.brightpass = 0.0;
         
+        //create glowmap by blurring small framebuffer
         glowmap.bind();
         gl.depthMask(false);
         gl.disable(gl.DEPTH_TEST);
@@ -211,6 +242,7 @@ function initialize() {
         quadGlowMapBlurModel.drawPrep();
         quadGlowMapBlurModel.draw({ model: quadGlowMapBlur.transform, glowBlurSize: 0.01});
         
+        //create fullscreen scene
         framebuffer.bind();
         gl.depthMask(true);
         gl.enable(gl.DEPTH_TEST);
@@ -221,6 +253,7 @@ function initialize() {
         gl.depthMask(false);
         gl.disable(gl.DEPTH_TEST);
         
+        //post processing
         var quadModel = postProcessQuad.model;
         quadModel.drawPrep({blurSize: 0.04, glowStrengh: 2.0});
         quadModel.draw({ model: postProcessQuad.transform });
@@ -233,8 +266,8 @@ function initialize() {
         for (var i=0;i<len;i++){
             lollies[i].setSphereBrightness(colval);
         }
-/*=======
         drawObjectConst.time = clock;
+/*=======
         var colval = (Math.sin(clock)/2)+0.5;
         pillar.setSphereColor([colval,0,0]);
         pillar2.setSphereColor([0,colval,0]);
@@ -269,19 +302,19 @@ function initialize() {
 
     function playerMovement(){
         if(walkW){
-            eyeRadius -= 0.05;
+            eyeRadius -= 0.15;
         }else if(walkS){
-            eyeRadius += 0.05;
+            eyeRadius += 0.15;
         }
         if(walkA){
-            eyeRotated -= 0.05;
+            eyeRotated -= 0.15;
         }else if(walkD){
-            eyeRotated += 0.05;
+            eyeRotated += 0.15;
         }
         if(walkQ){
-            eyeHeight += 0.05;
+            eyeHeight += 0.15;
         }else if(walkE){
-            eyeHeight -= 0.05;
+            eyeHeight -= 0.15;
         }
 
         // Calculate the current eye position.
@@ -300,6 +333,25 @@ function initialize() {
         mat4.lookAt(
             eyePosition, target, up,
             view);
+        
+        var invModel = mat3.create();
+        mat4.toInverseMat3(model, invModel);
+        invModel = mat3.toMat4(invModel);
+        mat4.transpose(invModel);
+        
+        var invProj = mat3.create();
+        mat4.toInverseMat3(model, invProj);
+        invProj = mat3.toMat4(invProj);
+        mat4.transpose(invProj);
+        
+        var invView = mat3.create();
+        mat4.toInverseMat3(model, invView);
+        invView = mat3.toMat4(invView);
+        mat4.transpose(invView);
+        
+        mat4.multiply(invProj, invModelView,  invModelView);
+        mat4.multiply(invView, invModelView,  invModelView);
+        mat4.multiply(invModel, invModelView,  invModelView);
     }
 
     // Initial call to get the rendering started.

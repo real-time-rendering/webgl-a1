@@ -33,6 +33,8 @@
     uniform mat4 projection;
     uniform mat4 view;
     uniform mat4 model;
+    
+    uniform int waterview;
 
     const int LIGHT_NUM = 4;
 
@@ -51,8 +53,17 @@
     varying vec2 texCoordI;
 
     void main() {
-        vec4 positionW = model * position;
+        vec4 positionW;
         normalW = (model * vec4(normal, 0.0)).xyz;
+        if(waterview == 1){
+            normalW.y *= -1.0;
+            vec4 positionFlipped = position;
+            positionFlipped.y *= -1.0;
+            positionW = model * positionFlipped;
+        } else {
+            positionW = model * position;
+        }
+        
         for(int i=0; i<3*LIGHT_NUM; i+=3){
             lightDirectionW[i  ] = lightPositions[i  ] - positionW.x;
             lightDirectionW[i+1] = lightPositions[i+1] - positionW.y;
@@ -137,6 +148,11 @@
     varying vec2 texCoordI;
     uniform sampler2D colorBuffer;
     uniform sampler2D glowMap;
+    uniform sampler2D waterMap;
+    uniform int showReflectiveTex;
+    
+    const vec2 reflTexUL = vec2(0.1,0.1);
+    const vec2 reflTexBR = vec2(0.3,0.3);
     
     uniform float glowStrengh;
 
@@ -144,6 +160,16 @@
         vec3 glowmapPixel = texture2D(glowMap, texCoordI).rgb;
         vec3 origPixel = texture2D(colorBuffer, texCoordI).rgb;
         gl_FragColor.rgb = glowmapPixel * glowStrengh + origPixel;
+        if(showReflectiveTex == 1){
+            if( texCoordI.x > reflTexUL.x &&
+                texCoordI.y > reflTexUL.y &&
+                texCoordI.x < reflTexBR.x &&
+                texCoordI.y < reflTexBR.y
+                ){
+                vec2 screenTexCoord = (texCoordI.xy * reflTexBR) - reflTexUL;
+                gl_FragColor.rgb = texture2D(waterMap, screenTexCoord).rgb;
+            }
+        }
         gl_FragColor.a = 1.0;
     }
 </script>
@@ -163,6 +189,7 @@
 
     varying vec2 texCoordI;
     uniform sampler2D colorBuffer;
+    
 
     uniform float glowBlurSize;
     const int samples = 5;
@@ -189,6 +216,7 @@
     uniform mat4 view;
     uniform mat4 model;
     uniform vec3 eyePosition;
+    uniform mat4 invModelView;
 
     attribute vec2 texCoord;
     attribute vec4 position;
@@ -203,7 +231,7 @@
         vec4 positionW = model * position;
         normalW = (model * vec4(normal, 0.0)).xyz;
         eyeDirectionW = eyePosition - positionW.xyz;
-        texCoordI = texCoord;
+        texCoordI = texCoord; //(invModelView * positionW).xy;
         gl_Position = projection * view * positionW;
     }
 </script>
@@ -213,6 +241,7 @@
 
     varying vec2 texCoordI;
     uniform float time;
+    uniform sampler2D waterMap;
 
     vec2 makeWave(float time, vec2 coord){
         return vec2(
@@ -226,8 +255,12 @@
     }
 
     void main() {
-        gl_FragColor.b = makeWave(time, texCoordI.xy).x + makeWave(time, texCoordI.xy).y;
-        gl_FragColor.rg = vec2(0.0, 0.0);
+        gl_FragColor.rgb = texture2D(waterMap, texCoordI.xy).rgb;
+        //some grey to see the reflective surface
+        gl_FragColor.rgb += vec3(0.1, 0.1, 0.1);
+        
+        //gl_FragColor.b = makeWave(time, texCoordI.xy).x + makeWave(time, texCoordI.xy).y;
+        //gl_FragColor.rg = vec2(0.0, 0.0);
         gl_FragColor.a = 1.0;
     }
 </script>
