@@ -253,7 +253,7 @@
     uniform sampler2D waterNormal;
     
     const float waterSpeed = 0.02;
-    const float waterStrength = 0.1;
+    const float waterStrength = 0.04;
 
     vec2 makeWave(float time, vec2 coord){
         return vec2(
@@ -271,12 +271,6 @@
         waterNormalCoord += vec2(1.0,1.0) * time * waterSpeed;
         vec3 textureNormal = texture2D(waterNormal, waterNormalCoord).rgb;
         gl_FragColor.rgb = texture2D(waterMap, (reflectionI.xy)+textureNormal.xy * waterStrength).rgb;
-        //gl_FragColor.rgb = texture2D(waterMap, texCoordI.xy).rgb;
-        //some grey to see the reflective surface
-        
-        
-        //gl_FragColor.b = makeWave(time, texCoordI.xy).x + makeWave(time, texCoordI.xy).y;
-        //gl_FragColor.rg = vec2(0.0, 0.0);
         gl_FragColor.a = 1.0;
     }
 </script>
