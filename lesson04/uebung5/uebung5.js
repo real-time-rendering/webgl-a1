@@ -59,7 +59,7 @@ function initialize() {
     var n = 0;
     for (var i=0;i<max;i++){
         for (var e=0;e<max;e++){
-            pillarPositions.push([(i-max/2)*5,((max-e)+(max-i))-3,(e-max/2)*5]);
+            pillarPositions.push([(i-max/2)*5 + (max/2),Math.abs(i-((max/2)-0.5)+e-((max/2)-0.5))*2+2,(e-max/2)*5 + (max/2)]);
             pillarSphereColors.push(HSBtoRGB(1-(n/(max*max)),1,1));
             n++;
         }
@@ -69,8 +69,9 @@ function initialize() {
                                       30.0, 30.0,
                                       {waterMap: watermap.texture,
                                        waterNormal: waternormal} );
+    var waterWell = new DrawableCube(programs[0],32.0,[0.5,0.5,0.5]);
 
-    var size = "small";
+    var size = "large";
     var cubeTextures = {
         cubemap: tdl.textures.loadTexture(
             [
@@ -198,8 +199,9 @@ function initialize() {
     // Animation parameters for the rotating eye-point.
     var eyeSpeed = 0.2;
     var eyeHeight = 10;
-    var eyeRadius = 20;
-    var eyeRotated = 4;
+    var eyeRadius = 80;
+    //var eyeRotated = 4;
+    var eyeRotated = 0;
 
     // Animation needs accurate timing information.
     var elapsedTime = 0.0;
@@ -217,7 +219,7 @@ function initialize() {
         time: clock,
         waterview: 1,
         showReflectiveTex: showReflectionTex ? 1 : 0,
-        invModelView: invModelView,
+        invModelView: invModelView
     };
 
     var skyboxConst = {
@@ -318,10 +320,15 @@ function initialize() {
         for (var i=0;i<max*max;i++){
             pillar.setSphereBrightness(colval);
             pillar.setSphereColor(pillarSphereColors[i]);
+
             pillar.translate(pillarPositions[i]);
+            //pillar.rotate(0,((clock*20)%360)* Math.PI / 180,0);
+
             pillar.drawObject(drawObjectConst);
         }
 
+        waterWell.drawObject(drawObjectConst);
+        waterWell.translate([0,-16.1,0]);
 
 
         if(drawObjectConst.waterview == 0){
@@ -349,9 +356,9 @@ function initialize() {
         }
 
         // Calculate the current eye position.
-        eyePosition[0] = Math.sin(eyeRotated * eyeSpeed) * eyeRadius;
+        eyePosition[0] = Math.sin(eyeRotated * eyeSpeed) * eyeRadius/2;
         eyePosition[1] = eyeHeight;
-        eyePosition[2] = Math.cos(eyeRotated * eyeSpeed) * eyeRadius;
+        eyePosition[2] = Math.cos(eyeRotated * eyeSpeed) * eyeRadius/2;
 
         // Calculate the perspective projection matrix.
         mat4.perspective(

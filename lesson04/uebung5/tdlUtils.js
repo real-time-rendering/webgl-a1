@@ -22,8 +22,7 @@ DrawableObject.prototype.draw = function(uniforms, per) {
     }
 }
 
-DrawableObject.prototype.rotate =function(x,y,z){
-    var ident = mat4.identity(this.transform);
+DrawableObject.prototype.rotate =function(ident,x,y,z){
     mat4.rotate(ident, z,[0, 0, 1]);
     mat4.rotate(ident, y,[0, 1, 0]);
     mat4.rotate(ident, x,[1, 0, 0]);
@@ -118,11 +117,12 @@ DrawablePillar.prototype.drawObject = function(uniforms){
         for (var e=0;e<this.translations.length;e++){
             mat4.translate(ident,this.translations[e]);
         }
-        mat4.translate(ident,[0,i*this.size,0]);
-        this.translations = [];
-        this.elements[i].drawObject(uniforms);
 
+        mat4.translate(ident,[0,i*this.size,0]);
+
+        this.elements[i].drawObject(uniforms);
     }
+    this.translations = [];
 }
 
 DrawablePillar.prototype.translate = function(to){
