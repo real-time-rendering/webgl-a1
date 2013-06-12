@@ -26,7 +26,7 @@ window.onload = function() {
 }
 
 var GLOWMAP_SIZE = 128;
-var WATERMAP_SIZE = 512;
+var WATERMAP_SIZE = 256;
 
 // The main entry point.
 function initialize() {
@@ -42,6 +42,8 @@ function initialize() {
     var glowmap = tdl.framebuffers.createFramebuffer(GLOWMAP_SIZE, GLOWMAP_SIZE, true);
     var watermap = tdl.framebuffers.createFramebuffer(WATERMAP_SIZE, WATERMAP_SIZE, true);
     var backBuffer = new tdl.framebuffers.BackBuffer(canvas);
+    
+    var waternormal = tdl.textures.loadTexture('waternormal.jpg')
 
     // Create the shader programs.
     var programs = createProgramsFromTags();
@@ -63,7 +65,10 @@ function initialize() {
         }
     }
 
-    var waterPlane = new DrawableQuad(programs[3], 30.0, 30.0, watermap );
+    var waterPlane = new DrawableQuad(programs[3],
+                                      30.0, 30.0,
+                                      {waterMap: watermap.texture,
+                                       waterNormal: waternormal} );
 
     canvas.onmousemove = function(event){
         var t = vec3.create([-eyePosition[0], -eyePosition[1], -eyePosition[2]]);
@@ -214,7 +219,7 @@ function initialize() {
             clock += elapsedTime;
         }
         
-        animateScene();
+        
         //render scene from under water perspective
         drawObjectConst.waterview = 1;
         watermap.bind();

@@ -137,10 +137,10 @@ DrawablePillar.prototype.setSphereColor = function(color){
     this.sphere.color = color;
 }
 
-var DrawableQuad = function(program, width, depth, texture){
+var DrawableQuad = function(program, width, depth, textures){
     this.model = new tdl.models.Model(program,
-                                      tdl.primitives.createPlane(width, depth, 20, 20),
-                                      {waterMap: texture.texture});
+                                      tdl.primitives.createPlane(width, depth, width, depth),
+                                      textures);
     this.color = typeof color === 'undefined' ? [1,1,1] : color;
 }
 DrawableQuad.prototype = new DrawableObject();
