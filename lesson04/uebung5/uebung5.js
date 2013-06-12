@@ -245,7 +245,7 @@ function initialize() {
             clock += elapsedTime;
         }
         
-        animateScene();
+        //animateScene();
         //render scene from under water perspective
         drawObjectConst.waterview = 1;
         watermap.bind();
@@ -260,7 +260,7 @@ function initialize() {
         smallFramebuffer.bind();
         gl.depthMask(true);
         gl.enable(gl.DEPTH_TEST);
-        renderScene();
+        renderScene(false);
         //disable brightpass
         drawObjectConst.brightpass = 0.0;
         
@@ -276,7 +276,7 @@ function initialize() {
         framebuffer.bind();
         gl.depthMask(true);
         gl.enable(gl.DEPTH_TEST);
-        renderScene();
+        renderScene(true);
         
         backBuffer.bind();
         gl.depthMask(false);
@@ -288,23 +288,23 @@ function initialize() {
         quadModel.draw({ model: postProcessQuad.transform });
     }
 
-    function renderScene(){
+    function renderScene(renderskybox){
         gl.clearColor(0.0,0.0,0.0,1.0);
         gl.clearDepth(1);
      
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
         gl.enable(gl.CULL_FACE);
 
-        gl.depthMask(false);
-        gl.disable(gl.DEPTH_TEST);
+        if(renderskybox){
+            gl.depthMask(false);
+            gl.disable(gl.DEPTH_TEST);
 
-        skybox.drawPrep(skyboxConst);
-        mat4.translate(mat4.identity(skyboxPer.model),eyePosition);
-        skybox.draw(skyboxPer);
+            skybox.drawPrep(skyboxConst);
+            mat4.translate(mat4.identity(skyboxPer.model),eyePosition);
+            skybox.draw(skyboxPer);
 
-        gl.depthMask(true);
-
-        gl.enable(gl.CULL_FACE);
+            gl.depthMask(true);
+        }
         gl.enable(gl.DEPTH_TEST);
 
 
