@@ -53,15 +53,12 @@
     varying vec2 texCoordI;
 
     void main() {
-        vec4 positionW;
+        vec4 positionW = model * position;
         normalW = (model * vec4(normal, 0.0)).xyz;
-        if(waterview == 1){
-            normalW.y *= -1.0;
+        if(waterview > 0){
             vec4 positionFlipped = position;
-            positionFlipped.y *= -1.0;
-            positionW = model * positionFlipped;
-        } else {
-            positionW = model * position;
+            positionW.y *= -1.0;
+            normalW.y *= -1.0;
         }
         
         for(int i=0; i<3*LIGHT_NUM; i+=3){
@@ -84,7 +81,8 @@
     uniform vec3 color;
     uniform vec3 lightIntensity;
     uniform float brightpass;
-
+    
+    uniform int waterview;
 
     varying vec3 normalW;
     varying float lightDirectionW[LIGHT_NUM*3];
@@ -115,7 +113,6 @@
     uniform float time;
 
     void main() {
-        //for cellshader
         vec3 outcolor = vec3(0.0,0.0,0.0);
         for(int i=0; i<3*LIGHT_NUM; i+=3){
             vec3 lightColor = vec3(lightColors[i],lightColors[i+1],lightColors[i+2]);
@@ -231,8 +228,8 @@
         vec4 positionW = model * position;
         normalW = (model * vec4(normal, 0.0)).xyz;
         eyeDirectionW = eyePosition - positionW.xyz;
-        texCoordI = texCoord; //(invModelView * positionW).xy;
         gl_Position = projection * view * positionW;
+        texCoordI = gl_Position.xy; //texCoord; //(invModelView * position).xy;
     }
 </script>
 

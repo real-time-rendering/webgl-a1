@@ -64,9 +64,9 @@ function initialize() {
     }
 
     
-    waterPlane = new DrawableQuad(programs[3], 10.0, 10.0, [1,1,1] );
+    var waterPlane = new DrawableQuad(programs[3], 10.0, 10.0, watermap );
 
-    var drawableObjects = [waterPlane].concat(lollies);
+    var drawableObjects = lollies;
 
     canvas.onmousemove = function(event){
         var t = vec3.create([-eyePosition[0], -eyePosition[1], -eyePosition[2]]);
@@ -193,7 +193,7 @@ function initialize() {
         lightColors: lightColors,
         brightpass: 0.5,
         time: clock,
-        waterview: 0,
+        waterview: 1,
         showReflectiveTex: showReflectionTex ? 1 : 0,
         invModelView: invModelView,
     };
@@ -217,21 +217,24 @@ function initialize() {
             clock += elapsedTime;
         }
         
+        animateScene();
+        
         //render scene from under water perspective
         drawObjectConst.waterview = 1;
         watermap.bind();
         gl.depthMask(true);
         gl.enable(gl.DEPTH_TEST);
         renderScene();
-
-        drawObjectConst.brightpass = 0.4;
         drawObjectConst.waterview = 0;
+
+        //enable brightpass for glow map generation
+        drawObjectConst.brightpass = 0.4;
         // draw scene in small framebuffer for glowmap
         smallFramebuffer.bind();
         gl.depthMask(true);
         gl.enable(gl.DEPTH_TEST);
         renderScene();
-        
+        //disable brightpass
         drawObjectConst.brightpass = 0.0;
         
         //create glowmap by blurring small framebuffer
@@ -246,7 +249,6 @@ function initialize() {
         framebuffer.bind();
         gl.depthMask(true);
         gl.enable(gl.DEPTH_TEST);
-        animateScene();
         renderScene();
         
         backBuffer.bind();
@@ -295,6 +297,9 @@ function initialize() {
 
         for (var i=0;i<drawableObjects.length;i++){
             drawableObjects[i].drawObject(drawObjectConst);
+        }
+        if(drawObjectConst.waterview == 0){
+            waterPlane.drawObject(drawObjectConst);
         }
     }
     
@@ -349,9 +354,10 @@ function initialize() {
         invView = mat3.toMat4(invView);
         mat4.transpose(invView);
         
-        mat4.multiply(invProj, invModelView,  invModelView);
-        mat4.multiply(invView, invModelView,  invModelView);
-        mat4.multiply(invModel, invModelView,  invModelView);
+        invModelView = mat4.create();
+        mat4.multiply(invModelView, invProj,  invModelView);
+        mat4.multiply(invModelView, invView,  invModelView);
+        mat4.multiply(invModelView, invModel, invModelView);
     }
 
     // Initial call to get the rendering started.

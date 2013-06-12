@@ -133,9 +133,11 @@ DrawablePillar.prototype.setSphereBrightness = function(brightness){
     this.sphere.brightness = brightness;
 }
 
-var DrawableQuad = function(program, width, depth, color){
-    this.model = new tdl.models.Model(program,tdl.primitives.createPlane(width, depth, 1, 1),null);
-    this.color = color || null;
+var DrawableQuad = function(program, width, depth, texture){
+    this.model = new tdl.models.Model(program,
+                                      tdl.primitives.createPlane(width, depth, 1, 1),
+                                      {waterMap: texture.texture});
+    this.color = typeof color === 'undefined' ? [1,1,1] : color;
 }
 DrawableQuad.prototype = new DrawableObject();
 DrawableQuad.prototype.drawObject = DrawableTorus.prototype.drawObject;
@@ -193,7 +195,7 @@ function createQuad(program, framebuffer) {
         indices: indices
     }, {
         colorBuffer: framebuffer.texture,
-        depthBuffer: framebuffer.depthTexture
+        depthBuffer: framebuffer.depthTexture,
     }),mat4.identity(mat4.create()));
 };
 
