@@ -230,6 +230,7 @@
     varying vec3 eyeDirectionW;
 
     varying vec2 texCoordI;
+    varying vec2 reflectionI;
 
     void main() {
         vec4 positionW = model * position;
@@ -237,7 +238,8 @@
         eyeDirectionW = eyePosition - positionW.xyz;
         vec4 viewvec = view * positionW;
         gl_Position = projection * viewvec;
-        texCoordI = ((gl_Position.xy) / (gl_Position.z/30.0)); //texCoord; //(invModelView * position).xy;
+        texCoordI = texCoord;
+        reflectionI = ((gl_Position.xy / gl_Position.z) + vec2(1.0, 1.0)) / 2.0; //texCoord; //(invModelView * position).xy;
     }
 </script>
 
@@ -245,8 +247,13 @@
     precision highp float;
 
     varying vec2 texCoordI;
+    varying vec2 reflectionI;
     uniform float time;
     uniform sampler2D waterMap;
+    uniform sampler2D waterNormal;
+    
+    const float waterSpeed = 0.02;
+    const float waterStrength = 0.1;
 
     vec2 makeWave(float time, vec2 coord){
         return vec2(
@@ -260,10 +267,13 @@
     }
 
     void main() {
-        gl_FragColor.rgb = texture2D(waterMap, (texCoordI.xy + vec2(30.0, 30.0)) / 60.0).rgb;
+        vec2 waterNormalCoord = texCoordI.xy;
+        waterNormalCoord += vec2(1.0,1.0) * time * waterSpeed;
+        vec3 textureNormal = texture2D(waterNormal, waterNormalCoord).rgb;
+        gl_FragColor.rgb = texture2D(waterMap, (reflectionI.xy)+textureNormal.xy * waterStrength).rgb;
         //gl_FragColor.rgb = texture2D(waterMap, texCoordI.xy).rgb;
         //some grey to see the reflective surface
-        gl_FragColor.rgb += vec3(0.1, 0.1, 0.1);
+        
         
         //gl_FragColor.b = makeWave(time, texCoordI.xy).x + makeWave(time, texCoordI.xy).y;
         //gl_FragColor.rg = vec2(0.0, 0.0);
