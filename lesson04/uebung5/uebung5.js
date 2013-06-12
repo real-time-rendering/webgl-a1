@@ -27,7 +27,7 @@ window.onload = function() {
 
 var GLOWMAP_SIZE = 128;
 var WATERMAP_SIZE = 256;
-var size = "large";
+var size = "small";
 
 // The main entry point.
 function initialize() {
