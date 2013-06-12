@@ -27,6 +27,7 @@ window.onload = function() {
 
 var GLOWMAP_SIZE = 128;
 var WATERMAP_SIZE = 256;
+var size = "large";
 
 // The main entry point.
 function initialize() {
@@ -71,7 +72,6 @@ function initialize() {
                                        waterNormal: waternormal} );
     var waterWell = new DrawableCube(programs[0],32.0,[0.5,0.5,0.5]);
 
-    var size = "small";
     var cubeTextures = {
         cubemap: tdl.textures.loadTexture(
             [
@@ -200,8 +200,8 @@ function initialize() {
     var eyeSpeed = 0.2;
     var eyeHeight = 10;
     var eyeRadius = 80;
-    //var eyeRotated = 4;
-    var eyeRotated = 0;
+    var eyeRotated = 4;
+    //var eyeRotated = 0;
 
     // Animation needs accurate timing information.
     var elapsedTime = 0.0;
@@ -321,8 +321,12 @@ function initialize() {
             pillar.setSphereBrightness(colval);
             pillar.setSphereColor(pillarSphereColors[i]);
 
-            pillar.translate(pillarPositions[i]);
-            //pillar.rotate(0,((clock*20)%360)* Math.PI / 180,0);
+            var pos = pillarPositions[i];
+            var tval = (Math.sin(clock*2)+1)/2;
+            var translateTo = [pos[0],pos[1]*tval+3,pos[2]];
+            pillar.translate(translateTo);
+
+            pillar.rotateY=((clock*20)%360)* Math.PI / 180;
 
             pillar.drawObject(drawObjectConst);
         }

@@ -109,11 +109,16 @@ var DrawablePillar = function(program, size, color, sphereColor){
     }
     this.sphere = new DrawableSphere(program,size*3,sphereColor); 
     this.elements.push(this.sphere);
+
+
 }
 
 DrawablePillar.prototype.drawObject = function(uniforms){
     for (var i=0;i<this.elements.length;i++){
         var ident = mat4.identity(this.elements[i].transform);
+
+        mat4.rotate(ident,this.rotateY,[0, 1, 0]);
+
         for (var e=0;e<this.translations.length;e++){
             mat4.translate(ident,this.translations[e]);
         }
@@ -123,6 +128,7 @@ DrawablePillar.prototype.drawObject = function(uniforms){
         this.elements[i].drawObject(uniforms);
     }
     this.translations = [];
+    this.rotateY = 0.0;
 }
 
 DrawablePillar.prototype.translate = function(to){
