@@ -189,7 +189,7 @@ function initialize() {
     }
     var lightColors = [1.0,0.0,0.0, 0.0,1.0,0.0, 0.0,0.0,1.0, 1.0,1.0,1.0];
     //var lightColors = [1.0,1.0,1.0, 1.0,1.0,1.0, 1.0,1.0,1.0, 1.0,1.0,1.0];
-    lightPositions = [10,10,10, 0,10,10, 10,0,10, 0,0,0];
+    lightPositions = [50,50,50, -50,50,50, -50,50,-50, 0,0,0];
     lightPositions = new Float32Array(lightPositions);
 
     var eyePosition = vec3.create();
