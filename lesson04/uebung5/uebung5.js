@@ -97,6 +97,8 @@ function initialize() {
         var height = canvas.height/2;
         var x = (((event.x==undefined)?event.pageX:event.x)-(width))/width;
         var y = (((event.y==undefined)?event.pageY:event.y)-(height))/height;
+        x*=(1/eyeRadius);
+        y*=0.25;
         target = vec3.create([(-(((x>1)?1:x)* (t[2]))) * (1+eyeRadius), (-((y>1)?1:y)) * (1+eyeRadius), (((x>1)?1:x)* (t[0])) * (1+eyeRadius)]);
     }
 
@@ -187,9 +189,9 @@ function initialize() {
     for(var i=0; i<LIGHT_NUM; i++){
         lightPositions = lightPositions.concat([10, 10, 10]);
     }
-    var lightColors = [1.0,0.0,0.0, 0.0,1.0,0.0, 0.0,0.0,1.0, 1.0,1.0,1.0];
+    var lightColors = [1.0,0.0,0.0, 0.0,1.0,0.0, 0.0,0.0,1.0, 0.2,0.2,0.2];
     //var lightColors = [1.0,1.0,1.0, 1.0,1.0,1.0, 1.0,1.0,1.0, 1.0,1.0,1.0];
-    lightPositions = [50,50,50, -50,50,50, -50,50,-50, 0,0,0];
+    lightPositions = [50,50,50, -50,50,50, -50,50,-50, 50,50,-50];
     lightPositions = new Float32Array(lightPositions);
 
     var eyePosition = vec3.create();
@@ -198,9 +200,9 @@ function initialize() {
 
     // Animation parameters for the rotating eye-point.
     var eyeSpeed = 0.2;
-    var eyeHeight = 10;
+    var eyeHeight = 14;
     var eyeRadius = 80;
-    var eyeRotated = 4;
+    var eyeRotated = -4;
     //var eyeRotated = 0;
 
     // Animation needs accurate timing information.
@@ -316,13 +318,14 @@ function initialize() {
 
         drawObjectConst.time = clock;
         var colval = (Math.abs(Math.sin(clock/2)));
+        var tval = (Math.sin(clock*2)+1)/2;
 
         for (var i=0;i<max*max;i++){
             pillar.setSphereBrightness(colval);
             pillar.setSphereColor(pillarSphereColors[i]);
 
             var pos = pillarPositions[i];
-            var tval = (Math.sin(clock*2)+1)/2;
+
             var translateTo = [pos[0],pos[1]*tval+3,pos[2]];
             pillar.translate(translateTo);
 
@@ -344,9 +347,9 @@ function initialize() {
 
     function playerMovement(){
         if(walkW){
-            eyeRadius -= 0.15;
+            eyeRadius -= 0.45;
         }else if(walkS){
-            eyeRadius += 0.15;
+            eyeRadius += 0.45;
         }
         if(walkA){
             eyeRotated -= 0.15;
