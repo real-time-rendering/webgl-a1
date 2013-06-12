@@ -51,7 +51,7 @@ function initialize() {
     var frag =  window.location.hash.substring(1);
     var pnum = frag ? parseInt(frag) : 0;
 
-    var pillar = new DrawablePillar(programs[0], 0.2, [0,0,0] ,[0,1,0]);
+    var pillar = new DrawablePillar(programs[0], 0.4, [0,0,0] ,[0,1,0]);
     var pillarSphereColors = [];
     var pillarPositions = [];
 
