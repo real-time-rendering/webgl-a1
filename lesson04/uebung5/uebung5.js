@@ -26,7 +26,7 @@ window.onload = function() {
 }
 
 var GLOWMAP_SIZE = 128;
-var WATERMAP_SIZE = 128;
+var WATERMAP_SIZE = 512;
 
 // The main entry point.
 function initialize() {
@@ -64,7 +64,7 @@ function initialize() {
     }
 
     
-    var waterPlane = new DrawableQuad(programs[3], 10.0, 10.0, watermap );
+    var waterPlane = new DrawableQuad(programs[3], 30.0, 30.0, watermap );
 
     var drawableObjects = lollies;
 
