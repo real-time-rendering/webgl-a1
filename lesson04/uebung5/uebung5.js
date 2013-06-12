@@ -71,7 +71,7 @@ function initialize() {
                                        waterNormal: waternormal} );
     var waterWell = new DrawableCube(programs[0],32.0,[0.5,0.5,0.5]);
 
-    var size = "large";
+    var size = "small";
     var cubeTextures = {
         cubemap: tdl.textures.loadTexture(
             [
