@@ -255,7 +255,7 @@ function initialize() {
         watermap.bind();
         gl.depthMask(true);
         gl.enable(gl.DEPTH_TEST);
-        renderScene();
+        renderScene(true);
         drawObjectConst.waterview = 0;
 
         //enable brightpass for glow map generation
