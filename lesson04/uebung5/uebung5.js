@@ -249,12 +249,7 @@ function initialize() {
         if (animate) {
             clock += elapsedTime;
         }
-        
-<<<<<<< HEAD
-        //animateScene();
-=======
-        
->>>>>>> 66693d2fd28696ceda7539e89013312587f3895b
+
         //render scene from under water perspective
         drawObjectConst.waterview = 1;
         watermap.bind();
