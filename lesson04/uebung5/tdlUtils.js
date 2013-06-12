@@ -52,9 +52,10 @@ DrawableTorus.prototype.drawObject = function(uniforms){
 // ------------- DrawableCube --------------------
 //--------------------------------------------------
 
-var DrawableCube = function(program, size, color){
-    this.model = new tdl.models.Model(program,tdl.primitives.createCube(size),null);
+var DrawableCube = function(program, size, color, textures){
+    this.model = new tdl.models.Model(program,tdl.primitives.createCube(size),textures);
     this.color = color || null;
+    
 }
 
 DrawableCube.prototype = new DrawableObject();

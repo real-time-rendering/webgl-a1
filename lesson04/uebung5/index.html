@@ -79,6 +79,9 @@
 
     const int LIGHT_NUM = 4;
 
+    uniform sampler2D texture;
+    uniform sampler2D normalmap;
+    
     uniform vec3 color;
     uniform vec3 lightIntensity;
     uniform float brightpass;
@@ -131,7 +134,7 @@
                 lightColor, color);
         }
 
-        gl_FragColor.rgb = brightpass_filter(outcolor);
+        gl_FragColor.rgb = brightpass_filter(outcolor) * texture2D(texture, texCoordI).rgb;
         gl_FragColor.a = 1.0;
     }
 </script>

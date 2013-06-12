@@ -43,7 +43,9 @@ function initialize() {
     var watermap = tdl.framebuffers.createFramebuffer(WATERMAP_SIZE, WATERMAP_SIZE, true);
     var backBuffer = new tdl.framebuffers.BackBuffer(canvas);
     
-    var waternormal = tdl.textures.loadTexture('waternormal.jpg')
+    var waternormal = tdl.textures.loadTexture('waternormal.jpg');
+    var bricktexture = tdl.textures.loadTexture('BubblyBricks-ColorMap.png');
+    var bricknormals = tdl.textures.loadTexture('BubblyBricks-NormalMap.png');
 
     // Create the shader programs.
     var programs = createProgramsFromTags();
@@ -69,7 +71,7 @@ function initialize() {
                                       30.0, 30.0,
                                       {waterMap: watermap.texture,
                                        waterNormal: waternormal} );
-    var waterWell = new DrawableCube(programs[0],32.0,[0.5,0.5,0.5]);
+    var waterWell = new DrawableCube(programs[0],32.0,[0.5,0.5,0.5], {texture: bricktexture, normalmap: bricknormals});
 
     var size = "small";
     var cubeTextures = {
