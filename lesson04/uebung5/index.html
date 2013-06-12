@@ -262,4 +262,37 @@
     }
 </script>
 
+<script id="vs4" type="x-shader/x-vertex">
+    uniform mat4 projection;
+    uniform mat4 view;
+    uniform mat4 model;
+
+    uniform vec3 eyePosition;
+
+    attribute vec4 position;
+    attribute vec3 normal;
+
+    varying vec3 eyeDirectionW;
+
+    void main() {
+    vec4 positionW = model * position * 10.0;
+    eyeDirectionW = - position.xyz;
+    gl_Position = projection * view * positionW;
+    }
+</script>
+
+<script id="fs4" type="x-shader/x-fragment">
+    precision highp  float;
+
+    uniform samplerCube cubemap;
+
+    varying vec3 eyeDirectionW;
+
+    void main() {
+    vec4 cubeMapColor = textureCube(cubemap, -eyeDirectionW);
+    gl_FragColor.rgb = cubeMapColor.rgb;
+    gl_FragColor.a = 1.0;
+    }
+</script>
+
 </html>

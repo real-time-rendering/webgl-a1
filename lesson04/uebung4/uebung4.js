@@ -226,7 +226,7 @@ function initialize() {
     var skyboxConst = {
         view: view,
         projection: projection,
-        eyePosition: eyePosition,
+        eyePosition: eyePosition
     };
 
     // Uniform variables that change for each torus in a frame.

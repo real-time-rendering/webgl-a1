@@ -65,6 +65,26 @@ function initialize() {
 
     var waterPlane = new DrawableQuad(programs[3], 10.0, 10.0, watermap );
 
+    var size = "small";
+    var cubeTextures = {
+        cubemap: tdl.textures.loadTexture(
+            [
+                'cubemap/'+size+'/posx.jpg', //positive x
+                'cubemap/'+size+'/negx.jpg', //negative x
+                'cubemap/'+size+'/posy.jpg', //positive y
+                'cubemap/'+size+'/negy.jpg', //negative y
+                'cubemap/'+size+'/posz.jpg', //positive z
+                'cubemap/'+size+'/negz.jpg'  //negative z
+            ]
+        )
+    };
+
+    var skybox = new tdl.models.Model(
+        programs[4],
+        tdl.primitives.createCube(-10),
+        cubeTextures
+    )
+
     canvas.onmousemove = function(event){
         var t = vec3.create([-eyePosition[0], -eyePosition[1], -eyePosition[2]]);
         var width = canvas.width/2;
@@ -195,6 +215,17 @@ function initialize() {
         invModelView: invModelView,
     };
 
+    var skyboxConst = {
+        view: view,
+        projection: projection,
+        eyePosition: eyePosition
+    };
+
+    var skyboxPer = {
+        model: model,
+        color: vec3.create()
+    };
+
     var postProcessQuad = createPostProcessingQuad(programs[1], framebuffer, glowmap, watermap);
     var quadGlowMapBlur = createQuad(programs[2], smallFramebuffer);
 
@@ -262,7 +293,19 @@ function initialize() {
      
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
         gl.enable(gl.CULL_FACE);
+
+        gl.depthMask(false);
+        gl.disable(gl.DEPTH_TEST);
+
+        skybox.drawPrep(skyboxConst);
+        mat4.translate(mat4.identity(skyboxPer.model),eyePosition);
+        skybox.draw(skyboxPer);
+
+        gl.depthMask(true);
+
+        gl.enable(gl.CULL_FACE);
         gl.enable(gl.DEPTH_TEST);
+
 
         drawObjectConst.time = clock;
         var colval = (Math.abs(Math.sin(clock/2)));
@@ -273,6 +316,8 @@ function initialize() {
             pillar.translate(pillarPositions[i]);
             pillar.drawObject(drawObjectConst);
         }
+
+
 
         if(drawObjectConst.waterview == 0){
             waterPlane.drawObject(drawObjectConst);
