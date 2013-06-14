@@ -60,12 +60,11 @@
         normalW = (model * vec4(normal, 0.0)).xyz;
         vec3 binormalW = (model * vec4(binormal, 0.0)).xyz;
         vec3 tangentW = (model * vec4(tangent, 0.0)).xyz;
-        
         tbn = mat3(tangentW, binormalW, normalW);
+        
         if(waterview == 1){
             vec4 positionFlipped = position;
             positionW.y *= -1.0;
-            //normalW.y *= -1.0;
         }
         
         for(int i=0; i<3*LIGHT_NUM; i+=3){
@@ -113,8 +112,8 @@
 
     vec3 phong(vec3 normal, vec3 eye, vec3 light, vec3 intensity, vec3 reflectivity) {
         float vdotn = dot(reflect(-eye, normal), light);
-        vec3 ambient = reflectivity * 0.01;
-        vec3 specular = 0.5 * intensity * pow(max(0.0, vdotn), 10.2);
+        vec3 ambient = reflectivity * 0.03;
+        vec3 specular = 0.7 * intensity * pow(max(0.0, vdotn), 10.2);
         return lambert(normal, light, intensity, reflectivity) + specular + ambient;
     }
     
@@ -221,6 +220,7 @@
     const float center = (float(samples)-1.0)/2.0;
     
     void main() {
+        
         vec3 color = vec3(0.0);
         for (int x = 0; x < samples; x++) {
             for (int y = 0; y < samples; y++) {
@@ -243,6 +243,7 @@
     uniform mat4 model;
     uniform vec3 eyePosition;
     uniform mat4 invModelView;
+    uniform float time;
 
     attribute vec2 texCoord;
     attribute vec4 position;
@@ -254,8 +255,14 @@
     varying vec2 texCoordI;
     varying vec2 reflectionI;
 
+    const float WAVE_HEIGHT = 0.1;
+    const float WAVE_SPEED = 1.0;
+    const float WAVE_LENGTH = 0.2;
+
     void main() {
-        vec4 positionW = model * position;
+        vec4 positionW = model * position;       
+        positionW.y += sin(WAVE_LENGTH * positionW.x*5.143 + WAVE_SPEED * time * 2.8234)*WAVE_HEIGHT + WAVE_HEIGHT;
+        positionW.y += cos(WAVE_LENGTH * positionW.z*3.322 + WAVE_SPEED * time * 3.3934)*WAVE_HEIGHT + WAVE_HEIGHT;
         normalW = (model * vec4(normal, 0.0)).xyz;
         eyeDirectionW = eyePosition - positionW.xyz;
         vec4 viewvec = view * positionW;

@@ -155,7 +155,9 @@ DrawablePillar.prototype.setSphereColor = function(color){
 
 var DrawableQuad = function(program, width, depth, textures){
     this.model = new tdl.models.Model(program,
-                                      tdl.primitives.createPlane(width, depth, width, depth),
+                                      tdl.primitives.addTangentsAndBinormals(
+                                        tdl.primitives.createPlane(width, depth, width, depth)
+                                      ),
                                       textures);
     this.color = typeof color === 'undefined' ? [1,1,1] : color;
 }
