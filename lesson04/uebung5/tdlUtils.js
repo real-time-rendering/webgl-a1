@@ -45,7 +45,7 @@ DrawableTorus.prototype = new DrawableObject();
 
 DrawableTorus.prototype.drawObject = function(uniforms){
     var drawColor = [this.color[0]*this.brightness,this.color[1]*this.brightness,this.color[2]*this.brightness];
-    this.draw(uniforms,{ model: this.transform , color: drawColor});
+    this.draw(uniforms,{ model: this.transform , color: drawColor, useTextures: this.useTextures});
 }
 
 //--------------------------------------------------
@@ -53,8 +53,11 @@ DrawableTorus.prototype.drawObject = function(uniforms){
 //--------------------------------------------------
 
 var DrawableCube = function(program, size, color, textures){
-    this.model = new tdl.models.Model(program,tdl.primitives.createCube(size),textures);
+    this.model = new tdl.models.Model(program,
+                                      tdl.primitives.addTangentsAndBinormals(tdl.primitives.createCube(size)),
+                                      textures);
     this.color = color || null;
+    this.useTextures = typeof textures !== 'undefined';
     
 }
 
@@ -65,9 +68,15 @@ DrawableCube.prototype.drawObject = DrawableTorus.prototype.drawObject;
 // ------------- DrawableSphere --------------------
 //--------------------------------------------------
 
-var DrawableSphere = function(program, size, color){
-    this.model = new tdl.models.Model(program,tdl.primitives.createSphere(size, 30, 20),null);
+var DrawableSphere = function(program, size, color, textures){
+    this.model = new tdl.models.Model(program,
+                                      tdl.primitives.addTangentsAndBinormals(
+                                      tdl.primitives.createSphere(size, 30, 20)
+                                      )
+                                      ,
+                                      textures);
     this.color = color || null;
+    this.useTextures = typeof textures !== 'undefined';
 }
 
 DrawableSphere.prototype = new DrawableObject();
@@ -77,8 +86,8 @@ DrawableSphere.prototype.drawObject = DrawableTorus.prototype.drawObject;
 // ------------- DrawableSphere --------------------
 //--------------------------------------------------
 
-var DrawableTruncatedCone = function(program, size, color){
-    this.model = new tdl.models.Model(program,tdl.primitives.createTruncatedCone(2, 1, 1,30,30),null);
+var DrawableTruncatedCone = function(program, size, color, uniforms){
+    this.model = new tdl.models.Model(program,tdl.primitives.createTruncatedCone(2, 1, 1,30,30),uniforms);
     this.color = color || null;
 }
 
@@ -101,14 +110,14 @@ DrawableFlaredCube.prototype.drawObject = DrawableTorus.prototype.drawObject;
 // ------------- DrawablePillar --------------------
 //--------------------------------------------------
 
-var DrawablePillar = function(program, size, color, sphereColor){
+var DrawablePillar = function(program, size, color, sphereColor, textures){
     this.size = size;
     this.elements = [];
     this.translations = [];
     for (var i=0;i<15;i++){
         //this.elements.push(new DrawableCube(program, size, color));
     }
-    this.sphere = new DrawableSphere(program,size*3,sphereColor); 
+    this.sphere = new DrawableSphere(program,size*3,sphereColor,textures); 
     this.elements.push(this.sphere);
 }
 

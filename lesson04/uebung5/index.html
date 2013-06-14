@@ -36,7 +36,7 @@
     
     uniform int waterview;
 
-    const int LIGHT_NUM = 4;
+    const int LIGHT_NUM = 3;
 
     uniform float lightPositions[3 * LIGHT_NUM];
     uniform float lightColors[3 * LIGHT_NUM];
@@ -45,18 +45,24 @@
     attribute vec2 texCoord;
     attribute vec4 position;
     attribute vec3 normal;
+    attribute vec3 tangent;
+    attribute vec3 binormal;
 
     varying vec3 normalW;
     varying vec4 positionW;
     varying float lightDirectionW[3 * LIGHT_NUM];
     varying vec3 eyeDirectionW;
-
+    varying mat3 tbn;
     varying vec2 texCoordI;
 
     void main() {
         positionW = model * position;
         normalW = (model * vec4(normal, 0.0)).xyz;
-        if(waterview > 0){
+        vec3 binormalW = (model * vec4(binormal, 0.0)).xyz;
+        vec3 tangentW = (model * vec4(tangent, 0.0)).xyz;
+        
+        tbn = mat3(tangentW, binormalW, normalW);
+        if(waterview == 1){
             vec4 positionFlipped = position;
             positionW.y *= -1.0;
             normalW.y *= -1.0;
@@ -77,35 +83,39 @@
 <script id="fs0" type="x-shader/x-fragment">
     precision highp  float;
 
-    const int LIGHT_NUM = 4;
+    const int LIGHT_NUM = 3;
+    const float textureRepeat = 5.0;
+    const float bumpStrength = 20.0;
 
     uniform sampler2D texture;
     uniform sampler2D normalmap;
+    uniform int useTextures;
     
     uniform vec3 color;
     uniform vec3 lightIntensity;
     uniform float brightpass;
     
+    uniform float lightColors[3 * LIGHT_NUM];
     uniform int waterview;
 
+    
     varying vec3 normalW;
     varying vec4 positionW;
-    varying float lightDirectionW[LIGHT_NUM*3];
-    uniform float lightColors[3 * LIGHT_NUM];
+    varying float lightDirectionW[3 * LIGHT_NUM];
     varying vec3 eyeDirectionW;
-
+    varying mat3 tbn;
     varying vec2 texCoordI;
 
     vec3 lambert(vec3 normal, vec3 light, vec3 intensity, vec3 reflectivity) {
         float ndotl = dot(normal, light);
-        return 0.1 * reflectivity * intensity + 0.6 * reflectivity * intensity * max(0.0, ndotl);
+        return 0.5 * reflectivity * intensity * max(0.0, ndotl);
     }
 
     vec3 phong(vec3 normal, vec3 eye, vec3 light, vec3 intensity, vec3 reflectivity) {
         float vdotn = dot(reflect(-eye, normal), light);
-
-        vec3 specular = 0.6 * intensity * pow(max(0.0, vdotn), 1.0);
-        return lambert(normal, light, intensity, reflectivity) + specular;
+        vec3 ambient = reflectivity * 0.01;
+        vec3 specular = 0.5 * intensity * pow(max(0.0, vdotn), 10.2);
+        return lambert(normal, light, intensity, reflectivity) + specular + ambient;
     }
     
     vec3 brightpass_filter(vec3 color){
@@ -123,18 +133,26 @@
             discard;
         }
         
+        vec3 normal = normalW;
+        vec3 fragcolor = color;
+        if(useTextures == 1){
+            normal = tbn * (texture2D(normalmap, texCoordI * textureRepeat).xyz * bumpStrength);
+            fragcolor = (texture2D(texture, texCoordI * textureRepeat).rgb );
+        }
+        
         vec3 outcolor = vec3(0.0,0.0,0.0);
         for(int i=0; i<3*LIGHT_NUM; i+=3){
             vec3 lightColor = vec3(lightColors[i],lightColors[i+1],lightColors[i+2]);
             vec3 lightDirection = vec3(lightDirectionW[i],lightDirectionW[i+1],lightDirectionW[i+2]);
             outcolor += phong(
-                normalize(normalW),
+                normalize(normal),
                 normalize(eyeDirectionW),
                 normalize(lightDirection),
-                lightColor, color);
+                lightColor,
+                fragcolor);
         }
-
-        gl_FragColor.rgb = brightpass_filter(outcolor) * texture2D(texture, texCoordI).rgb;
+        
+        gl_FragColor.rgb = brightpass_filter(outcolor);
         gl_FragColor.a = 1.0;
     }
 </script>
@@ -209,7 +227,8 @@
                 float xx = (float(x) - center)*glowBlurSize;
                 float yy = (float(y) - center)*glowBlurSize;
                 vec2 tc = texCoordI + vec2(xx, yy);
-                color += texture2D(colorBuffer, tc).rgb;
+                float kernelWeight = 1.0 / (abs(xx)+abs(yy)+1.0);
+                color += texture2D(colorBuffer, tc).rgb * kernelWeight;
             }
         }
 

@@ -44,8 +44,8 @@ function initialize() {
     var backBuffer = new tdl.framebuffers.BackBuffer(canvas);
     
     var waternormal = tdl.textures.loadTexture('waternormal.jpg');
-    var bricktexture = tdl.textures.loadTexture('BubblyBricks-ColorMap.png');
-    var bricknormals = tdl.textures.loadTexture('BubblyBricks-NormalMap.png');
+    var bricktexture = tdl.textures.loadTexture('brick-tex.png');
+    var bricknormals = tdl.textures.loadTexture('brick-nrm.png');
 
     // Create the shader programs.
     var programs = createProgramsFromTags();
@@ -97,8 +97,8 @@ function initialize() {
         var t = vec3.create([-eyePosition[0], -eyePosition[1], -eyePosition[2]]);
         var width = canvas.width/2;
         var height = canvas.height/2;
-        var x = (((event.x==undefined)?event.pageX:event.x)-(width))/width;
-        var y = (((event.y==undefined)?event.pageY:event.y)-(height))/height;
+        var x = ((((event.x==undefined)?event.pageX:event.x)-(width))/width)/10.0;
+        var y = ((((event.y==undefined)?event.pageY:event.y)-(height))/height)/10.0;
         target = vec3.create([(-(((x>1)?1:x)* (t[2]))) * (1+eyeRadius), (-((y>1)?1:y)) * (1+eyeRadius), (((x>1)?1:x)* (t[0])) * (1+eyeRadius)]);
     }
 
@@ -186,12 +186,18 @@ function initialize() {
     //var lightPos = [10, 10, 10];
     var lightPositions = [];
     //var lightColors = [];
-    for(var i=0; i<LIGHT_NUM; i++){
+    /*for(var i=0; i<LIGHT_NUM; i++){
         lightPositions = lightPositions.concat([10, 10, 10]);
-    }
-    var lightColors = [1.0,0.0,0.0, 0.0,1.0,0.0, 0.0,0.0,1.0, 1.0,1.0,1.0];
+    }*/
+    var lightColors = [0.925,   0.662,  0.478,
+                       0.925,   0.662,  0.478,
+                       0.0,     0.0,    0.0,
+                       1.0,     1.0,    1.0];
     //var lightColors = [1.0,1.0,1.0, 1.0,1.0,1.0, 1.0,1.0,1.0, 1.0,1.0,1.0];
-    lightPositions = [50,50,50, -50,50,50, -50,50,-50, 0,0,0];
+    lightPositions = [  -30,    20,     30,
+                        -30,    20,     0,
+                        0,      20,     0,
+                        0,      0,      0];
     lightPositions = new Float32Array(lightPositions);
 
     var eyePosition = vec3.create();
@@ -263,7 +269,7 @@ function initialize() {
         drawObjectConst.waterview = 0;
 
         //enable brightpass for glow map generation
-        drawObjectConst.brightpass = 0.4;
+        drawObjectConst.brightpass = 0.1;
         // draw scene in small framebuffer for glowmap
         smallFramebuffer.bind();
         gl.depthMask(true);
@@ -292,7 +298,7 @@ function initialize() {
         
         //post processing
         var quadModel = postProcessQuad.model;
-        quadModel.drawPrep({blurSize: 0.04, glowStrengh: 2.0});
+        quadModel.drawPrep({blurSize: 0.02, glowStrengh: 2.0});
         quadModel.draw({ model: postProcessQuad.transform });
     }
 
@@ -341,20 +347,22 @@ function initialize() {
     //-----------------------------------------------
 
     function playerMovement(){
+        var moveSpeed = 0.3;
+        
         if(walkW){
-            eyeRadius -= 0.15;
+            eyeRadius -= moveSpeed*2.0;
         }else if(walkS){
-            eyeRadius += 0.15;
+            eyeRadius += moveSpeed*2.0;
         }
         if(walkA){
-            eyeRotated -= 0.15;
+            eyeRotated -= moveSpeed;
         }else if(walkD){
-            eyeRotated += 0.15;
+            eyeRotated += moveSpeed;
         }
         if(walkQ){
-            eyeHeight += 0.15;
+            eyeHeight += moveSpeed;
         }else if(walkE){
-            eyeHeight -= 0.15;
+            eyeHeight -= moveSpeed;
         }
 
         // Calculate the current eye position.
