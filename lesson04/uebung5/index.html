@@ -65,7 +65,7 @@
         if(waterview == 1){
             vec4 positionFlipped = position;
             positionW.y *= -1.0;
-            normalW.y *= -1.0;
+            //normalW.y *= -1.0;
         }
         
         for(int i=0; i<3*LIGHT_NUM; i+=3){
@@ -289,10 +289,10 @@
     }
 
     void main() {
-        vec2 waterNormalCoord = texCoordI.xy;
-        waterNormalCoord += vec2(1.0,1.0) * time * waterSpeed;
-        vec3 textureNormal = texture2D(waterNormal, waterNormalCoord).rgb;
-        gl_FragColor.rgb = texture2D(waterMap, (reflectionI.xy)+textureNormal.xy * waterStrength).rgb;
+        vec2 waterNormalCoord = texCoordI.xy + vec2(1.0,1.0) * time * waterSpeed;
+        vec3 textureNormal = (texture2D(waterNormal, waterNormalCoord).rgb - vec3(0.5,0.5,0.5)) * 2.0;
+        vec2 reflTexCoord = reflectionI.xy + (textureNormal.xy * waterStrength);
+        gl_FragColor.rgb = texture2D(waterMap, reflTexCoord).rgb;
         gl_FragColor.a = 1.0;
     }
 </script>
