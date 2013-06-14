@@ -27,6 +27,8 @@ window.onload = function() {
 
 var GLOWMAP_SIZE = 128;
 var WATERMAP_SIZE = 256;
+var BRIGHT_PASS = 0.7;
+var size = "small";
 
 // The main entry point.
 function initialize() {
@@ -53,7 +55,7 @@ function initialize() {
     var frag =  window.location.hash.substring(1);
     var pnum = frag ? parseInt(frag) : 0;
 
-    var pillar = new DrawablePillar(programs[0], 0.2, [0,0,0] ,[0,1,0]);
+    var pillar = new DrawablePillar(programs[0], 0.4, [0,0,0] ,[0,1,0]);
     var pillarSphereColors = [];
     var pillarPositions = [];
 
@@ -73,7 +75,6 @@ function initialize() {
                                        waterNormal: waternormal} );
     var waterWell = new DrawableCube(programs[0],32.0,[0.5,0.5,0.5], {texture: bricktexture, normalmap: bricknormals});
 
-    var size = "small";
     var cubeTextures = {
         cubemap: tdl.textures.loadTexture(
             [
@@ -97,8 +98,10 @@ function initialize() {
         var t = vec3.create([-eyePosition[0], -eyePosition[1], -eyePosition[2]]);
         var width = canvas.width/2;
         var height = canvas.height/2;
-        var x = ((((event.x==undefined)?event.pageX:event.x)-(width))/width)/10.0;
-        var y = ((((event.y==undefined)?event.pageY:event.y)-(height))/height)/10.0;
+        var x = (((event.x==undefined)?event.pageX:event.x)-(width))/width;
+        var y = (((event.y==undefined)?event.pageY:event.y)-(height))/height;
+        x*=(1/eyeRadius);
+        y*=0.25;
         target = vec3.create([(-(((x>1)?1:x)* (t[2]))) * (1+eyeRadius), (-((y>1)?1:y)) * (1+eyeRadius), (((x>1)?1:x)* (t[0])) * (1+eyeRadius)]);
     }
 
@@ -186,14 +189,10 @@ function initialize() {
     //var lightPos = [10, 10, 10];
     var lightPositions = [];
     //var lightColors = [];
-    /*for(var i=0; i<LIGHT_NUM; i++){
-        lightPositions = lightPositions.concat([10, 10, 10]);
-    }*/
     var lightColors = [0.925,   0.662,  0.478,
                        0.925,   0.662,  0.478,
                        0.0,     0.0,    0.0,
                        1.0,     1.0,    1.0];
-    //var lightColors = [1.0,1.0,1.0, 1.0,1.0,1.0, 1.0,1.0,1.0, 1.0,1.0,1.0];
     lightPositions = [  -30,    20,     30,
                         -30,    20,     0,
                         0,      20,     0,
@@ -206,10 +205,10 @@ function initialize() {
 
     // Animation parameters for the rotating eye-point.
     var eyeSpeed = 0.2;
-    var eyeHeight = 10;
+    var eyeHeight = 14;
     var eyeRadius = 80;
-    //var eyeRotated = 4;
-    var eyeRotated = 0;
+    var eyeRotated = -4;
+    //var eyeRotated = 0;
 
     // Animation needs accurate timing information.
     var elapsedTime = 0.0;
@@ -269,7 +268,7 @@ function initialize() {
         drawObjectConst.waterview = 0;
 
         //enable brightpass for glow map generation
-        drawObjectConst.brightpass = 0.1;
+        drawObjectConst.brightpass = BRIGHT_PASS;
         // draw scene in small framebuffer for glowmap
         smallFramebuffer.bind();
         gl.depthMask(true);
@@ -298,7 +297,7 @@ function initialize() {
         
         //post processing
         var quadModel = postProcessQuad.model;
-        quadModel.drawPrep({blurSize: 0.02, glowStrengh: 2.0});
+        quadModel.drawPrep({blurSize: 0.02, glowStrengh: 3.0});
         quadModel.draw({ model: postProcessQuad.transform });
     }
 
@@ -324,13 +323,18 @@ function initialize() {
 
         drawObjectConst.time = clock;
         var colval = (Math.abs(Math.sin(clock/2)));
+        var tval = (Math.sin(clock*2)+1)/2;
 
         for (var i=0;i<max*max;i++){
             pillar.setSphereBrightness(colval);
             pillar.setSphereColor(pillarSphereColors[i]);
 
-            pillar.translate(pillarPositions[i]);
-            //pillar.rotate(0,((clock*20)%360)* Math.PI / 180,0);
+            var pos = pillarPositions[i];
+
+            var translateTo = [pos[0],pos[1]*tval+3,pos[2]];
+            pillar.translate(translateTo);
+
+            pillar.rotateY=((clock*5.0)%360)* Math.PI / 180;
 
             pillar.drawObject(drawObjectConst);
         }
