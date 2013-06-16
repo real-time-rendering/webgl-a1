@@ -121,6 +121,9 @@ function initialize() {
         }
     }
 
+    var postProcessQuad = createPostProcessingQuad(programs[1], framebuffer, glowmap, watermap);
+    var quadGlowMapBlur = createQuad(programs[2], smallFramebuffer);
+
     var waterPlane = new DrawableQuad(programs[3],
                                       30.0, 30.0,
                                       {waterMap: watermap.texture,
@@ -147,9 +150,6 @@ function initialize() {
         tdl.primitives.createCube(-10),
         cubeTextures
     )
-
-
-
 
     var walkW = false;
     var walkA = false;
@@ -288,8 +288,6 @@ function initialize() {
         color: vec3.create()
     };
 
-    var postProcessQuad = createPostProcessingQuad(programs[1], framebuffer, glowmap, watermap);
-    var quadGlowMapBlur = createQuad(programs[2], smallFramebuffer);
 
     // Renders one frame and registers itself for the next frame.
    function render() {
