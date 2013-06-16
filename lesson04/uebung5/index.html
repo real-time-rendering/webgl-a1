@@ -105,7 +105,7 @@
 </div>
 </body>
 
-<!-- Cell Shading -->
+<!-- Phong Shading with 3 LightSources -->
 
 <script id="vs0" type="x-shader/x-vertex">
     uniform mat4 projection;
@@ -234,6 +234,8 @@
     }
 </script>
 
+<!-- addition shader -->
+
 <script id="vs1" type="x-shader/x-vertex">
     attribute vec4 position;
     varying vec2 texCoordI;
@@ -273,6 +275,8 @@
     }
 </script>
 
+<!-- bloom shader -->
+
 <script id="vs2" type="x-shader/x-vertex">
     attribute vec4 position;
     varying vec2 texCoordI;
@@ -311,6 +315,8 @@
         gl_FragColor.a = 1.0;
     }
 </script>
+
+<!-- reflection shader -->
 
 <script id="vs3" type="x-shader/x-vertex">
     uniform mat4 projection;
@@ -392,6 +398,8 @@
         gl_FragColor.a = transparency;
     }
 </script>
+
+<!-- skybox shader -->
 
 <script id="vs4" type="x-shader/x-vertex">
     uniform mat4 projection;
