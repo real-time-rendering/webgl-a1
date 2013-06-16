@@ -84,7 +84,8 @@ function initialize() {
 
    canvas.addEventListener("click", function() {
     //canvas.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
-    requestFullScreen(canvas);
+    requestFullScreen(document.body);
+    
     //canvas.webkitRequestPointerLock();
    });
 

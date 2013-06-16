@@ -7,10 +7,15 @@
     <script type="text/javascript" src="../tdl/base.js"></script>
     <script type="text/javascript" src="../tdl/gl-matrix.js"></script>
     <script src="../jquery-1.9.1.min.js"></script>
+    <script src="../html5slider.js"></script>
 
     <style type="text/css">
         #error { display: none; }
         #canvas { border: 1px solid black; }
+        html, body{
+            background-color: #000000;
+            color: #fff;
+        }
     </style>
 
     <script type="text/javascript" src="tdlUtils.js"></script>
@@ -23,7 +28,23 @@
 
     <div id="canvas-container">
         <p><canvas id="canvas" width="600" height="600"></canvas></p>
+        <div>
+            BRIGHT_PASS
+            <input oninput="BRIGHT_PASS = parseFloat($(this).val());"
+            type="range" min="0" max="1" step="0.1" value="0.5">
+            <br>            
+            
+            GLOW_BLUR_SIZE
+            <input oninput="GLOW_BLUR_SIZE = parseFloat($(this).val());" 
+            type="range" min="0.01" max="0.1" step="0.01" value="0.01">
+            <br>            
+            
+            GLOW_STRENGTH
+            <input oninput="GLOW_STRENGTH = parseFloat($(this).val());" 
+            type="range" min="0" max="5.0" step="0.2" value="2.0">
+            <br>            
 
+        </div>
     </div>
 </div>
 </body>
