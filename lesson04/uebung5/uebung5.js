@@ -72,7 +72,7 @@ var RENDER_SCENE = true;
 var SHOW_SCENE = true;
 var RENDER_SKYBOX = true;
 var GLOWINGWELL = true;
-
+var BLOOM_BACKGROUND = false;
 
 var genViewTarget = function (x,y, eyePosition, eyeRadius){
     var t = vec3.create([-eyePosition[0], -eyePosition[1], -eyePosition[2]]);
