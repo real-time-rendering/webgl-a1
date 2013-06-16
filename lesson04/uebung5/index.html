@@ -46,6 +46,28 @@
         <div>
             <div style="display: inline">
                 <div class="table">
+                    <div>glow map size</div>
+                    <div>
+                        <select id="glowmapsize" onchange="reloadWindow()" value="128">
+                            <option>32</option>
+                            <option>64</option>
+                            <option>128</option>
+                            <option>256</option>
+                            <option>512</option>
+                            <option>1024</option>
+                        </select>
+                    </div>
+                    <div>water map size</div>
+                    <div>
+                        <select id="watermapsize" onchange="reloadWindow()" value="128">
+                            <option>32</option>
+                            <option>64</option>
+                            <option>128</option>
+                            <option>256</option>
+                            <option>512</option>
+                            <option>1024</option>
+                        </select>
+                    </div>
                     <div>
                         <div>bright pass</div>
                         <div><input oninput="BRIGHT_PASS = parseFloat($(this).val());"
@@ -75,13 +97,13 @@
             <div class="table">
                 <div>
                     <div>
-                        <input type="checkbox" onclick="SHOW_SCENE = $(this).is(':checked')">
+                        <input checked="checked" type="checkbox" onclick="SHOW_SCENE = $(this).is(':checked')">
                     </div>
                     <div>
                         render scene 
                     </div>
                     <div>
-                        <input type="checkbox" onclick="RENDER_SCENE = $(this).is(':checked')">
+                        <input checked="checked" type="checkbox" onclick="RENDER_SCENE = $(this).is(':checked')">
                     </div>
                     <div>
                         show scene
@@ -89,27 +111,33 @@
                 </div>
                 <div>
                     <div>
-                        <input type="checkbox" onclick="RENDER_WATER = $(this).is(':checked')">
+                        <input checked="checked" type="checkbox" onclick="RENDER_WATER = $(this).is(':checked')">
                     </div>
                     <div>
                         render water
                     </div>
                     <div>
-                        <input type="checkbox" onclick="SHOW_WATER = $(this).is(':checked')">
+                        <input checked="checked" type="checkbox" onclick="SHOW_WATER = $(this).is(':checked')">
                     </div>
                     <div>
                         show water
                     </div>
+                    <div>
+                        <input checked="checked" type="checkbox" onclick="RENDER_WATER_NORMALMAP = $(this).is(':checked')">
+                    </div>
+                    <div>
+                        show water normalmap
+                    </div>
                 </div>
                 <div>
                     <div>
-                        <input type="checkbox" onclick="RENDER_BLOOM = $(this).is(':checked')">
+                        <input checked="checked" type="checkbox" onclick="RENDER_BLOOM = $(this).is(':checked')">
                     </div>
                     <div>
                         render bloom 
                     </div>
                     <div>
-                        <input type="checkbox" onclick="SHOW_BLOOM = $(this).is(':checked')">
+                        <input checked="checked" type="checkbox" onclick="SHOW_BLOOM = $(this).is(':checked')">
                     </div>
                     <div>
                         show bloom 
@@ -117,28 +145,19 @@
                 </div>
                 <div>
                     <div>
-                         <input type="checkbox" onclick="RENDER_SKYBOX = $(this).is(':checked')" >
+                         <input checked="checked" type="checkbox" onclick="RENDER_SKYBOX = $(this).is(':checked')" >
                     </div>
                     <div>
                         skybox
                     </div>
                 </div>
             </div>
-            
-            
-            
-
-            
-            
-            
-
-
         </div>
     </div>
 </div>
 </body>
 
-<!-- Cell Shading -->
+<!-- Phong Shading with 3 LightSources -->
 
 <script id="vs0" type="x-shader/x-vertex">
     uniform mat4 projection;
@@ -267,6 +286,8 @@
     }
 </script>
 
+<!-- addition shader -->
+
 <script id="vs1" type="x-shader/x-vertex">
     attribute vec4 position;
     varying vec2 texCoordI;
@@ -306,6 +327,8 @@
     }
 </script>
 
+<!-- bloom shader -->
+
 <script id="vs2" type="x-shader/x-vertex">
     attribute vec4 position;
     varying vec2 texCoordI;
@@ -344,6 +367,8 @@
         gl_FragColor.a = 1.0;
     }
 </script>
+
+<!-- reflection shader -->
 
 <script id="vs3" type="x-shader/x-vertex">
     uniform mat4 projection;
@@ -400,6 +425,7 @@
     uniform sampler2D waterMap;
     uniform sampler2D waterNormal;
     uniform float reflectionAngleBias;
+    uniform int renderWaterNormalmap;
     
     const float waterSpeed = 0.02;
     const float waterStrength = 0.04;
@@ -416,15 +442,20 @@
     }
 
     void main() {
-        vec2 waterNormalCoord = texCoordI.xy + vec2(1.0,1.0) * time * waterSpeed;
-        vec3 textureNormal = (texture2D(waterNormal, waterNormalCoord).rgb - vec3(0.5,0.5,0.5)) * 2.0;
-        textureNormal = normalize(tbn * textureNormal);
+        vec3 textureNormal = vec3(0.0);
+        if(renderWaterNormalmap == 1){
+            vec2 waterNormalCoord = texCoordI.xy + vec2(1.0,1.0) * time * waterSpeed;
+            textureNormal = (texture2D(waterNormal, waterNormalCoord).rgb - vec3(0.5,0.5,0.5)) * 2.0;
+            textureNormal = normalize(tbn * textureNormal);
+        }
         vec2 reflTexCoord = clamp(reflectionI.xy + (textureNormal.xy * waterStrength), 0.001, 0.999);
         gl_FragColor.rgb = texture2D(waterMap, reflTexCoord).rgb * REFLECTION_DIMMING;
         float transparency = 1.0 - dot(eyeDirectionW, tbn * vec3(0.0,0.0,1.0)) / reflectionAngleBias;
         gl_FragColor.a = transparency;
     }
 </script>
+
+<!-- skybox shader -->
 
 <script id="vs4" type="x-shader/x-vertex">
     uniform mat4 projection;

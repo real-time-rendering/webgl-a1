@@ -43,11 +43,11 @@ function parseHash(){
     var hashstring = window.location.hash.substring(1)
     var kwargs = {};
     var args = hashstring.split(':');
-    for(var i=0; i<kwargs.length; i++){
-        if(args.length == 0){
+    for(var i=0; i<args.length; i++){
+        if(args[i].length == 0){
             continue;
         }
-        a = args.split('=');
+        a = args[i].split('=');
         kwargs[a[0]] = parseInt(a[1]);
     }
     return kwargs;
@@ -58,14 +58,15 @@ function reloadWindow(){
     url += '#'
     url += 'GLOWMAP_SIZE='+$('#glowmapsize').val();
     url += ':'
-    url += '#'
     url += 'WATERMAP_SIZE='+$('#watermapsize').val();
     url += ':'
     window.location = url;
+    window.location.reload();
 }
 
-var GLOWMAP_SIZE = 256;
-var WATERMAP_SIZE = 256;
+var options = parseHash();
+var GLOWMAP_SIZE = options.GLOWMAP_SIZE || 128;
+var WATERMAP_SIZE = options.WATERMAP_SIZE || 256;
 var BRIGHT_PASS = 0.5;
 var GLOW_BLUR_SIZE = 0.01;
 var GLOW_STRENGTH = 2.0;
@@ -73,6 +74,7 @@ var REFLECTION_ANGLE_MULTIPLICATOR = 30.0;
 var size = "small";
 
 var RENDER_WATER = true;
+var RENDER_WATER_NORMALMAP = true;
 var SHOW_WATER = true;
 var RENDER_BLOOM = true;
 var SHOW_BLOOM = true;
@@ -347,6 +349,7 @@ function initialize() {
         playerMovement(elapsedTime);
         drawObjectConst.reflectionAngleBias = REFLECTION_ANGLE_MULTIPLICATOR;
         drawObjectConst.renderWater = RENDER_WATER ? 1 : 0;
+        drawObjectConst.renderWaterNormalmap = RENDER_WATER_NORMALMAP ? 1 : 0;
         drawObjectConst.renderBloom = 1;//RENDER_BLOOM ? 1 : 0;
 
         if(RENDER_WATER){
