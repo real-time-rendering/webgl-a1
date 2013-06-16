@@ -49,6 +49,7 @@ var REFLECTION_ANGLE_MULTIPLICATOR = 30.0;
 var size = "small";
 
 var RENDER_WATER = true;
+var SHOW_WATER = true;
 var RENDER_BLOOM = true;
 var SHOW_BLOOM = true;
 var RENDER_SCENE = true;
@@ -291,7 +292,6 @@ function initialize() {
         showReflectiveTex: showReflectionTex ? 1 : 0,
         invModelView: invModelView,
         reflectionAngleBias: 50.0,
-        showBloom: 1.0,
     };
 
     var skyboxConst = {
@@ -385,7 +385,7 @@ function initialize() {
         gl.enable(gl.BLEND);
         gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
-        if(renderskybox){
+        if(renderskybox && RENDER_SKYBOX){
             gl.depthMask(false);
             gl.disable(gl.DEPTH_TEST);
 
@@ -429,7 +429,9 @@ function initialize() {
         if(drawObjectConst.waterview == 0){
             waterWell3.translate([0,-4.5, 0]);
             waterWell3.drawObject(drawObjectConst);
-            waterPlane.drawObject(drawObjectConst);
+            if(SHOW_WATER){
+                waterPlane.drawObject(drawObjectConst);
+            }
         }
     }
     
