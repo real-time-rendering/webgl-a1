@@ -40,7 +40,7 @@ window.onload = function() {
 }
 
 
-var GLOWMAP_SIZE = 256;
+var GLOWMAP_SIZE = 128;
 var WATERMAP_SIZE = 256;
 var BRIGHT_PASS = 0.5;
 var GLOW_BLUR_SIZE = 0.01;

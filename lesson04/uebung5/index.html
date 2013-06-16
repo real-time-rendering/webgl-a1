@@ -38,6 +38,17 @@
 
             <table border="0">
                 <tr>
+                    <td>glow map size</td>
+                    <td>
+                        <select onchange="GLOWMAP_SIZE = $(this).val();" value="128">
+                            <option>128</option>
+                            <option>256</option>
+                            <option>512</option>
+                            <option>1024</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
                     <td>bright pass</td>
                     <td><input oninput="BRIGHT_PASS = parseFloat($(this).val());"
                                   type="range" min="0" max="1" step="0.1" value="0.5">
