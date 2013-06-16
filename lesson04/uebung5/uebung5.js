@@ -40,12 +40,12 @@ window.onload = function() {
 }
 
 
-var GLOWMAP_SIZE = 128;
+var GLOWMAP_SIZE = 1024;
 var WATERMAP_SIZE = 256;
-var BRIGHT_PASS = 0.7;
-var GLOW_BLUR_SIZE = 0.01;
+var BRIGHT_PASS = 0.4;
+var GLOW_BLUR_SIZE = 0.01/4;
 var GLOW_STRENGTH = 3.0;
-var size = "small";
+var size = "large";
 
 
 var genViewTarget = function (x,y, eyePosition, eyeRadius){
@@ -64,7 +64,7 @@ var genViewTarget = function (x,y, eyePosition, eyeRadius){
  */
 function requestFullScreen(element) {
     // Supports most browsers and their versions.
-    var requestMethod = element.requestFullScreen || element.webkitRequestFullScreen || element.mozRequestFullScreen || element.msRequestFullScreen;
+    var requestMethod = element.requestFullScreen || element.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT) || element.mozRequestFullScreen || element.msRequestFullScreen;
 
     if (requestMethod) { // Native full screen.
         requestMethod.call(element);
