@@ -29,7 +29,8 @@ DrawableObject.prototype.rotate =function(ident,x,y,z){
 }
 
 DrawableObject.prototype.translate = function(to){
-    mat4.translate(mat4.identity(this.transform),to);
+    var ident = mat4.identity(this.transform);
+    mat4.translate(ident,to);
 }
 
 //--------------------------------------------------

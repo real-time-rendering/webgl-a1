@@ -16,27 +16,64 @@ function createProgramsFromTags() {
 }
 
 // Registers an onload handler.
-window.onload = function() {
+/*window.onload = function() {
     try {
         initialize();
     } catch (e) {
         $('#error').text(e.message || e);
         $('#error').css('display', 'block');
     }
+}  */
+
+window.onload = function() {
+    $(window).resize(function() {
+        var width = $('#canvas-container').innerWidth();
+        $('#canvas').attr('width', width).attr('height', width*0.6);
+    });
+    $(window).resize();
+    try {
+        initialize();
+    } catch(e) {
+        $('#error').text(e.message || e);
+        $('#error').css('display', 'block');
+    }
 }
+
 
 var GLOWMAP_SIZE = 128;
 var WATERMAP_SIZE = 256;
 var BRIGHT_PASS = 0.7;
-var size = "small";
+var size = "large";
+
+
+var genViewTarget = function (x,y, eyePosition, eyeRadius){
+    var t = vec3.create([-eyePosition[0], -eyePosition[1], -eyePosition[2]]);
+    var width = canvas.width/2;
+    var height = canvas.height/2;
+    var x = (x-(width))/width;
+    var y = (y-(height))/height;
+    x*=(1/eyeRadius);
+    y*=0.25;
+    return vec3.create([(-(((x>1)?1:x)* (t[2]))) * (1+eyeRadius), (-((y>1)?1:y)) * (1+eyeRadius), (((x>1)?1:x)* (t[0])) * (1+eyeRadius)]);
+}
 
 // The main entry point.
 function initialize() {
 
 
+
     // Setup the canvas widget for WebGL.
     window.canvas = document.getElementById("canvas");
     window.gl = tdl.webgl.setupWebGL(canvas);
+
+   canvas.addEventListener("click", function() {
+    canvas.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+    //canvas.webkitRequestPointerLock();
+   });
+
+    canvas.onmousemove = function(event){
+        target = genViewTarget(((event.x==undefined)?event.pageX:event.x),((event.y==undefined)?event.pageY:event.y), eyePosition, eyeRadius);
+    }
 
     // Create a new framebuffer linked to a texture whenever the
     var framebuffer = tdl.framebuffers.createFramebuffer(canvas.width, canvas.height, true);
@@ -94,16 +131,9 @@ function initialize() {
         cubeTextures
     )
 
-    canvas.onmousemove = function(event){
-        var t = vec3.create([-eyePosition[0], -eyePosition[1], -eyePosition[2]]);
-        var width = canvas.width/2;
-        var height = canvas.height/2;
-        var x = (((event.x==undefined)?event.pageX:event.x)-(width))/width;
-        var y = (((event.y==undefined)?event.pageY:event.y)-(height))/height;
-        x*=(1/eyeRadius);
-        y*=0.25;
-        target = vec3.create([(-(((x>1)?1:x)* (t[2]))) * (1+eyeRadius), (-((y>1)?1:y)) * (1+eyeRadius), (((x>1)?1:x)* (t[0])) * (1+eyeRadius)]);
-    }
+
+
+
 
     var walkW = false;
     var walkA = false;
@@ -151,6 +181,7 @@ function initialize() {
     // keys.
     window.onkeypress = function(event) {
         var n = String.fromCharCode(event.which);
+        //console.log(n);
         switch (n) {
             case " ":
                 animate = !animate;
@@ -193,10 +224,11 @@ function initialize() {
                        0.925,   0.662,  0.478,
                        0.0,     0.0,    0.0,
                        1.0,     1.0,    1.0];
-    lightPositions = [  -30,    20,     30,
-                        -30,    20,     0,
-                        0,      20,     0,
-                        0,      0,      0];
+
+    lightPositions = [  -50,    20,     50,
+                        -50,    20,     -50,
+                        50,      20,     50,
+                        50,      20,      -50];
     lightPositions = new Float32Array(lightPositions);
 
     var eyePosition = vec3.create();
@@ -205,9 +237,9 @@ function initialize() {
 
     // Animation parameters for the rotating eye-point.
     var eyeSpeed = 0.2;
-    var eyeHeight = 14;
+    var eyeHeight = 20;
     var eyeRadius = 80;
-    var eyeRotated = -4;
+    var eyeRotated = 11;
     //var eyeRotated = 0;
 
     // Animation needs accurate timing information.
@@ -327,11 +359,12 @@ function initialize() {
 
         for (var i=0;i<max*max;i++){
             pillar.setSphereBrightness(colval);
+            //pillar.setSphereBrightness(tval);
             pillar.setSphereColor(pillarSphereColors[i]);
 
             var pos = pillarPositions[i];
 
-            var translateTo = [pos[0],pos[1]*tval+3,pos[2]];
+            var translateTo = [pos[0],pos[1]*tval+7,pos[2]];
             pillar.translate(translateTo);
 
             pillar.rotateY=((clock*5.0)%360)* Math.PI / 180;
@@ -340,7 +373,7 @@ function initialize() {
         }
 
         waterWell.drawObject(drawObjectConst);
-        waterWell.translate([0,-16.1,0]);
+        waterWell.translate([0,-16.01,0]);
 
 
         if(drawObjectConst.waterview == 0){
