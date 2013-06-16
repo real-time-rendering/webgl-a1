@@ -179,12 +179,12 @@
     const vec2 reflTexUL = vec2(0.1,0.1);
     const vec2 reflTexBR = vec2(0.3,0.3);
     
-    uniform float glowStrengh;
+    uniform float glowStrength;
 
     void main() {
         vec3 glowmapPixel = texture2D(glowMap, texCoordI).rgb;
         vec3 origPixel = texture2D(colorBuffer, texCoordI).rgb;
-        gl_FragColor.rgb = glowmapPixel * glowStrengh + origPixel;
+        gl_FragColor.rgb = glowmapPixel * glowStrength + origPixel;
         if(showReflectiveTex == 1){
             if( texCoordI.x > reflTexUL.x &&
                 texCoordI.y > reflTexUL.y &&
@@ -258,7 +258,7 @@
     varying vec2 texCoordI;
     varying vec2 reflectionI;
 
-    const float WAVE_HEIGHT = 0.1;
+    const float WAVE_HEIGHT = 0.05;
     const float WAVE_SPEED = 1.0;
     const float WAVE_LENGTH = 0.2;
 
@@ -274,7 +274,7 @@
         vec4 viewvec = view * positionW;
         gl_Position = projection * viewvec;
         texCoordI = texCoord;
-        reflectionI = ((gl_Position.xy / gl_Position.z) + vec2(1.0, 1.0)) / 2.0; //texCoord; //(invModelView * position).xy;
+        reflectionI = ((gl_Position.xy / (gl_Position.z)) + vec2(1.0, 1.0)) / 2.0;
     }
 </script>
 
@@ -311,17 +311,17 @@
         vec2 waterNormalCoord = texCoordI.xy + vec2(1.0,1.0) * time * waterSpeed;
         vec3 textureNormal = (texture2D(waterNormal, waterNormalCoord).rgb - vec3(0.5,0.5,0.5)) * 2.0;
         textureNormal = normalize(tbn * textureNormal);
-        vec2 reflTexCoord = reflectionI.xy + (textureNormal.xy * waterStrength);
+        vec2 reflTexCoord = clamp(reflectionI.xy + (textureNormal.xy * waterStrength), 0.001, 0.999);
         gl_FragColor.rgb = texture2D(waterMap, reflTexCoord).rgb * REFLECTION_DIMMING;
         float reflectionAngle = 30.0;
         float transparency = 1.0 - dot(eyeDirectionW, tbn * vec3(0.0,0.0,1.0)) / reflectionAngle;
-        //transparency /= 10.0;
+        /*transparency /= 10.0;
         if(transparency<0.0){
             transparency = 0.0;
         }
         if(transparency>1.0){
             transparency = 1.0;
-        }
+        }*/
         gl_FragColor.a = transparency;
     }
 </script>
