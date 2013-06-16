@@ -281,7 +281,7 @@
 <script id="fs3" type="x-shader/x-fragment">
     precision highp float;
     
-    const float REFLECTION_DIMMING = 0.5;
+    const float REFLECTION_DIMMING = 0.8;
 
     varying vec4 positionW;
     varying vec3 eyeDirectionW;
@@ -292,6 +292,7 @@
     uniform float time;
     uniform sampler2D waterMap;
     uniform sampler2D waterNormal;
+    uniform float reflectionAngleBias;
     
     const float waterSpeed = 0.02;
     const float waterStrength = 0.04;
@@ -313,15 +314,7 @@
         textureNormal = normalize(tbn * textureNormal);
         vec2 reflTexCoord = clamp(reflectionI.xy + (textureNormal.xy * waterStrength), 0.001, 0.999);
         gl_FragColor.rgb = texture2D(waterMap, reflTexCoord).rgb * REFLECTION_DIMMING;
-        float reflectionAngle = 30.0;
-        float transparency = 1.0 - dot(eyeDirectionW, tbn * vec3(0.0,0.0,1.0)) / reflectionAngle;
-        /*transparency /= 10.0;
-        if(transparency<0.0){
-            transparency = 0.0;
-        }
-        if(transparency>1.0){
-            transparency = 1.0;
-        }*/
+        float transparency = 1.0 - dot(eyeDirectionW, tbn * vec3(0.0,0.0,1.0)) / reflectionAngleBias;
         gl_FragColor.a = transparency;
     }
 </script>

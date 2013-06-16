@@ -40,11 +40,11 @@ window.onload = function() {
 }
 
 
-var GLOWMAP_SIZE = 128;
+var GLOWMAP_SIZE = 256;
 var WATERMAP_SIZE = 256;
-var BRIGHT_PASS = 0.7;
+var BRIGHT_PASS = 0.5;
 var GLOW_BLUR_SIZE = 0.01;
-var GLOW_STRENGTH = 3.0;
+var GLOW_STRENGTH = 2.0;
 var size = "small";
 
 
@@ -276,7 +276,8 @@ function initialize() {
         time: clock,
         waterview: 1,
         showReflectiveTex: showReflectionTex ? 1 : 0,
-        invModelView: invModelView
+        invModelView: invModelView,
+        reflectionAngleBias: 50.0,
     };
 
     var skyboxConst = {
@@ -402,9 +403,9 @@ function initialize() {
         waterWell2.drawObject(drawObjectConst);
 
         if(drawObjectConst.waterview == 0){
-            waterPlane.drawObject(drawObjectConst);
             waterWell3.translate([0,-4.5, 0]);
             waterWell3.drawObject(drawObjectConst);
+            waterPlane.drawObject(drawObjectConst);
         }
     }
     
