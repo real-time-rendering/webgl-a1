@@ -51,7 +51,7 @@
                         <select id="glowmapsize" onchange="reloadWindow()" value="128">
                             <option>32</option>
                             <option>64</option>
-                            <option>128</option>
+                            <option selected="selected">128</option>
                             <option>256</option>
                             <option>512</option>
                             <option>1024</option>
@@ -59,11 +59,11 @@
                     </div>
                     <div>water map size</div>
                     <div>
-                        <select id="watermapsize" onchange="reloadWindow()" value="128">
+                        <select id="watermapsize" onchange="reloadWindow()" value="256">
                             <option>32</option>
                             <option>64</option>
                             <option>128</option>
-                            <option>256</option>
+                            <option selected="selected">256</option>
                             <option>512</option>
                             <option>1024</option>
                         </select>
@@ -149,6 +149,12 @@
                     </div>
                     <div>
                         skybox
+                    </div>
+                    <div>
+                        <input checked="checked" type="checkbox" onclick="GLOWINGWELL = $(this).is(':checked')" >
+                    </div>
+                    <div>
+                        glowing well
                     </div>
                 </div>
             </div>
