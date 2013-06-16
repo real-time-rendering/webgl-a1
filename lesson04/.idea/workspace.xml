@@ -19,7 +19,7 @@
     <file path="/uebung4.html" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1369658267622" ignored="false" />
     <file path="/index3.html" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1369148573435" ignored="false" />
     <file path="/uebung4.js" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1369653570871" ignored="false" />
-    <file path="/uebung5.js" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1371400993891" ignored="false" />
+    <file path="/uebung5.js" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1371405321371" ignored="false" />
     <file path="/tdlUtils.js" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1371397936023" ignored="false" />
     <file path="/primitives.js" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1371397061856" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -44,7 +44,7 @@
       <file leaf-file-name="uebung5.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/uebung5/uebung5.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="66" column="114" selection-start="2019" selection-end="2019" vertical-scroll-proportion="0.3411017">
+            <state line="181" column="21" selection-start="6153" selection-end="6153" vertical-scroll-proportion="0.38135594">
               <folding />
             </state>
           </provider>
@@ -71,8 +71,11 @@
       <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/uebung5/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="207" column="54" selection-start="6174" selection-end="6174" vertical-scroll-proportion="-37.040817">
-              <folding />
+            <state line="228" column="54" selection-start="6954" selection-end="6954" vertical-scroll-proportion="-37.040817">
+              <folding>
+                <marker date="1371404938000" expanded="true" signature="776:794" placeholder="{...}" />
+                <marker date="1371404938000" expanded="true" signature="802:830" placeholder="{...}" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -431,17 +434,13 @@
         <state line="40" column="89" selection-start="1278" selection-end="1278" vertical-scroll-proportion="0.7222222" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/uebung5/tdlUtils.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="55" column="18" selection-start="1889" selection-end="1903" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/uebung5/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="207" column="54" selection-start="6174" selection-end="6174" vertical-scroll-proportion="-37.040817">
-          <folding />
+        <state line="228" column="54" selection-start="6954" selection-end="6954" vertical-scroll-proportion="-37.040817">
+          <folding>
+            <marker date="1371404938000" expanded="true" signature="776:794" placeholder="{...}" />
+            <marker date="1371404938000" expanded="true" signature="802:830" placeholder="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -452,9 +451,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/uebung5/tdlUtils.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="55" column="18" selection-start="1889" selection-end="1903" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/uebung5/uebung5.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="66" column="114" selection-start="2019" selection-end="2019" vertical-scroll-proportion="0.3411017">
+        <state line="181" column="21" selection-start="6153" selection-end="6153" vertical-scroll-proportion="0.38135594">
           <folding />
         </state>
       </provider>
