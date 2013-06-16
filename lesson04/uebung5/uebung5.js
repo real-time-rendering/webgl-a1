@@ -39,6 +39,30 @@ window.onload = function() {
     }
 }
 
+function parseHash(){
+    var hashstring = window.location.hash.substring(1)
+    var kwargs = {};
+    var args = hashstring.split(':');
+    for(var i=0; i<kwargs.length; i++){
+        if(args.length == 0){
+            continue;
+        }
+        a = args.split('=');
+        kwargs[a[0]] = parseInt(a[1]);
+    }
+    return kwargs;
+}
+
+function reloadWindow(){
+    var url = window.location.protocol + '//' + window.location.host+ window.location.pathname;
+    url += '#'
+    url += 'GLOWMAP_SIZE='+$('#glowmapsize').val();
+    url += ':'
+    url += '#'
+    url += 'WATERMAP_SIZE='+$('#watermapsize').val();
+    url += ':'
+    window.location = url;
+}
 
 var GLOWMAP_SIZE = 256;
 var WATERMAP_SIZE = 256;
