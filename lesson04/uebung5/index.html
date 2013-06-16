@@ -50,7 +50,34 @@
             type="range" min="1.0" max="100.0" step="1.0" value="30.0">
             <br>
             
-                  
+            render scene <input type="checkbox"
+            onclick="SHOW_SCENE = $(this).is(':checked')"
+            >
+            <br>
+            show scene <input type="checkbox"
+            onclick="RENDER_SCENE = $(this).is(':checked')"
+            >
+            <br>
+            
+            render water <input type="checkbox"
+            onclick="RENDER_WATER = $(this).is(':checked')"
+            >
+            <br>
+
+            render bloom <input type="checkbox"
+            onclick="RENDER_BLOOM = $(this).is(':checked')"
+            >
+            <br>
+            
+            show bloom <input type="checkbox"
+            onclick="SHOW_BLOOM = $(this).is(':checked')"
+            >
+            <br>
+
+            skybox <input type="checkbox"
+            onclick="RENDER_SKYBOX = $(this).is(':checked')"
+            >
+            <br>
 
         </div>
     </div>
@@ -203,7 +230,8 @@
     uniform sampler2D colorBuffer;
     uniform sampler2D glowMap;
     uniform sampler2D waterMap;
-    uniform int showReflectiveTex;
+    uniform int showBloom;
+    uniform int showScene;
     
     const vec2 reflTexUL = vec2(0.1,0.1);
     const vec2 reflTexBR = vec2(0.3,0.3);
@@ -213,16 +241,12 @@
     void main() {
         vec3 glowmapPixel = texture2D(glowMap, texCoordI).rgb;
         vec3 origPixel = texture2D(colorBuffer, texCoordI).rgb;
-        gl_FragColor.rgb = glowmapPixel * glowStrength + origPixel;
-        if(showReflectiveTex == 1){
-            if( texCoordI.x > reflTexUL.x &&
-                texCoordI.y > reflTexUL.y &&
-                texCoordI.x < reflTexBR.x &&
-                texCoordI.y < reflTexBR.y
-                ){
-                vec2 screenTexCoord = (texCoordI.xy * reflTexBR) - reflTexUL;
-                gl_FragColor.rgb = texture2D(waterMap, screenTexCoord).rgb;
-            }
+        gl_FragColor.rgb = vec3(0.0);
+        if(showScene == 1){
+            gl_FragColor.rgb += origPixel;
+        }
+        if(showBloom == 1){
+            gl_FragColor.rgb += glowmapPixel * glowStrength;
         }
         gl_FragColor.a = 1.0;
     }
