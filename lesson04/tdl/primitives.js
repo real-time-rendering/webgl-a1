@@ -850,18 +850,23 @@ tdl.primitives.CUBE_FACE_INDICES_ = [
  * @return {!Object.<string, !tdl.primitives.AttribBuffer>} The
  *         created plane vertices.
  */
-tdl.primitives.createCube = function(size) {
-  var k = size / 2;
+
+
+tdl.primitives.createCuboid = function(sizeX,sizeY,sizeZ) {
+  //var k = size / 2;
+  var x = sizeX /2;
+  var y = sizeY /2;
+  var z = sizeZ /2;
 
   var cornerVertices = [
-    [-k, -k, -k],
-    [+k, -k, -k],
-    [-k, +k, -k],
-    [+k, +k, -k],
-    [-k, -k, +k],
-    [+k, -k, +k],
-    [-k, +k, +k],
-    [+k, +k, +k]
+    [-x, -y, -z],
+    [+x, -y, -z],
+    [-x, +y, -z],
+    [+x, +y, -z],
+    [-x, -y, +z],
+    [+x, -y, +z],
+    [-x, +y, +z],
+    [+x, +y, +z]
   ];
 
   var faceNormals = [
@@ -912,6 +917,10 @@ tdl.primitives.createCube = function(size) {
     texCoord: texCoords,
     indices: indices};
 };
+
+tdl.primitives.createCube = function(size) {
+    return tdl.primitives.createCuboid(size,size,size);
+}
 
 
 /**
