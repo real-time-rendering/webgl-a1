@@ -77,7 +77,7 @@
                     <div>
                         <div>glow blur size</div>
                         <div><input oninput="GLOW_BLUR_SIZE = parseFloat($(this).val());"
-                                      type="range" min="0.01" max="0.1" step="0.01" value="0.01">
+                                      type="range" min="0.001" max="0.1" step="0.001" value="0.01">
                             </div>
                     </div>
                     <div>
@@ -154,6 +154,7 @@
             </div>
         </div>
     </div>
+    <a onclick="requestFullScreen(document.body)">fullscreen</a>
 </div>
 </body>
 

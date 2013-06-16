@@ -369,7 +369,7 @@ function initialize() {
             smallFramebuffer.bind();
             gl.depthMask(true);
             gl.enable(gl.DEPTH_TEST);
-            renderScene(false);
+            renderScene(BLOOM_BACKGROUND);
             //disable brightpass
             drawObjectConst.brightpass = 0.0;
             
