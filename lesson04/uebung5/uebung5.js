@@ -61,7 +61,7 @@ var BRIGHT_PASS = 0.5;
 var GLOW_BLUR_SIZE = 0.01;
 var GLOW_STRENGTH = 2.0;
 var REFLECTION_ANGLE_MULTIPLICATOR = 30.0;
-var size = "large";
+var size = "small";
 
 var RENDER_WATER = true;
 var RENDER_WATER_NORMALMAP = true;
@@ -72,7 +72,7 @@ var RENDER_SCENE = true;
 var SHOW_SCENE = true;
 var RENDER_SKYBOX = true;
 var GLOWINGWELL = true;
-
+var BLOOM_BACKGROUND = false;
 
 var genViewTarget = function (x,y, eyePosition, eyeRadius){
     var t = vec3.create([-eyePosition[0], -eyePosition[1], -eyePosition[2]]);
@@ -138,7 +138,7 @@ function initialize() {
     var n = 0;
     for (var i=0;i<max;i++){
         for (var e=0;e<max;e++){
-            pillarPositions.push([(i-max/2)*5 + (max/2),Math.abs(i-((max/2)-0.5)+e-((max/2)-0.5))*2-5,(e-max/2)*5 + (max/2)]);
+            pillarPositions.push([(i-max/2)*5*0.8 + (max/2),Math.abs(i-((max/2)-0.5)+e-((max/2)-0.5))*2-9,((e-max/2)*5 + (max/2))*0.8]);
             pillarSphereColors.push(HSBtoRGB(1-(n/(max*max)),1,1));
             n++;
         }
@@ -360,7 +360,7 @@ function initialize() {
             smallFramebuffer.bind();
             gl.depthMask(true);
             gl.enable(gl.DEPTH_TEST);
-            renderScene(true);
+            renderScene(BLOOM_BACKGROUND);
             //disable brightpass
             drawObjectConst.brightpass = 0.0;
             
