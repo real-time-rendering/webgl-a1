@@ -126,7 +126,8 @@ function initialize() {
                                       {waterMap: watermap.texture,
                                        waterNormal: waternormal} );
     var waterWell1 = new DrawableCuboid(programs[0],1.5,32.0,32.0,[0.5,0.5,0.5], {texture: bricktexture, normalmap: bricknormals});
-    var waterWell2 = new DrawableCuboid(programs[0],32.0,32.0,1.5,32.0,[0.5,0.5,0.5], {texture: bricktexture, normalmap: bricknormals});
+    var waterWell2 = new DrawableCuboid(programs[0],32.0,32.0,1.5,[0.5,0.5,0.5], {texture: bricktexture, normalmap: bricknormals});
+    var waterWell3 = new DrawableCuboid(programs[0],31.9,1.5,31.9,[0.5,0.5,0.5], {texture: bricktexture, normalmap: bricknormals});
 
     var cubeTextures = {
         cubemap: tdl.textures.loadTexture(
@@ -379,7 +380,7 @@ function initialize() {
 
             var pos = pillarPositions[i];
 
-            var translateTo = [pos[0],pos[1]*tval+7,pos[2]];
+            var translateTo = [pos[0],pos[1]*tval+8,pos[2]];
             pillar.translate(translateTo);
 
             pillar.rotateY=((clock*5.0)%360)* Math.PI / 180;
@@ -391,11 +392,12 @@ function initialize() {
         waterWell1.drawObject(drawObjectConst);
         waterWell1.translate([15.3,-14.2,0]);
         waterWell1.drawObject(drawObjectConst);
-
         waterWell2.translate([0,-14.2,-15.3]);
         waterWell2.drawObject(drawObjectConst);
         waterWell2.translate([0,-14.2, 15.3]);
         waterWell2.drawObject(drawObjectConst);
+        waterWell3.translate([0,-29.5, 0]);
+        waterWell3.drawObject(drawObjectConst);
 
 
         if(drawObjectConst.waterview == 0){
@@ -406,7 +408,7 @@ function initialize() {
     //-----------------------------------------------
 
     function playerMovement(deltat){
-        var moveSpeed = 5.0;
+        var moveSpeed = 15.0;
         
         if(walkW){
             eyeRadius -= deltat*moveSpeed*2.0;
