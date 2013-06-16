@@ -299,8 +299,6 @@ function initialize() {
             tdl.webgl.requestAnimationFrame(render, canvas);
         }
 
-        playerMovement();
-
         // Do the time keeping.
         var now = (new Date()).getTime() * 0.001;
         elapsedTime = (then == 0.0 ? 0.0 : now - then);
@@ -308,6 +306,8 @@ function initialize() {
         if (animate) {
             clock += elapsedTime;
         }
+
+        playerMovement(elapsedTime);
 
         //render scene from under water perspective
         drawObjectConst.waterview = 1;
@@ -401,23 +401,23 @@ function initialize() {
     
     //-----------------------------------------------
 
-    function playerMovement(){
-        var moveSpeed = 0.3;
+    function playerMovement(deltat){
+        var moveSpeed = 5.0;
         
         if(walkW){
-            eyeRadius -= moveSpeed*2.0;
+            eyeRadius -= deltat*moveSpeed*2.0;
         }else if(walkS){
-            eyeRadius += moveSpeed*2.0;
+            eyeRadius += deltat*moveSpeed*2.0;
         }
         if(walkA){
-            eyeRotated -= moveSpeed;
+            eyeRotated -= deltat*moveSpeed;
         }else if(walkD){
-            eyeRotated += moveSpeed;
+            eyeRotated += deltat*moveSpeed;
         }
         if(walkQ){
-            eyeHeight += moveSpeed;
+            eyeHeight += deltat*moveSpeed;
         }else if(walkE){
-            eyeHeight -= moveSpeed;
+            eyeHeight -= deltat*moveSpeed;
         }
 
         // Calculate the current eye position.
