@@ -45,6 +45,7 @@ var WATERMAP_SIZE = 256;
 var BRIGHT_PASS = 0.5;
 var GLOW_BLUR_SIZE = 0.01;
 var GLOW_STRENGTH = 2.0;
+var REFLECTION_ANGLE_MULTIPLICATOR = 30.0;
 var size = "small";
 
 
@@ -308,6 +309,7 @@ function initialize() {
         }
 
         playerMovement(elapsedTime);
+        drawObjectConst.reflectionAngleBias = REFLECTION_ANGLE_MULTIPLICATOR;
 
         //render scene from under water perspective
         drawObjectConst.waterview = 1;
