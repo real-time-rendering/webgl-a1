@@ -249,10 +249,12 @@
     attribute vec2 texCoord;
     attribute vec4 position;
     attribute vec3 normal;
+    attribute vec3 binormal;
+    attribute vec3 tangent;
 
-    varying vec3 normalW;
+    varying vec4 positionW;
     varying vec3 eyeDirectionW;
-
+    varying mat3 tbn;
     varying vec2 texCoordI;
     varying vec2 reflectionI;
 
@@ -261,10 +263,13 @@
     const float WAVE_LENGTH = 0.2;
 
     void main() {
-        vec4 positionW = model * position;       
+        positionW = model * position;
         positionW.y += sin(WAVE_LENGTH * positionW.x*5.143 + WAVE_SPEED * time * 2.8234)*WAVE_HEIGHT + WAVE_HEIGHT;
         positionW.y += cos(WAVE_LENGTH * positionW.z*3.322 + WAVE_SPEED * time * 3.3934)*WAVE_HEIGHT + WAVE_HEIGHT;
-        normalW = (model * vec4(normal, 0.0)).xyz;
+        vec3 normalW = (model * vec4(normal, 0.0)).xyz;
+        vec3 binormalW = (model * vec4(binormal, 0.0)).xyz;
+        vec3 tangentW = (model * vec4(tangent, 0.0)).xyz;
+        tbn = mat3(tangentW, binormalW, normalW);
         eyeDirectionW = eyePosition - positionW.xyz;
         vec4 viewvec = view * positionW;
         gl_Position = projection * viewvec;
@@ -276,10 +281,14 @@
 <script id="fs3" type="x-shader/x-fragment">
     precision highp float;
     
-    const float REFLECTION_DIMMING = 0.2;
+    const float REFLECTION_DIMMING = 0.5;
 
+    varying vec4 positionW;
+    varying vec3 eyeDirectionW;
+    varying mat3 tbn;
     varying vec2 texCoordI;
     varying vec2 reflectionI;
+    
     uniform float time;
     uniform sampler2D waterMap;
     uniform sampler2D waterNormal;
@@ -301,9 +310,19 @@
     void main() {
         vec2 waterNormalCoord = texCoordI.xy + vec2(1.0,1.0) * time * waterSpeed;
         vec3 textureNormal = (texture2D(waterNormal, waterNormalCoord).rgb - vec3(0.5,0.5,0.5)) * 2.0;
+        textureNormal = normalize(tbn * textureNormal);
         vec2 reflTexCoord = reflectionI.xy + (textureNormal.xy * waterStrength);
         gl_FragColor.rgb = texture2D(waterMap, reflTexCoord).rgb * REFLECTION_DIMMING;
-        gl_FragColor.a = 1.0;
+        float reflectionAngle = 30.0;
+        float transparency = 1.0 - dot(eyeDirectionW, tbn * vec3(0.0,0.0,1.0)) / reflectionAngle;
+        //transparency /= 10.0;
+        if(transparency<0.0){
+            transparency = 0.0;
+        }
+        if(transparency>1.0){
+            transparency = 1.0;
+        }
+        gl_FragColor.a = transparency;
     }
 </script>
 
@@ -334,9 +353,9 @@
     varying vec3 eyeDirectionW;
 
     void main() {
-    vec4 cubeMapColor = textureCube(cubemap, -eyeDirectionW);
-    gl_FragColor.rgb = cubeMapColor.rgb;
-    gl_FragColor.a = 1.0;
+        vec4 cubeMapColor = textureCube(cubemap, -eyeDirectionW);
+        gl_FragColor.rgb = cubeMapColor.rgb;
+        gl_FragColor.a = 1.0;
     }
 </script>
 
