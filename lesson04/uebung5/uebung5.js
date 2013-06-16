@@ -48,6 +48,14 @@ var GLOW_STRENGTH = 2.0;
 var REFLECTION_ANGLE_MULTIPLICATOR = 30.0;
 var size = "small";
 
+var RENDER_WATER = true;
+var SHOW_WATER = true;
+var RENDER_BLOOM = true;
+var SHOW_BLOOM = true;
+var RENDER_SCENE = true;
+var SHOW_SCENE = true;
+var RENDER_SKYBOX = true;
+
 
 var genViewTarget = function (x,y, eyePosition, eyeRadius){
     var t = vec3.create([-eyePosition[0], -eyePosition[1], -eyePosition[2]]);
@@ -314,38 +322,46 @@ function initialize() {
 
         playerMovement(elapsedTime);
         drawObjectConst.reflectionAngleBias = REFLECTION_ANGLE_MULTIPLICATOR;
+        drawObjectConst.renderWater = RENDER_WATER ? 1 : 0;
+        drawObjectConst.renderBloom = 1;//RENDER_BLOOM ? 1 : 0;
 
-        //render scene from under water perspective
-        drawObjectConst.waterview = 1;
-        watermap.bind();
-        gl.depthMask(true);
-        gl.enable(gl.DEPTH_TEST);
-        renderScene(true);
-        drawObjectConst.waterview = 0;
-
-        //enable brightpass for glow map generation
-        drawObjectConst.brightpass = BRIGHT_PASS;
-        // draw scene in small framebuffer for glowmap
-        smallFramebuffer.bind();
-        gl.depthMask(true);
-        gl.enable(gl.DEPTH_TEST);
-        renderScene(false);
-        //disable brightpass
-        drawObjectConst.brightpass = 0.0;
+        if(RENDER_WATER){
+            //render scene from under water perspective
+            drawObjectConst.waterview = 1;
+            watermap.bind();
+            gl.depthMask(true);
+            gl.enable(gl.DEPTH_TEST);
+            renderScene(true);
+            drawObjectConst.waterview = 0;
+        }
         
-        //create glowmap by blurring small framebuffer
-        glowmap.bind();
-        gl.depthMask(false);
-        gl.disable(gl.DEPTH_TEST);
-        var quadGlowMapBlurModel = quadGlowMapBlur.model;
-        quadGlowMapBlurModel.drawPrep();
-        quadGlowMapBlurModel.draw({ model: quadGlowMapBlur.transform, glowBlurSize: GLOW_BLUR_SIZE});
+        if(RENDER_BLOOM){
+            //enable brightpass for glow map generation
+            drawObjectConst.brightpass = BRIGHT_PASS;
+            // draw scene in small framebuffer for glowmap
+            smallFramebuffer.bind();
+            gl.depthMask(true);
+            gl.enable(gl.DEPTH_TEST);
+            renderScene(false);
+            //disable brightpass
+            drawObjectConst.brightpass = 0.0;
+            
+            //create glowmap by blurring small framebuffer
+            glowmap.bind();
+            gl.depthMask(false);
+            gl.disable(gl.DEPTH_TEST);
+            var quadGlowMapBlurModel = quadGlowMapBlur.model;
+            quadGlowMapBlurModel.drawPrep();
+            quadGlowMapBlurModel.draw({ model: quadGlowMapBlur.transform, glowBlurSize: GLOW_BLUR_SIZE});
+        }
         
-        //create fullscreen scene
-        framebuffer.bind();
-        gl.depthMask(true);
-        gl.enable(gl.DEPTH_TEST);
-        renderScene(true);
+        if(RENDER_SCENE){
+            //create fullscreen scene
+            framebuffer.bind();
+            gl.depthMask(true);
+            gl.enable(gl.DEPTH_TEST);
+            renderScene(true);
+        }
         
         backBuffer.bind();
         gl.depthMask(false);
@@ -353,7 +369,10 @@ function initialize() {
         
         //post processing
         var quadModel = postProcessQuad.model;
-        quadModel.drawPrep({blurSize: 0.02, glowStrength: GLOW_STRENGTH});
+        quadModel.drawPrep({blurSize: 0.02,
+                            glowStrength: GLOW_STRENGTH,
+                            showBloom: SHOW_BLOOM ? 1 : 0,
+                            showScene: SHOW_SCENE ? 1 : 0});
         quadModel.draw({ model: postProcessQuad.transform });
     }
 
@@ -366,7 +385,7 @@ function initialize() {
         gl.enable(gl.BLEND);
         gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
-        if(renderskybox){
+        if(renderskybox && RENDER_SKYBOX){
             gl.depthMask(false);
             gl.disable(gl.DEPTH_TEST);
 
@@ -410,7 +429,9 @@ function initialize() {
         if(drawObjectConst.waterview == 0){
             waterWell3.translate([0,-4.5, 0]);
             waterWell3.drawObject(drawObjectConst);
-            waterPlane.drawObject(drawObjectConst);
+            if(SHOW_WATER){
+                waterPlane.drawObject(drawObjectConst);
+            }
         }
     }
     
