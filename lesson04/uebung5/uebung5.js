@@ -43,6 +43,8 @@ window.onload = function() {
 var GLOWMAP_SIZE = 128;
 var WATERMAP_SIZE = 256;
 var BRIGHT_PASS = 0.7;
+var GLOW_BLUR_SIZE = 0.01;
+var GLOW_STRENGTH = 3.0;
 var size = "small";
 
 
@@ -329,7 +331,7 @@ function initialize() {
         gl.disable(gl.DEPTH_TEST);
         var quadGlowMapBlurModel = quadGlowMapBlur.model;
         quadGlowMapBlurModel.drawPrep();
-        quadGlowMapBlurModel.draw({ model: quadGlowMapBlur.transform, glowBlurSize: 0.01});
+        quadGlowMapBlurModel.draw({ model: quadGlowMapBlur.transform, glowBlurSize: GLOW_BLUR_SIZE});
         
         //create fullscreen scene
         framebuffer.bind();
@@ -343,7 +345,7 @@ function initialize() {
         
         //post processing
         var quadModel = postProcessQuad.model;
-        quadModel.drawPrep({blurSize: 0.02, glowStrengh: 3.0});
+        quadModel.drawPrep({blurSize: 0.02, glowStrength: GLOW_STRENGTH});
         quadModel.draw({ model: postProcessQuad.transform });
     }
 
@@ -353,6 +355,8 @@ function initialize() {
      
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
         gl.enable(gl.CULL_FACE);
+        gl.enable(gl.BLEND);
+        gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
         if(renderskybox){
             gl.depthMask(false);
@@ -394,12 +398,11 @@ function initialize() {
         waterWell2.drawObject(drawObjectConst);
         waterWell2.translate([0,-14.2, 15.3]);
         waterWell2.drawObject(drawObjectConst);
-        waterWell3.translate([0,-29.5, 0]);
-        waterWell3.drawObject(drawObjectConst);
-
 
         if(drawObjectConst.waterview == 0){
             waterPlane.drawObject(drawObjectConst);
+            waterWell3.translate([0,-4.5, 0]);
+            waterWell3.drawObject(drawObjectConst);
         }
     }
     
@@ -451,15 +454,8 @@ function initialize() {
         invProj = mat3.toMat4(invProj);
         mat4.transpose(invProj);
         
-        var invView = mat3.create();
-        mat4.toInverseMat3(model, invView);
-        invView = mat3.toMat4(invView);
-        mat4.transpose(invView);
-        
         invModelView = mat4.create();
         mat4.multiply(invModelView, invProj,  invModelView);
-        mat4.multiply(invModelView, invView,  invModelView);
-        mat4.multiply(invModelView, invModel, invModelView);
     }
 
     // Initial call to get the rendering started.
