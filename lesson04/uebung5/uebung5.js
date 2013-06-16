@@ -61,7 +61,7 @@ var BRIGHT_PASS = 0.5;
 var GLOW_BLUR_SIZE = 0.01;
 var GLOW_STRENGTH = 2.0;
 var REFLECTION_ANGLE_MULTIPLICATOR = 30.0;
-var size = "small";
+var size = "large";
 
 var RENDER_WATER = true;
 var RENDER_WATER_NORMALMAP = true;
@@ -360,7 +360,7 @@ function initialize() {
             smallFramebuffer.bind();
             gl.depthMask(true);
             gl.enable(gl.DEPTH_TEST);
-            renderScene(false);
+            renderScene(true);
             //disable brightpass
             drawObjectConst.brightpass = 0.0;
             
