@@ -50,16 +50,32 @@ DrawableTorus.prototype.drawObject = function(uniforms){
 }
 
 //--------------------------------------------------
+// ------------- DrawableCuboid --------------------
+//--------------------------------------------------
+
+var DrawableCuboid = function(program, x,y,z, color, textures){
+    this.model = new tdl.models.Model(program,
+                                      tdl.primitives.addTangentsAndBinormals(tdl.primitives.createCuboid(x,y,z)),
+                                      textures);
+    this.color = color || null;
+    this.useTextures = typeof textures !== 'undefined';
+    
+}
+
+DrawableCuboid.prototype = new DrawableObject();
+DrawableCuboid.prototype.drawObject = DrawableTorus.prototype.drawObject;
+
+//--------------------------------------------------
 // ------------- DrawableCube --------------------
 //--------------------------------------------------
 
 var DrawableCube = function(program, size, color, textures){
     this.model = new tdl.models.Model(program,
-                                      tdl.primitives.addTangentsAndBinormals(tdl.primitives.createCube(size)),
-                                      textures);
+        tdl.primitives.addTangentsAndBinormals(tdl.primitives.createCuboid(size,size,size)),
+        textures);
     this.color = color || null;
     this.useTextures = typeof textures !== 'undefined';
-    
+
 }
 
 DrawableCube.prototype = new DrawableObject();

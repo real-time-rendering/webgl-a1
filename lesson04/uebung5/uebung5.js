@@ -59,9 +59,6 @@ var genViewTarget = function (x,y, eyePosition, eyeRadius){
 
 // The main entry point.
 function initialize() {
-
-
-
     // Setup the canvas widget for WebGL.
     window.canvas = document.getElementById("canvas");
     window.gl = tdl.webgl.setupWebGL(canvas);
@@ -110,7 +107,8 @@ function initialize() {
                                       30.0, 30.0,
                                       {waterMap: watermap.texture,
                                        waterNormal: waternormal} );
-    var waterWell = new DrawableCube(programs[0],32.0,[0.5,0.5,0.5], {texture: bricktexture, normalmap: bricknormals});
+    var waterWell1 = new DrawableCuboid(programs[0],1.5,32.0,32.0,[0.5,0.5,0.5], {texture: bricktexture, normalmap: bricknormals});
+    var waterWell2 = new DrawableCuboid(programs[0],32.0,32.0,1.5,32.0,[0.5,0.5,0.5], {texture: bricktexture, normalmap: bricknormals});
 
     var cubeTextures = {
         cubemap: tdl.textures.loadTexture(
@@ -130,7 +128,6 @@ function initialize() {
         tdl.primitives.createCube(-10),
         cubeTextures
     )
-
 
 
 
@@ -222,13 +219,13 @@ function initialize() {
     //var lightColors = [];
     var lightColors = [0.925,   0.662,  0.478,
                        0.925,   0.662,  0.478,
-                       0.0,     0.0,    0.0,
+                       0.925,   0.662,  0.478,
                        1.0,     1.0,    1.0];
 
-    lightPositions = [  -50,    20,     50,
-                        -50,    20,     -50,
-                        50,      20,     50,
-                        50,      20,      -50];
+    lightPositions = [  -50,    40,     50,
+                        -50,    40,     -50,
+                        50,      40,     -50,
+                        50,      40,      50];
     lightPositions = new Float32Array(lightPositions);
 
     var eyePosition = vec3.create();
@@ -372,8 +369,15 @@ function initialize() {
             pillar.drawObject(drawObjectConst);
         }
 
-        waterWell.drawObject(drawObjectConst);
-        waterWell.translate([0,-16.01,0]);
+        waterWell1.translate([-15.3,-14.2,0]);
+        waterWell1.drawObject(drawObjectConst);
+        waterWell1.translate([15.3,-14.2,0]);
+        waterWell1.drawObject(drawObjectConst);
+
+        waterWell2.translate([0,-14.2,-15.3]);
+        waterWell2.drawObject(drawObjectConst);
+        waterWell2.translate([0,-14.2, 15.3]);
+        waterWell2.drawObject(drawObjectConst);
 
 
         if(drawObjectConst.waterview == 0){
