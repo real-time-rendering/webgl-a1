@@ -90,17 +90,6 @@ function initialize() {
     window.canvas = document.getElementById("canvas");
     window.gl = tdl.webgl.setupWebGL(canvas);
 
-   canvas.addEventListener("click", function() {
-    //canvas.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
-    requestFullScreen(document.body);
-    
-    //canvas.webkitRequestPointerLock();
-   });
-
-    canvas.onmousemove = function(event){
-        target = genViewTarget(((event.x==undefined)?event.pageX:event.x),((event.y==undefined)?event.pageY:event.y), eyePosition, eyeRadius);
-    }
-
     // Create a new framebuffer linked to a texture whenever the
     var framebuffer = tdl.framebuffers.createFramebuffer(canvas.width, canvas.height, true);
     var smallFramebuffer = tdl.framebuffers.createFramebuffer(GLOWMAP_SIZE, GLOWMAP_SIZE, true);
@@ -121,6 +110,11 @@ function initialize() {
     var pillar = new DrawablePillar(programs[0], 0.4, [0,0,0] ,[0,1,0]);
     var pillarSphereColors = [];
     var pillarPositions = [];
+
+    var animate = true;
+    var mouseView = true;
+    var renderActivated = true;
+    var showReflectionTex = false;
 
     var max =5;
     var n = 0;
@@ -192,6 +186,20 @@ function initialize() {
         }
     }
 
+    canvas.addEventListener("click", function() {
+        mouseView = !mouseView;
+    });
+
+    canvas.addEventListener('dblclick', function(){
+        requestFullScreen(document.body);
+    });
+
+    canvas.onmousemove = function(event){
+        if (mouseView){
+            target = genViewTarget(((event.x==undefined)?event.pageX:event.x),((event.y==undefined)?event.pageY:event.y), eyePosition, eyeRadius);
+        }
+    }
+
     window.onkeydown = function(event) {
         setSwitch(String.fromCharCode(event.which),true);
     }
@@ -199,10 +207,6 @@ function initialize() {
     window.onkeyup = function(event) {
         setSwitch(String.fromCharCode(event.which),false);
     }
-
-    var animate = true;
-    var renderActivated = true;
-    var showReflectionTex = false;
 
     // Register a keypress-handler for shader program switching using the number
     // keys.

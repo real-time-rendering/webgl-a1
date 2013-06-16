@@ -14,9 +14,14 @@
     <style type="text/css">
         #error { display: none; }
         #canvas { border: 1px solid black; }
+        input[type='range'] {
+            background-color: #FF0000;
+            color: #FF0000;
+        }
         html, body{
-            background-color: #000000;
-            color: #fff;
+            font-family: 'PT Sans', sans-serif;
+            background-color: #FFFFFF;
+            color: #000000;
         }
     </style>
 
@@ -30,25 +35,46 @@
     <div id="canvas-container">
         <p><canvas id="canvas" width="600" height="600"></canvas></p>
         <div>
-            BRIGHT_PASS
-            <input oninput="BRIGHT_PASS = parseFloat($(this).val());"
-            type="range" min="0" max="1" step="0.1" value="0.5">
-            <br>            
+
+            <table border="0">
+                <tr>
+                    <td>bright pass</td>
+                    <td><input oninput="BRIGHT_PASS = parseFloat($(this).val());"
+                                  type="range" min="0" max="1" step="0.1" value="0.5">
+                        </td>
+                </tr>
+                <tr>
+                    <td>glow blur size</td>
+                    <td><input oninput="GLOW_BLUR_SIZE = parseFloat($(this).val());"
+                                  type="range" min="0.01" max="0.1" step="0.01" value="0.01">
+                        </td>
+                </tr>
+                <tr>
+                    <td>glow strengh</td>
+                    <td><input oninput="GLOW_STRENGTH = parseFloat($(this).val());"
+                               type="range" min="0" max="5.0" step="0.2" value="2.0">
+                    </td>
+                </tr>
+                <tr>
+                    <td>reflection angle</td>
+                    <td><input oninput="REFLECTION_ANGLE_MULTIPLICATOR = parseFloat($(this).val());"
+                                  type="range" min="1.0" max="100.0" step="1.0" value="30.0">
+                    </td>
+                </tr>
+            </table>
+
+
+
+
             
-            GLOW_BLUR_SIZE
-            <input oninput="GLOW_BLUR_SIZE = parseFloat($(this).val());" 
-            type="range" min="0.01" max="0.1" step="0.01" value="0.01">
-            <br>            
+
+
             
-            GLOW_STRENGTH
-            <input oninput="GLOW_STRENGTH = parseFloat($(this).val());" 
-            type="range" min="0" max="5.0" step="0.2" value="2.0">
-            <br>         
+
+
             
-            REFLECTION_ANGLE_MULTIPLICATOR
-            <input oninput="REFLECTION_ANGLE_MULTIPLICATOR = parseFloat($(this).val());" 
-            type="range" min="1.0" max="100.0" step="1.0" value="30.0">
-            <br>
+
+
             
             render scene <input type="checkbox"
             onclick="SHOW_SCENE = $(this).is(':checked')"
