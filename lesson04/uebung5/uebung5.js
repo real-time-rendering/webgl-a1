@@ -15,16 +15,6 @@ function createProgramsFromTags() {
     return programs;
 }
 
-// Registers an onload handler.
-/*window.onload = function() {
-    try {
-        initialize();
-    } catch (e) {
-        $('#error').text(e.message || e);
-        $('#error').css('display', 'block');
-    }
-}  */
-
 window.onload = function() {
     $(window).resize(function() {
         var width = $('#canvas-container').innerWidth();
@@ -81,6 +71,7 @@ var SHOW_BLOOM = true;
 var RENDER_SCENE = true;
 var SHOW_SCENE = true;
 var RENDER_SKYBOX = true;
+var GLOWINGWELL = true;
 
 
 var genViewTarget = function (x,y, eyePosition, eyeRadius){
@@ -444,6 +435,9 @@ function initialize() {
             pillar.drawObject(drawObjectConst);
         }
 
+        if((!renderskybox)&&(!GLOWINGWELL)){
+            return;
+        }
         waterWell1.translate([-15.3,-14.2,0]);
         waterWell1.drawObject(drawObjectConst);
         waterWell1.translate([15.3,-14.2,0]);
