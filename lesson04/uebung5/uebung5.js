@@ -138,7 +138,7 @@ function initialize() {
     var n = 0;
     for (var i=0;i<max;i++){
         for (var e=0;e<max;e++){
-            pillarPositions.push([(i-max/2)*5 + (max/2),Math.abs(i-((max/2)-0.5)+e-((max/2)-0.5))*2-5,(e-max/2)*5 + (max/2)]);
+            pillarPositions.push([(i-max/2)*5*0.8 + (max/2),Math.abs(i-((max/2)-0.5)+e-((max/2)-0.5))*2-9,((e-max/2)*5 + (max/2))*0.8]);
             pillarSphereColors.push(HSBtoRGB(1-(n/(max*max)),1,1));
             n++;
         }

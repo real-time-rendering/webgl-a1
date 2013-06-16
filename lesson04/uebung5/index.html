@@ -208,6 +208,7 @@
         if(waterview == 1){
             vec4 positionFlipped = position;
             positionW.y *= -1.0;
+            normalW.y *= -1.0;
         }
         
         for(int i=0; i<3*LIGHT_NUM; i+=3){
