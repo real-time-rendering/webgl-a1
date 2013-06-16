@@ -43,7 +43,7 @@ window.onload = function() {
 var GLOWMAP_SIZE = 128;
 var WATERMAP_SIZE = 256;
 var BRIGHT_PASS = 0.7;
-var size = "large";
+var size = "small";
 
 
 var genViewTarget = function (x,y, eyePosition, eyeRadius){
@@ -57,6 +57,23 @@ var genViewTarget = function (x,y, eyePosition, eyeRadius){
     return vec3.create([(-(((x>1)?1:x)* (t[2]))) * (1+eyeRadius), (-((y>1)?1:y)) * (1+eyeRadius), (((x>1)?1:x)* (t[0])) * (1+eyeRadius)]);
 }
 
+/*
+ * http://stackoverflow.com/questions/1125084/how-to-make-in-javascript-full-screen-windows-stretching-all-over-the-screen
+ */
+function requestFullScreen(element) {
+    // Supports most browsers and their versions.
+    var requestMethod = element.requestFullScreen || element.webkitRequestFullScreen || element.mozRequestFullScreen || element.msRequestFullScreen;
+
+    if (requestMethod) { // Native full screen.
+        requestMethod.call(element);
+    } else if (typeof window.ActiveXObject !== "undefined") { // Older IE.
+        var wscript = new ActiveXObject("WScript.Shell");
+        if (wscript !== null) {
+            wscript.SendKeys("{F11}");
+        }
+    }
+}
+
 // The main entry point.
 function initialize() {
     // Setup the canvas widget for WebGL.
@@ -64,7 +81,8 @@ function initialize() {
     window.gl = tdl.webgl.setupWebGL(canvas);
 
    canvas.addEventListener("click", function() {
-    canvas.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+    //canvas.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+    requestFullScreen(canvas);
     //canvas.webkitRequestPointerLock();
    });
 
@@ -278,8 +296,6 @@ function initialize() {
             tdl.webgl.requestAnimationFrame(render, canvas);
         }
 
-        playerMovement();
-
         // Do the time keeping.
         var now = (new Date()).getTime() * 0.001;
         elapsedTime = (then == 0.0 ? 0.0 : now - then);
@@ -287,6 +303,8 @@ function initialize() {
         if (animate) {
             clock += elapsedTime;
         }
+
+        playerMovement(elapsedTime);
 
         //render scene from under water perspective
         drawObjectConst.waterview = 1;
@@ -387,23 +405,23 @@ function initialize() {
     
     //-----------------------------------------------
 
-    function playerMovement(){
-        var moveSpeed = 0.3;
+    function playerMovement(deltat){
+        var moveSpeed = 5.0;
         
         if(walkW){
-            eyeRadius -= moveSpeed*2.0;
+            eyeRadius -= deltat*moveSpeed*2.0;
         }else if(walkS){
-            eyeRadius += moveSpeed*2.0;
+            eyeRadius += deltat*moveSpeed*2.0;
         }
         if(walkA){
-            eyeRotated -= moveSpeed;
+            eyeRotated -= deltat*moveSpeed;
         }else if(walkD){
-            eyeRotated += moveSpeed;
+            eyeRotated += deltat*moveSpeed;
         }
         if(walkQ){
-            eyeHeight += moveSpeed;
+            eyeHeight += deltat*moveSpeed;
         }else if(walkE){
-            eyeHeight -= moveSpeed;
+            eyeHeight -= deltat*moveSpeed;
         }
 
         // Calculate the current eye position.
