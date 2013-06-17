@@ -245,7 +245,6 @@
     
     varying vec3 normalW;
     varying vec4 positionW;
-    varying float depthEC;
     varying float lightDirectionW[3 * LIGHT_NUM];
     varying vec3 eyeDirectionW;
     varying mat3 tbn;
@@ -271,6 +270,8 @@
     }
 
     uniform float time;
+    
+    const float MAGIC_WATER_SPACING = 0.1;
 
     void main() {
         
@@ -280,7 +281,7 @@
         }
         
         //dont refract objects above the water surface
-        if(refractionView == 1 && positionW.y > 0.0){
+        if(refractionView == 1 && positionW.y > MAGIC_WATER_SPACING){
             discard;
         }
         
@@ -304,11 +305,7 @@
         }
         
         gl_FragColor.rgb = brightpass_filter(outcolor);
-        if(refractionView == 1){
-            gl_FragColor.a = depthEC;
-        } else {
-            gl_FragColor.a = 1.0;
-        }
+        gl_FragColor.a = 1.0;
     }
 </script>
 
@@ -411,7 +408,6 @@
     attribute vec3 tangent;
 
     varying vec4 positionW;
-    varying float waterFragDepth;
     varying vec3 eyeDirectionW;
     varying mat3 tbn;
     varying vec2 texCoordI;
@@ -432,7 +428,6 @@
         eyeDirectionW = eyePosition - positionW.xyz;
         vec4 viewvec = view * positionW;
         gl_Position = projection * viewvec;
-        waterFragDepth = gl_Position.z;
         texCoordI = texCoord;
         reflectionI = ((gl_Position.xy / (gl_Position.z)) + vec2(1.0, 1.0)) / 2.0;
     }
@@ -441,10 +436,9 @@
 <script id="fs3" type="x-shader/x-fragment">
     precision highp float;
     
-    const float REFLECTION_DIMMING = 0.8;
+    const float REFLECTION_DIMMING = 0.4;
 
     varying vec4 positionW;
-    varying float waterFragDepth;
     varying vec3 eyeDirectionW;
     varying mat3 tbn;
     varying vec2 texCoordI;
@@ -457,8 +451,6 @@
     uniform float reflectionAngleBias;
     uniform int renderWaterNormalmap;
     uniform int renderWaterNormalmapRefract;
-    uniform int showWaterDepth;
-    uniform float waterDensity;
     
     const float waterSpeed = 0.02;
     const float refractionSpeed = 0.01;
@@ -478,22 +470,17 @@
             refractTextureNormal = (texture2D(waterNormal, waterNormalCoord).rgb - vec3(0.5,0.5,0.5)) * 2.0;
             refractTextureNormal = normalize(tbn * reflectTextureNormal);
         }
-        float sceneDepth = texture2D(sceneTexture, reflectionI.xy).a;
-        //rough approximation of snells law (only for water on the xz-plane)
-        float snells_offset = (sceneDepth - waterFragDepth) * waterDensity;
         
-        if(showWaterDepth == 1){
-            gl_FragColor.rgb = vec3(snells_offset);
-        } else {
-            vec2 reflectTexCoord = clamp(reflectionI.xy + (reflectTextureNormal.xz * waterStrength), 0.001, 0.999);
-            vec3 reflection = texture2D(waterMap, reflectTexCoord).rgb * REFLECTION_DIMMING;
-            
-            vec2 refractTexCoord = clamp(reflectionI.xy + (refractTextureNormal.xz * refractionStrength), 0.001, 0.999);
-            vec3 refraction = texture2D(sceneTexture, refractTexCoord).rgb;
-            
-            float transparency = 1.0 - dot(eyeDirectionW, tbn * vec3(0.0,0.0,1.0)) / reflectionAngleBias;
-            gl_FragColor.rgb = reflection * transparency + refraction * (1.0 - transparency);
-        }
+        vec2 reflectTexCoord = clamp(reflectionI.xy + (reflectTextureNormal.xz * waterStrength), 0.001, 0.999);
+        vec3 reflection = texture2D(waterMap, reflectTexCoord).rgb * REFLECTION_DIMMING;
+        
+        vec2 refractTexCoord = clamp(reflectionI.xy + (refractTextureNormal.xz * refractionStrength), 0.001, 0.999);
+        vec3 refraction = texture2D(sceneTexture, refractTexCoord).rgb;
+        
+        float viewDependentTransparency = dot(eyeDirectionW, tbn * vec3(0.0,0.0,1.0)) / reflectionAngleBias;
+        float transparency = 1.0 - clamp(viewDependentTransparency, 0.0, 1.0);
+        gl_FragColor.rgb = reflection * transparency + refraction * (1.0 - transparency);
+    
         gl_FragColor.a = 1.0;
     }
 </script>

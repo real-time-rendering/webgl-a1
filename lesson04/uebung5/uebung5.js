@@ -115,7 +115,7 @@ function initialize() {
     var framebuffer = tdl.framebuffers.createFramebuffer(canvas.width, canvas.height, true);
     var smallFramebuffer = tdl.framebuffers.createFramebuffer(GLOWMAP_SIZE, GLOWMAP_SIZE, true);
     var glowmap = tdl.framebuffers.createFramebuffer(GLOWMAP_SIZE, GLOWMAP_SIZE, true);
-    var refractionmap = new tdl.framebuffers.Float32Framebuffer(WATERMAP_SIZE, WATERMAP_SIZE, true);
+    var refractionmap = new tdl.framebuffers.createFramebuffer(WATERMAP_SIZE, WATERMAP_SIZE, true);
     var watermap = tdl.framebuffers.createFramebuffer(WATERMAP_SIZE, WATERMAP_SIZE, true);
     var backBuffer = new tdl.framebuffers.BackBuffer(canvas);
     
