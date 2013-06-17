@@ -65,8 +65,10 @@ var REFLECTION_ANGLE_MULTIPLICATOR = 30.0;
 var size = "small";
 
 var RENDER_WATER = true;
-var RENDER_WATER_NORMALMAP = true;
+var RENDER_WATER_REFLECTION = true;
+var RENDER_WATER_REFLECTION_NORMALMAP = true;
 var RENDER_WATER_REFRACTION = true;
+var RENDER_WATER_REFRACTION_NORMALMAP = true;
 var SHOW_WATER = true;
 var SHOW_WATER_DEPTH = false;
 var RENDER_BLOOM = true;
@@ -350,11 +352,12 @@ function initialize() {
         playerMovement(elapsedTime);
         drawObjectConst.reflectionAngleBias = REFLECTION_ANGLE_MULTIPLICATOR;
         drawObjectConst.renderWater = RENDER_WATER ? 1 : 0;
-        drawObjectConst.renderWaterNormalmap = RENDER_WATER_NORMALMAP ? 1 : 0;
-        drawObjectConst.renderWaterNormalmapRefract = RENDER_WATER_REFRACTION ? 1 : 0;
+        drawObjectConst.renderWaterReflect = RENDER_WATER_REFLECTION ? 1 : 0;
+        drawObjectConst.renderWaterReflectNormalmap = RENDER_WATER_REFLECTION_NORMALMAP ? 1 : 0;
+        drawObjectConst.renderWaterRefract = RENDER_WATER_REFRACTION ? 1 : 0;
+        drawObjectConst.renderWaterRefractNormalmap = RENDER_WATER_REFRACTION_NORMALMAP ? 1 : 0;
         drawObjectConst.renderBloom = RENDER_BLOOM ? 1 : 0;
-        drawObjectConst.showWaterDepth = SHOW_WATER_DEPTH ? 1 : 0;
-        drawObjectConst.waterDensity = WATER_DENSITY;
+        
 
         gl.enable(gl.CULL_FACE);
 
