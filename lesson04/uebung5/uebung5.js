@@ -60,12 +60,15 @@ var WATERMAP_SIZE = options.WATERMAP_SIZE || 256;
 var BRIGHT_PASS = 0.5;
 var GLOW_BLUR_SIZE = 0.01;
 var GLOW_STRENGTH = 2.0;
+var WATER_DENSITY = 0.00;
 var REFLECTION_ANGLE_MULTIPLICATOR = 30.0;
 var size = "small";
 
 var RENDER_WATER = true;
 var RENDER_WATER_NORMALMAP = true;
+var RENDER_WATER_REFRACTION = true;
 var SHOW_WATER = true;
+var SHOW_WATER_DEPTH = false;
 var RENDER_BLOOM = true;
 var SHOW_BLOOM = true;
 var RENDER_SCENE = true;
@@ -112,6 +115,7 @@ function initialize() {
     var framebuffer = tdl.framebuffers.createFramebuffer(canvas.width, canvas.height, true);
     var smallFramebuffer = tdl.framebuffers.createFramebuffer(GLOWMAP_SIZE, GLOWMAP_SIZE, true);
     var glowmap = tdl.framebuffers.createFramebuffer(GLOWMAP_SIZE, GLOWMAP_SIZE, true);
+    var refractionmap = new tdl.framebuffers.Float32Framebuffer(WATERMAP_SIZE, WATERMAP_SIZE, true);
     var watermap = tdl.framebuffers.createFramebuffer(WATERMAP_SIZE, WATERMAP_SIZE, true);
     var backBuffer = new tdl.framebuffers.BackBuffer(canvas);
     
@@ -150,7 +154,8 @@ function initialize() {
     var waterPlane = new DrawableQuad(programs[3],
                                       30.0, 30.0,
                                       {waterMap: watermap.texture,
-                                       waterNormal: waternormal} );
+                                       waterNormal: waternormal,
+                                       sceneTexture: refractionmap.texture} );
     var waterWell1 = new DrawableCuboid(programs[0],1.5,32.0,32.0,[0.5,0.5,0.5], {texture: bricktexture, normalmap: bricknormals});
     var waterWell2 = new DrawableCuboid(programs[0],32.0,32.0,1.5,[0.5,0.5,0.5], {texture: bricktexture, normalmap: bricknormals});
     var waterWell3 = new DrawableQuad(programs[0],
@@ -312,6 +317,8 @@ function initialize() {
         showReflectiveTex: showReflectionTex ? 1 : 0,
         invModelView: invModelView,
         reflectionAngleBias: 50.0,
+        showWaterDepth: 0,
+        waterDensity: 0.1,
     };
 
     var skyboxConst = {
@@ -344,11 +351,25 @@ function initialize() {
         drawObjectConst.reflectionAngleBias = REFLECTION_ANGLE_MULTIPLICATOR;
         drawObjectConst.renderWater = RENDER_WATER ? 1 : 0;
         drawObjectConst.renderWaterNormalmap = RENDER_WATER_NORMALMAP ? 1 : 0;
-        drawObjectConst.renderBloom = 1;//RENDER_BLOOM ? 1 : 0;
+        drawObjectConst.renderWaterNormalmapRefract = RENDER_WATER_REFRACTION ? 1 : 0;
+        drawObjectConst.renderBloom = RENDER_BLOOM ? 1 : 0;
+        drawObjectConst.showWaterDepth = SHOW_WATER_DEPTH ? 1 : 0;
+        drawObjectConst.waterDensity = WATER_DENSITY;
 
         gl.enable(gl.CULL_FACE);
 
         if(RENDER_WATER){
+            //render scene without water for refraction
+            var tmp_water_shown = SHOW_WATER;
+            SHOW_WATER = false;
+            drawObjectConst.refractionView = 1;
+            refractionmap.bind();
+            gl.depthMask(true);
+            gl.enable(gl.DEPTH_TEST);
+            renderScene(true);
+            SHOW_WATER = tmp_water_shown;
+            drawObjectConst.refractionView = 0;
+            
             //render scene from under water perspective
             drawObjectConst.waterview = 1;
             watermap.bind();
@@ -401,7 +422,7 @@ function initialize() {
         quadModel.draw({ model: postProcessQuad.transform });
     }
 
-    function renderScene(renderskybox){
+    function renderScene(renderskybox, renderwater){
         gl.clearColor(0.0,0.0,0.0,1.0);
         gl.clearDepth(1);
      
