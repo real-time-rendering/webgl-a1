@@ -153,7 +153,10 @@ function initialize() {
                                        waterNormal: waternormal} );
     var waterWell1 = new DrawableCuboid(programs[0],1.5,32.0,32.0,[0.5,0.5,0.5], {texture: bricktexture, normalmap: bricknormals});
     var waterWell2 = new DrawableCuboid(programs[0],32.0,32.0,1.5,[0.5,0.5,0.5], {texture: bricktexture, normalmap: bricknormals});
-    var waterWell3 = new DrawableCuboid(programs[0],31.9,1.5,31.9,[0.5,0.5,0.5], {texture: bricktexture, normalmap: bricknormals});
+    var waterWell3 = new DrawableQuad(programs[0],
+                                      30.0, 30.0,
+                                      {texture: bricktexture,
+                                       normalmap: bricknormals} );
 
     var cubeTextures = {
         cubemap: tdl.textures.loadTexture(
@@ -343,14 +346,18 @@ function initialize() {
         drawObjectConst.renderWaterNormalmap = RENDER_WATER_NORMALMAP ? 1 : 0;
         drawObjectConst.renderBloom = 1;//RENDER_BLOOM ? 1 : 0;
 
+        gl.enable(gl.CULL_FACE);
+
         if(RENDER_WATER){
             //render scene from under water perspective
             drawObjectConst.waterview = 1;
             watermap.bind();
             gl.depthMask(true);
             gl.enable(gl.DEPTH_TEST);
+            gl.disable(gl.CULL_FACE);
             renderScene(true);
             drawObjectConst.waterview = 0;
+            gl.enable(gl.CULL_FACE);
         }
         
         if(RENDER_BLOOM){
@@ -399,7 +406,6 @@ function initialize() {
         gl.clearDepth(1);
      
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-        gl.enable(gl.CULL_FACE);
         gl.enable(gl.BLEND);
         gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
@@ -451,6 +457,7 @@ function initialize() {
             waterWell3.translate([0,-4.5, 0]);
             waterWell3.drawObject(drawObjectConst);
             if(SHOW_WATER){
+                waterPlane.translate([0,0,0]);
                 waterPlane.drawObject(drawObjectConst);
             }
         }
