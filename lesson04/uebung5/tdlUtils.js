@@ -177,6 +177,7 @@ var DrawableQuad = function(program, width, depth, textures){
                                       ),
                                       textures);
     this.color = typeof color === 'undefined' ? [1,1,1] : color;
+    this.useTextures = typeof textures !== 'undefined';
 }
 DrawableQuad.prototype = new DrawableObject();
 DrawableQuad.prototype.drawObject = DrawableTorus.prototype.drawObject;
