@@ -45,7 +45,7 @@
         <p><canvas id="canvas" width="600" height="600"></canvas></p>
         <div>
             <div style="display: inline">
-                <div class="table">
+                <div class="table" style="float: left; margin: 0 30px 0 0;">
                     <div>glow map size</div>
                     <div>
                         <select id="glowmapsize" onchange="reloadWindow()" value="128">
@@ -68,6 +68,8 @@
                             <option>1024</option>
                         </select>
                     </div>
+                   </div>
+                    <div class="table" style="float: left;  margin: 0 30px 0 0;">
                     <div>
                         <div>bright pass</div>
                         <div><input oninput="BRIGHT_PASS = parseFloat($(this).val());"
@@ -94,9 +96,9 @@
                     </div>
                 </div>
             </div>
-            <div class="table">
+            <div class="table" style="">
                 <div>
-                    <div>
+                    <div class="table" style="margin: 0 20px 0 0;">
                         <input checked="checked" type="checkbox" onclick="SHOW_SCENE = $(this).is(':checked')">
                     </div>
                     <div>
@@ -166,7 +168,6 @@
             </div>
         </div>
     </div>
-    <a onclick="requestFullScreen(document.body)">fullscreen</a>
 </div>
 </body>
 
