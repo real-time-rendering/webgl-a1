@@ -15,20 +15,20 @@ var GLOW_STRENGTH = options.GLOW_STRENGTH || 2.0;
 var REFLECTION_ANGLE_MULTIPLICATOR = options.REFLECTION_ANGLE_MULTIPLICATOR || 30.0;
 var size = "small";
 
-var RENDER_WATER = options.RENDER_WATER || true;
-var RENDER_WATER_REFLECTION = options.RENDER_WATER_REFLECTION ||  true;
-var RENDER_WATER_REFLECTION_NORMALMAP = options.RENDER_WATER_REFLECTION_NORMALMAP ||  true;
-var RENDER_WATER_REFRACTION = options.RENDER_WATER_REFRACTION ||  true;
-var RENDER_WATER_REFRACTION_NORMALMAP = options.RENDER_WATER_REFRACTION_NORMALMAP ||  true;
-var SHOW_WATER = options.SHOW_WATER ||  true;
+var RENDER_WATER = (options.RENDER_WATER)?strToBool(options.RENDER_WATER ):true;
+var RENDER_WATER_REFLECTION = (options.RENDER_WATER_REFLECTION)?strToBool(options.RENDER_WATER_REFLECTION):true;
+var RENDER_WATER_REFLECTION_NORMALMAP = (options.RENDER_WATER_REFLECTION_NORMALMAP)?strToBool(options.RENDER_WATER_REFLECTION_NORMALMAP):true;
+var RENDER_WATER_REFRACTION = (options.RENDER_WATER_REFRACTION)?strToBool(options.RENDER_WATER_REFRACTION):true;
+var RENDER_WATER_REFRACTION_NORMALMAP = (options.RENDER_WATER_REFRACTION_NORMALMAP)?strToBool(options.RENDER_WATER_REFRACTION_NORMALMAP):true;
+var SHOW_WATER = (options.SHOW_WATER)?strToBool(options.SHOW_WATER):true
 //var SHOW_WATER_DEPTH = options.SHOW_WATER_DEPTH ||  false;
-var RENDER_BLOOM = options.RENDER_BLOOM ||  true;
-var SHOW_BLOOM = options.SHOW_BLOOM ||  true;
-var RENDER_SCENE = options.SHOW_BLOOM ||  true;
-var SHOW_SCENE = options.SHOW_SCENE ||  true;
-var RENDER_SKYBOX = options.RENDER_SKYBOX ||  true;
-var GLOWINGWELL = options.GLOWINGWELL ||  true;
-var BLOOM_BACKGROUND = options.BLOOM_BACKGROUND ||  false;
+var RENDER_BLOOM = (options.RENDER_BLOOM)?strToBool(options.RENDER_BLOOM):true;
+var SHOW_BLOOM = (options.SHOW_BLOOM)?strToBool(options.SHOW_BLOOM):true;
+var RENDER_SCENE = (options.SHOW_BLOOM)?strToBool(options.SHOW_BLOOM):true;
+var SHOW_SCENE = (options.SHOW_SCENE )?strToBool(options.SHOW_SCENE):true;
+var RENDER_SKYBOX = (options.RENDER_SKYBOX)?strToBool(options.RENDER_SKYBOX):true;
+var GLOWINGWELL = (options.GLOWINGWELL)?strToBool(options.GLOWINGWELL):true;
+var BLOOM_BACKGROUND = (options.BLOOM_BACKGROUND)?strToBool(options.BLOOM_BACKGROUND):false;
 
 // Loads all shader programs from the DOM and return them in an array.
 function createProgramsFromTags() {
@@ -43,9 +43,32 @@ function createProgramsFromTags() {
 
 
 function initControles(){
+    //comboboxes
     $('#glowmapsize').val(GLOWMAP_SIZE);
     $('#watermapsize').val(WATERMAP_SIZE);
-    //$('#renderbloom').attr('checked', strToBool(RENDER_BLOOM));
+
+    //checkboxes
+    $('#showscene').attr('checked', SHOW_SCENE);
+    $('#updatescene').attr('checked', RENDER_SCENE);
+    $('#skybox').attr('checked', RENDER_SKYBOX);
+
+    $('#renderbloom').attr('checked', RENDER_BLOOM);
+    $('#showbloom').attr('checked', SHOW_BLOOM);
+    $('#glowingwell').attr('checked', GLOWINGWELL);
+    $('#bloombackground').attr('checked', BLOOM_BACKGROUND);
+
+    $('#renderwater').attr('checked', RENDER_WATER);
+    $('#showwater').attr('checked', RENDER_WATER_REFLECTION);
+    $('#renderwaterreflection').attr('checked', SHOW_WATER);
+    $('#renderwaterreflectionnormalmap').attr('checked', RENDER_WATER_REFLECTION_NORMALMAP);
+    $('#renderwaterrefraction').attr('checked', RENDER_WATER_REFRACTION);
+    $('#renderwaterrefractionnormalmap').attr('checked', RENDER_WATER_REFRACTION_NORMALMAP);
+
+    //ranges
+    $('#brightpass').val(BRIGHT_PASS);
+    $('#glowblursize').val(GLOW_BLUR_SIZE);
+    $('#glowstrengh').val(GLOW_STRENGTH);
+    $('#reflectionanglemultiplicator').val(REFLECTION_ANGLE_MULTIPLICATOR);
 }
 
 function strToBool(str){
@@ -76,7 +99,8 @@ function parseHash(){
             continue;
         }
         a = args[i].split('=');
-        kwargs[a[0]] = parseInt(a[1]);
+        var intVal = parseFloat(a[1]);
+        kwargs[a[0]] = (isNaN(NaN))?a[1]:intVal;
     }
     return kwargs;
 }

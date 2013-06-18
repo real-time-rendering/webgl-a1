@@ -4,7 +4,7 @@
     <list default="true" id="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" name="Default" comment="" />
     <ignored path="lesson04.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/index.html" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1371504813792" ignored="false" />
+    <file path="/index.html" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1371552647538" ignored="false" />
     <file path="/ShaderScript.js" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1366034090522" ignored="false" />
     <file path="/sphere.js" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1366629746734" ignored="false" />
     <file path="/uebung1x.html" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1366310780385" ignored="false" />
@@ -19,7 +19,7 @@
     <file path="/uebung4.html" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1369658267622" ignored="false" />
     <file path="/index3.html" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1369148573435" ignored="false" />
     <file path="/uebung4.js" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1369653570871" ignored="false" />
-    <file path="/uebung5.js" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1371505424091" ignored="false" />
+    <file path="/uebung5.js" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1371553198654" ignored="false" />
     <file path="/tdlUtils.js" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1371397936023" ignored="false" />
     <file path="/primitives.js" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1371397061856" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -41,28 +41,19 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="uebung5.js" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/uebung5/uebung5.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="47" column="6" selection-start="1873" selection-end="1873" vertical-scroll-proportion="0.41226214">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="tdlUtils.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/uebung5/tdlUtils.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="55" column="18" selection-start="1889" selection-end="1903" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/uebung5/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="72" column="53" selection-start="3759" selection-end="3770" vertical-scroll-proportion="-16.875">
+            <state line="214" column="34" selection-start="8787" selection-end="8787" vertical-scroll-proportion="-1.7346939">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="uebung5.js" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/uebung5/uebung5.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="25" column="73" selection-start="1463" selection-end="1463" vertical-scroll-proportion="0.4678899">
               <folding />
             </state>
           </provider>
@@ -157,68 +148,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="uebung5" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lesson04" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lesson04" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="uebung5" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="cubemap" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lesson04" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lesson04" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="uebung5" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="cubemap" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="small" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lesson04" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lesson04" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="uebung5" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="cubemap" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="large" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -346,8 +275,8 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.0" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24982357" sideWeight="0.73740053" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14820042" sideWeight="0.7148541" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.28514588" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14820042" sideWeight="0.632626" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.367374" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -500,23 +429,23 @@
         <state line="854" column="0" selection-start="28227" selection-end="28254" vertical-scroll-proportion="24.264706" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/uebung5/index.html">
+    <entry file="file://$PROJECT_DIR$/uebung5/tdlUtils.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="72" column="53" selection-start="3759" selection-end="3770" vertical-scroll-proportion="-16.875">
+        <state line="55" column="18" selection-start="1889" selection-end="1903" vertical-scroll-proportion="1.8374165">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/uebung5/tdlUtils.js">
+    <entry file="file://$PROJECT_DIR$/uebung5/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="55" column="18" selection-start="1889" selection-end="1903" vertical-scroll-proportion="0.0">
+        <state line="214" column="34" selection-start="8787" selection-end="8787" vertical-scroll-proportion="-1.7346939">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/uebung5/uebung5.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="47" column="6" selection-start="1873" selection-end="1873" vertical-scroll-proportion="0.41226214">
+        <state line="25" column="73" selection-start="1463" selection-end="1463" vertical-scroll-proportion="0.4678899">
           <folding />
         </state>
       </provider>
