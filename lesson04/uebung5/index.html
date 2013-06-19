@@ -65,7 +65,7 @@
                             show scene 
                         </div>
                         <div>
-                            <input checked="checked" type="checkbox" onclick="SHOW_SCENE = $(this).is(':checked')">
+                            <input id="showscene" checked="checked" type="checkbox" onclick="SHOW_SCENE = $(this).is(':checked')">
                         </div>
                     </div>
                     <div>
@@ -73,7 +73,7 @@
                             update scene
                         </div>
                         <div>
-                            <input checked="checked" type="checkbox" onclick="RENDER_SCENE = $(this).is(':checked')">
+                            <input id="updatescene" checked="checked" type="checkbox" onclick="RENDER_SCENE = $(this).is(':checked')">
                         </div>
                     </div>
                     <div>
@@ -81,7 +81,7 @@
                             skybox
                         </div>
                         <div>
-                             <input checked="checked" type="checkbox" onclick="RENDER_SKYBOX = $(this).is(':checked')" >
+                             <input id="skybox" checked="checked" type="checkbox" onclick="RENDER_SKYBOX = $(this).is(':checked')" >
                         </div>
                     </div>
                 </div>
@@ -107,7 +107,7 @@
                             update bloom 
                         </div>
                         <div>
-                            <input checked="checked" type="checkbox" onclick="RENDER_BLOOM = $(this).is(':checked')">
+                            <input id="renderbloom" checked="checked" type="checkbox" onclick="RENDER_BLOOM = $(this).is(':checked')">
                         </div>
                     </div>
                     <div>
@@ -115,24 +115,24 @@
                             show bloom 
                         </div>
                         <div>
-                            <input checked="checked" type="checkbox" onclick="SHOW_BLOOM = $(this).is(':checked')">
+                            <input id="showbloom" checked="checked" type="checkbox" onclick="SHOW_BLOOM = $(this).is(':checked')">
                         </div>
                     </div>
                     <div>
                         <div>bright pass</div>
-                        <div><input oninput="BRIGHT_PASS = parseFloat($(this).val());"
+                        <div><input id="brightpass" oninput="BRIGHT_PASS = parseFloat($(this).val());"
                                       type="range" min="0" max="1" step="0.1" value="0.5">
                         </div>
                     </div>
                     <div>
                         <div>glow blur size</div>
-                        <div><input oninput="GLOW_BLUR_SIZE = parseFloat($(this).val());"
+                        <div><input id="glowblursize" oninput="GLOW_BLUR_SIZE = parseFloat($(this).val());"
                                       type="range" min="0.001" max="0.1" step="0.001" value="0.01">
                             </div>
                     </div>
                     <div>
                         <div>glow strengh</div>
-                        <div><input oninput="GLOW_STRENGTH = parseFloat($(this).val());"
+                        <div><input id="glowstrengh" oninput="GLOW_STRENGTH = parseFloat($(this).val());"
                                    type="range" min="0" max="5.0" step="0.2" value="2.0">
                         </div>
                     </div>
@@ -141,7 +141,7 @@
                             glowing well
                         </div>
                         <div>
-                            <input checked="checked" type="checkbox" onclick="GLOWINGWELL = $(this).is(':checked')" >
+                            <input id="glowingwell" checked="checked" type="checkbox" onclick="GLOWINGWELL = $(this).is(':checked')" >
                         </div>
                     </div>
                     <div>
@@ -149,7 +149,7 @@
                             background bloom
                         </div>
                         <div>
-                            <input type="checkbox" onclick="BLOOM_BACKGROUND = $(this).is(':checked')" >
+                            <input id="bloombackground" type="checkbox" onclick="BLOOM_BACKGROUND = $(this).is(':checked')" >
                         </div>
                     </div>
                 </div>
@@ -172,7 +172,7 @@
                     </div>
                     <div>
                         <div>reflection angle</div>
-                        <div><input oninput="REFLECTION_ANGLE_MULTIPLICATOR = parseFloat($(this).val());"
+                        <div><input id="reflectionanglemultiplicator" oninput="REFLECTION_ANGLE_MULTIPLICATOR = parseFloat($(this).val());"
                                       type="range" min="1.0" max="100.0" step="1.0" value="30.0">
                         </div>
                     </div>
@@ -181,7 +181,7 @@
                             render water
                         </div>
                         <div>
-                            <input checked="checked" type="checkbox" onclick="RENDER_WATER = $(this).is(':checked')">
+                            <input id="renderwater" checked="checked" type="checkbox" onclick="RENDER_WATER = $(this).is(':checked')">
                         </div>
                     </div>
                     <div>
@@ -189,7 +189,7 @@
                             show water
                         </div>
                         <div>
-                            <input checked="checked" type="checkbox" onclick="SHOW_WATER = $(this).is(':checked')">
+                            <input id="showwater" checked="checked" type="checkbox" onclick="SHOW_WATER = $(this).is(':checked')">
                         </div>
                     </div>
                     <div>
@@ -197,7 +197,7 @@
                             enable reflection
                         </div>
                         <div>
-                            <input checked="checked" type="checkbox" onclick="RENDER_WATER_REFLECTION = $(this).is(':checked')">
+                            <input id="renderwaterreflection" checked="checked" type="checkbox" onclick="RENDER_WATER_REFLECTION = $(this).is(':checked')">
                         </div>
                     </div>
                     <div>
@@ -205,7 +205,7 @@
                             enable reflection normalmap
                         </div>
                         <div>
-                            <input checked="checked" type="checkbox" onclick="RENDER_WATER_REFLECTION_NORMALMAP = $(this).is(':checked')">
+                            <input id="renderwaterreflectionnormalmap" checked="checked" type="checkbox" onclick="RENDER_WATER_REFLECTION_NORMALMAP = $(this).is(':checked')">
                         </div>
                     </div>
                     <div>
@@ -213,7 +213,7 @@
                             enable refraction
                         </div>
                         <div>
-                            <input checked="checked" type="checkbox" onclick="RENDER_WATER_REFRACTION = $(this).is(':checked')">
+                            <input id="renderwaterrefraction" checked="checked" type="checkbox" onclick="RENDER_WATER_REFRACTION = $(this).is(':checked')">
                         </div>
                     </div>
                     <div>
@@ -221,7 +221,7 @@
                             enable refraction normalmap
                         </div>
                         <div>
-                            <input checked="checked" type="checkbox" onclick="RENDER_WATER_REFRACTION_NORMALMAP = $(this).is(':checked')">
+                            <input id="renderwaterrefractionnormalmap" checked="checked" type="checkbox" onclick="RENDER_WATER_REFRACTION_NORMALMAP = $(this).is(':checked')">
                         </div>
                     </div>
                 </div>
