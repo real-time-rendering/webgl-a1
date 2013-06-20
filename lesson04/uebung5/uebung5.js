@@ -13,7 +13,7 @@ var GLOW_BLUR_SIZE = options.GLOW_BLUR_SIZE || 0.01;
 var GLOW_STRENGTH = options.GLOW_STRENGTH || 2.0;
 //var WATER_DENSITY = 0.00;
 var REFLECTION_ANGLE_MULTIPLICATOR = options.REFLECTION_ANGLE_MULTIPLICATOR || 30.0;
-var size = "small";
+var size = "large";
 
 var RENDER_WATER = (options.RENDER_WATER)?strToBool(options.RENDER_WATER ):true;
 var RENDER_WATER_REFLECTION = (options.RENDER_WATER_REFLECTION)?strToBool(options.RENDER_WATER_REFLECTION):true;

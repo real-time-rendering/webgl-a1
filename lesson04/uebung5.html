@@ -1,0 +1,71 @@
+
+<h2>&Uuml;bung 4</h2>
+</br>
+<p><b>Aufgabe 4</b></p>
+<p>Gegenstand dieser Aufgabe ist die selbstständige Recherche, prototypische Implementierung, schriftliche Ausarbeitung und abschließende Präsentation einer nicht-trivialen Multi-Pass Technik. </p>
+<p><b>Themenwahl</b></p>
+<p>Wir haben uns für die umsetzung verschiedener, kombinierte Multi-pass Techniken im Rahmen einer kleinen Beispielanwendung entschieden. Konkret sind dies Bloom, winkelabhhängige Spiegelung und Refraktion</p>
+<p><b>Theoretische Grundladen</b></p>
+<p><b><i>* Bloom</i></b></p>
+<p>Das Blooming erzeugt einen Leucht- bzw. Überstrahl-Effekt in Abhängigkeit der Helligkeit eines jeden Pixels. Im allgemeinen werden hierbei helle Bereiche einer Szene stark überzeichnet dargestellt - dunkle hingegen bleiben unverändert. Der Ablauf des Bloomings lässt sich in follgende Schritte unterteilen:<br><br>
+<p><img src="bloom.jpg"></p><br>
+<b>1. Berechnung der Szene</b></b><br>Die Szene wird zunächst normal, z.B. über einen Phong-Shader gerendert und in einem Framebuffer gespeichert.<br><br>
+<b>2. Berechnung der Glowmap</b></b><br>Die Szene wird erneut, aber mit geringerer Auflösung (z.B. 128*128 Pixel) gerendert, wobei nur Pixel mit einer bestimmten minimalen Helligkeit (<code>brightpass</code>) beachtet werden. Dies wird auch als sogenannte Brigth-Pass Filterung bezeichnet:
+</br></br><pre>
+vec3 brightpass_filter(vec3 color){
+   float b = (color.r + color.g + color.b)/3.0;
+   if(b < brightpass){
+       return vec3(0.0,0.0,0.0);
+   }
+   return color;
+}
+
+void main() {
+   ...
+   gl_FragColor.rgb = brightpass_filter(outcolor);
+}
+</pre>
+Diese sogenannte Glowmap wird dann per linearer Interpolation auf die Ausmaße der ursprünglichen Szene vergrößert und ebenfalls in einem einem Framebuffer gespeichert.<br><br>
+
+<b>3. Glowmap weichzeichen</b></b><br>Die Glowmap wird anschließend per vereinfachten gaußschen Weichzeichner geblurt:
+</br></br><pre>
+const int samples = 5;
+const float center = (float(samples)-1.0)/2.0;
+
+vec3 color = vec3(0.0);
+   for (int x = 0; x < samples; x++) {
+      for (int y = 0; y < samples; y++) {
+        float xx = (float(x) - center) * glowBlurSize;
+        float yy = (float(y) - center) * glowBlurSize;
+        vec2 tc = texCoordI + vec2(xx, yy);
+        float kernelWeight = 1.0 / (abs(xx)+abs(yy)+1.0);
+        color += texture2D(colorBuffer, tc).rgb *
+            kernelWeight;
+      }
+}
+</pre>
+BlaBlub... die (<code>glowBlurSize</code>) wirkt sich dabei wie folgt aus.
+<br><br>
+<b>4. Berechnung des Endresultats durch additive Farbmischung</b>
+<p>Die zuvor gefüllten Frambuffer werden dann per additive Farbmischung in Abhängigkeit eines Multiplikators (<code>glowStrength</code>) der angibt wie stark sich die Glowmap auf das Endresultat auswirkt verrechnet.
+<pre>
+void main() {
+   vec3 glowmapPixel = texture2D(glowMap, texCoordI).rgb;
+   vec3 origPixel = texture2D(colorBuffer, texCoordI).rgb;
+
+   gl_FragColor.rgb += origPixel;
+   gl_FragColor.rgb += glowmapPixel * glowStrength;
+   gl_FragColor.a = 1.0;
+}
+</pre>
+</p></p></b><br><br>
+<p><b><i>* Reflection</i></b></p>
+<p>bla</p>
+<br><br>
+<p><b>Ergebniss</b></p>
+<p><a href="uebung5/index.html"><img src="scene.jpg"></a></p>
+<li><a href="uebung5/index.html">index.html</a></li>
+<li><a href="uebung5/uebung5.js">uebung5.js</a></li>
+<li><a href="uebung5/tdlUtils.js">tdlUtils.js</a></li>
+
+

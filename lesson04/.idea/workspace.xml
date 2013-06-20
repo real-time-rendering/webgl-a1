@@ -4,7 +4,7 @@
     <list default="true" id="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" name="Default" comment="" />
     <ignored path="lesson04.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/index.html" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1371552647538" ignored="false" />
+    <file path="/index.html" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1371652170996" ignored="false" />
     <file path="/ShaderScript.js" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1366034090522" ignored="false" />
     <file path="/sphere.js" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1366629746734" ignored="false" />
     <file path="/uebung1x.html" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1366310780385" ignored="false" />
@@ -22,6 +22,7 @@
     <file path="/uebung5.js" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1371553198654" ignored="false" />
     <file path="/tdlUtils.js" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1371397936023" ignored="false" />
     <file path="/primitives.js" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1371397061856" ignored="false" />
+    <file path="/uebung5.html" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1371714846801" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,16 +45,43 @@
       <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/uebung5/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="214" column="34" selection-start="8787" selection-end="8787" vertical-scroll-proportion="-1.7346939">
+            <state line="410" column="11" selection-start="14330" selection-end="14724" vertical-scroll-proportion="-95.875">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="uebung5.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="uebung5.html" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/uebung5.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="48" column="65" selection-start="2553" selection-end="2553" vertical-scroll-proportion="0.45578232">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="35" column="26" selection-start="1293" selection-end="1293" vertical-scroll-proportion="-11.416667">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="uebung4.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/uebung4.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="19" column="138" selection-start="1314" selection-end="1314" vertical-scroll-proportion="-11.875">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="uebung5.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/uebung5/uebung5.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="25" column="73" selection-start="1463" selection-end="1463" vertical-scroll-proportion="0.4678899">
+            <state line="20" column="134" selection-start="1032" selection-end="1032" vertical-scroll-proportion="-6.818182">
               <folding />
             </state>
           </provider>
@@ -69,10 +97,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/uebung5_glow/entity.js" />
-        <option value="$PROJECT_DIR$/uebung5_glow/pass.fs" />
-        <option value="$PROJECT_DIR$/uebung5_glow/pass2.vs" />
-        <option value="$PROJECT_DIR$/uebung5_glow/pass2.fs" />
         <option value="$PROJECT_DIR$/uebung5_glow/tdlUtils.js" />
         <option value="$PROJECT_DIR$/uebung5_glow/uebung5.js" />
         <option value="$PROJECT_DIR$/uebung5_glow/index.html" />
@@ -84,7 +108,11 @@
         <option value="$PROJECT_DIR$/uebung5/monitor.js" />
         <option value="$PROJECT_DIR$/uebung5/tramberend/entity.js" />
         <option value="$PROJECT_DIR$/uebung5/index.html" />
+        <option value="$PROJECT_DIR$/uebung4.html" />
+        <option value="$PROJECT_DIR$/uebung5_glow/uebung5.html" />
         <option value="$PROJECT_DIR$/uebung5/uebung5.js" />
+        <option value="$PROJECT_DIR$/index.html" />
+        <option value="$PROJECT_DIR$/uebung5.html" />
       </list>
     </option>
   </component>
@@ -119,6 +147,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -137,43 +166,28 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lesson04" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lesson04" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="uebung5" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="recentsLimit" value="5" />
     <property name="options.lastSelected" value="reference.settingsdialog.IDE.editor.colors" />
+    <property name="recentsLimit" value="5" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="FullScreen" value="false" />
     <property name="DefaultHtmlFileTemplate" value="Html5" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/uebung5/tramberend" />
       <recent name="$PROJECT_DIR$/uebung5" />
       <recent name="$PROJECT_DIR$/uebung4/cubemap/1" />
       <recent name="$PROJECT_DIR$/uebung4" />
-      <recent name="$PROJECT_DIR$/uebung4/cupemap/small" />
     </key>
   </component>
   <component name="RunManager" selected="JavaScript Debug.Übung3 Server">
@@ -202,7 +216,7 @@
     <configuration default="false" name="Übung3 Server" type="JavascriptDebugSession" factoryName="Remote" singleton="true">
       <JSRemoteDebuggerConfigurationSettings>
         <option name="engineId" value="chrome" />
-        <option name="fileUrl" value="http://localhost:63342/lesson04/uebung5/index.html" />
+        <option name="fileUrl" value="http://localhost:63342/lesson04/index.html" />
       </JSRemoteDebuggerConfigurationSettings>
       <RunnerSettings RunnerId="JavascriptDebugRunner" />
       <ConfigurationWrapper RunnerId="JavascriptDebugRunner" />
@@ -269,14 +283,14 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="22" width="1440" height="874" extended-state="6" />
+    <frame x="0" y="22" width="1440" height="874" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.0" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24982357" sideWeight="0.73740053" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14820042" sideWeight="0.632626" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.367374" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14820042" sideWeight="0.6710875" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32891247" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -356,40 +370,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/tdl/primitives.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="854" column="0" selection-start="28227" selection-end="28254" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/uebung5/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="277" column="10" selection-start="9785" selection-end="9785" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/glMatrix-0.9.5.min.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="23" column="250" selection-start="9217" selection-end="9217" vertical-scroll-proportion="0.6955645" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/uebung4/cubemap/1/large/negx.jpg">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/uebung4/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="116" column="11" selection-start="2447" selection-end="3181" vertical-scroll-proportion="1.0925926" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/uebung4/uebung4.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="102" column="9" selection-start="3219" selection-end="3220" vertical-scroll-proportion="0.33195877">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/uebung3/index3.html">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-0.82098764" />
@@ -397,9 +377,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/uebung3/uebung3_4.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="188" column="8" selection-start="5932" selection-end="5993" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="188" column="8" selection-start="5932" selection-end="5993" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/uebung3/index.html">
@@ -414,9 +392,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/uebung3/uebung3.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-1.117647">
-          <folding />
-        </state>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-1.117647" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/uebung2/index.html">
@@ -431,21 +407,55 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/uebung5/tdlUtils.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="55" column="18" selection-start="1889" selection-end="1903" vertical-scroll-proportion="1.8374165">
-          <folding />
-        </state>
+        <state line="55" column="18" selection-start="1889" selection-end="1903" vertical-scroll-proportion="1.8374165" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uebung5/brick-tex.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uebung5/brick-nrm.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bloom.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/uebung5/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="214" column="34" selection-start="8787" selection-end="8787" vertical-scroll-proportion="-1.7346939">
+        <state line="410" column="11" selection-start="14330" selection-end="14724" vertical-scroll-proportion="-95.875">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uebung4.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="19" column="138" selection-start="1314" selection-end="1314" vertical-scroll-proportion="-11.875">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/uebung5/uebung5.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="25" column="73" selection-start="1463" selection-end="1463" vertical-scroll-proportion="0.4678899">
+        <state line="20" column="134" selection-start="1032" selection-end="1032" vertical-scroll-proportion="-6.818182">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="35" column="26" selection-start="1293" selection-end="1293" vertical-scroll-proportion="-11.416667">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uebung5.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="48" column="65" selection-start="2553" selection-end="2553" vertical-scroll-proportion="0.45578232">
           <folding />
         </state>
       </provider>
