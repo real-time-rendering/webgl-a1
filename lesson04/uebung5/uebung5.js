@@ -13,7 +13,8 @@ var GLOW_BLUR_SIZE = options.GLOW_BLUR_SIZE || 0.01;
 var GLOW_STRENGTH = options.GLOW_STRENGTH || 2.0;
 //var WATER_DENSITY = 0.00;
 var REFLECTION_ANGLE_MULTIPLICATOR = options.REFLECTION_ANGLE_MULTIPLICATOR || 30.0;
-var size = "large";
+var ENABLE_WATERVIEW = false;
+var size = "small";
 
 var RENDER_WATER = (options.RENDER_WATER)?strToBool(options.RENDER_WATER ):true;
 var RENDER_WATER_REFLECTION = (options.RENDER_WATER_REFLECTION)?strToBool(options.RENDER_WATER_REFLECTION):true;
@@ -442,11 +443,17 @@ function initialize() {
         }
         
         if(RENDER_SCENE){
+            if(ENABLE_WATERVIEW){
+                drawObjectConst.waterview = 1;
+            } else {
+                drawObjectConst.waterview = 0;
+            }
             //create fullscreen scene
             framebuffer.bind();
             gl.depthMask(true);
             gl.enable(gl.DEPTH_TEST);
             renderScene(true);
+            drawObjectConst.waterview = 0;
         }
         
         backBuffer.bind();
@@ -474,7 +481,7 @@ function initialize() {
             gl.depthMask(false);
             gl.disable(gl.DEPTH_TEST);
 
-            skybox.drawPrep(skyboxConst);
+            skybox.drawPrep(drawObjectConst);
             mat4.translate(mat4.identity(skyboxPer.model),eyePosition);
             skybox.draw(skyboxPer);
 

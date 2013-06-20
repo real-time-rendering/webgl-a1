@@ -84,6 +84,14 @@
                              <input id="skybox" checked="checked" type="checkbox" onclick="RENDER_SKYBOX = $(this).is(':checked')" >
                         </div>
                     </div>
+                    <div>
+                        <div>
+                            waterview
+                        </div>
+                        <div>
+                             <input id="waterview" type="checkbox" onclick="ENABLE_WATERVIEW = $(this).is(':checked')" >
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="boxed">
@@ -564,6 +572,7 @@
     uniform mat4 projection;
     uniform mat4 view;
     uniform mat4 model;
+    uniform int waterview;
 
     uniform vec3 eyePosition;
 
@@ -573,9 +582,12 @@
     varying vec3 eyeDirectionW;
 
     void main() {
-    vec4 positionW = model * position * 10.0;
-    eyeDirectionW = - position.xyz;
-    gl_Position = projection * view * positionW;
+        vec4 positionW = model * position * 10.0;
+        eyeDirectionW = - position.xyz;
+        if(waterview == 1){
+            eyeDirectionW.y *= -1.0;
+        }
+        gl_Position = projection * view * positionW;
     }
 </script>
 
