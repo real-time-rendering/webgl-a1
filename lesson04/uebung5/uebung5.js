@@ -11,8 +11,9 @@ var WATERMAP_SIZE = options.WATERMAP_SIZE || 256;
 var BRIGHT_PASS = options.BRIGHT_PASS || 0.5;
 var GLOW_BLUR_SIZE = options.GLOW_BLUR_SIZE || 0.01;
 var GLOW_STRENGTH = options.GLOW_STRENGTH || 2.0;
+var REFRACTION_STRENGTH = options.REFRACTION_STRENGTH || 0.01;
 //var WATER_DENSITY = 0.00;
-var REFLECTION_ANGLE_MULTIPLICATOR = options.REFLECTION_ANGLE_MULTIPLICATOR || 30.0;
+var REFLECTION_ANGLE_MULTIPLICATOR = options.REFLECTION_ANGLE_MULTIPLICATOR || 1.0;
 var ENABLE_WATERVIEW = false;
 var size = "small";
 
@@ -21,6 +22,7 @@ var RENDER_WATER_REFLECTION = (options.RENDER_WATER_REFLECTION)?strToBool(option
 var RENDER_WATER_REFLECTION_NORMALMAP = (options.RENDER_WATER_REFLECTION_NORMALMAP)?strToBool(options.RENDER_WATER_REFLECTION_NORMALMAP):true;
 var RENDER_WATER_REFRACTION = (options.RENDER_WATER_REFRACTION)?strToBool(options.RENDER_WATER_REFRACTION):true;
 var RENDER_WATER_REFRACTION_NORMALMAP = (options.RENDER_WATER_REFRACTION_NORMALMAP)?strToBool(options.RENDER_WATER_REFRACTION_NORMALMAP):true;
+var RENDER_WATER_REFRACTION_ADVANCED = (options.RENDER_WATER_REFRACTION_ADVANCED)?strToBool(options.RENDER_WATER_REFRACTION_ADVANCED):true;
 var SHOW_WATER = (options.SHOW_WATER)?strToBool(options.SHOW_WATER):true
 //var SHOW_WATER_DEPTH = options.SHOW_WATER_DEPTH ||  false;
 var RENDER_BLOOM = (options.RENDER_BLOOM)?strToBool(options.RENDER_BLOOM):true;
@@ -64,6 +66,7 @@ function initControles(){
     $('#renderwaterreflectionnormalmap').attr('checked', RENDER_WATER_REFLECTION_NORMALMAP);
     $('#renderwaterrefraction').attr('checked', RENDER_WATER_REFRACTION);
     $('#renderwaterrefractionnormalmap').attr('checked', RENDER_WATER_REFRACTION_NORMALMAP);
+    $('#renderwaterrefractionadvanced').attr('checked', RENDER_WATER_REFRACTION_ADVANCED);
 
     //ranges
     $('#brightpass').val(BRIGHT_PASS);
@@ -155,7 +158,7 @@ function initialize() {
     var framebuffer = tdl.framebuffers.createFramebuffer(canvas.width, canvas.height, true);
     var smallFramebuffer = tdl.framebuffers.createFramebuffer(GLOWMAP_SIZE, GLOWMAP_SIZE, true);
     var glowmap = tdl.framebuffers.createFramebuffer(GLOWMAP_SIZE, GLOWMAP_SIZE, true);
-    var refractionmap = new tdl.framebuffers.createFramebuffer(WATERMAP_SIZE, WATERMAP_SIZE, true);
+    var refractionmap = new tdl.framebuffers.Float32Framebuffer(WATERMAP_SIZE, WATERMAP_SIZE, true);
     var watermap = tdl.framebuffers.createFramebuffer(WATERMAP_SIZE, WATERMAP_SIZE, true);
     var backBuffer = new tdl.framebuffers.BackBuffer(canvas);
     
@@ -359,6 +362,7 @@ function initialize() {
         reflectionAngleBias: 50.0,
         showWaterDepth: 0,
         waterDensity: 0.1,
+        refractionStrength: 0.01,
     };
 
     var skyboxConst = {
@@ -394,7 +398,9 @@ function initialize() {
         drawObjectConst.renderWaterReflectNormalmap = RENDER_WATER_REFLECTION_NORMALMAP ? 1 : 0;
         drawObjectConst.renderWaterRefract = RENDER_WATER_REFRACTION ? 1 : 0;
         drawObjectConst.renderWaterRefractNormalmap = RENDER_WATER_REFRACTION_NORMALMAP ? 1 : 0;
+        drawObjectConst.renderWaterRefractAdvanced = RENDER_WATER_REFRACTION_ADVANCED ? 1 : 0;
         drawObjectConst.renderBloom = RENDER_BLOOM ? 1 : 0;
+        drawObjectConst.refractionStrength = REFRACTION_STRENGTH;
         
 
         gl.enable(gl.CULL_FACE);
