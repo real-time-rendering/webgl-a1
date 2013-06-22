@@ -284,6 +284,7 @@ function initialize() {
         //console.log(n);
         switch (n) {
             case " ":
+            case "p":
                 animate = !animate;
                 break;
             case "r":

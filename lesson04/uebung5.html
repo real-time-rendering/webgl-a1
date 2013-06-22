@@ -1,17 +1,17 @@
 
-<h2>&Uuml;bung 4</h2>
+<h2>&Uuml;bung 5</h2>
 </br>
-<p><b>Aufgabe 4</b></p>
 <p>Gegenstand dieser Aufgabe ist die selbstständige Recherche, prototypische Implementierung, schriftliche Ausarbeitung und abschließende Präsentation einer nicht-trivialen Multi-Pass Technik. </p>
 <p><b>Themenwahl</b></p>
 <p>Wir haben uns für die umsetzung verschiedener, kombinierte Multi-pass Techniken im Rahmen einer kleinen Beispielanwendung entschieden. Konkret sind dies Bloom, winkelabhhängige Spiegelung und Refraktion</p>
 <p><b>Theoretische Grundladen</b></p>
-<p><b><i>* Bloom</i></b></p>
+<h3>Bloom</h3>
 <p>Das Blooming erzeugt einen Leucht- bzw. Überstrahl-Effekt in Abhängigkeit der Helligkeit eines jeden Pixels. Im allgemeinen werden hierbei helle Bereiche einer Szene stark überzeichnet dargestellt - dunkle hingegen bleiben unverändert. Der Ablauf des Bloomings lässt sich in follgende Schritte unterteilen:<br><br>
 <p><img src="bloom.jpg"></p><br>
 <b>1. Berechnung der Szene</b></b><br>Die Szene wird zunächst normal, z.B. über einen Phong-Shader gerendert und in einem Framebuffer gespeichert.<br><br>
 <b>2. Berechnung der Glowmap</b></b><br>Die Szene wird erneut, aber mit geringerer Auflösung (z.B. 128*128 Pixel) gerendert, wobei nur Pixel mit einer bestimmten minimalen Helligkeit (<code>brightpass</code>) beachtet werden. Dies wird auch als sogenannte Brigth-Pass Filterung bezeichnet:
-</br></br><pre>
+</br></br>
+<pre class="fragment"><code class="language-glsl">
 vec3 brightpass_filter(vec3 color){
    float b = (color.r + color.g + color.b)/3.0;
    if(b < brightpass){
@@ -24,11 +24,12 @@ void main() {
    ...
    gl_FragColor.rgb = brightpass_filter(outcolor);
 }
-</pre>
+</code></pre>
 Diese sogenannte Glowmap wird dann per linearer Interpolation auf die Ausmaße der ursprünglichen Szene vergrößert und ebenfalls in einem einem Framebuffer gespeichert.<br><br>
 
 <b>3. Glowmap weichzeichen</b></b><br>Die Glowmap wird anschließend per vereinfachten gaußschen Weichzeichner geblurt:
-</br></br><pre>
+</br></br>
+<pre class="fragment"><code class="language-glsl">
 const int samples = 5;
 const float center = (float(samples)-1.0)/2.0;
 
@@ -43,12 +44,12 @@ vec3 color = vec3(0.0);
             kernelWeight;
       }
 }
-</pre>
+</code></pre>
 BlaBlub... die (<code>glowBlurSize</code>) wirkt sich dabei wie folgt aus.
 <br><br>
 <b>4. Berechnung des Endresultats durch additive Farbmischung</b>
 <p>Die zuvor gefüllten Frambuffer werden dann per additive Farbmischung in Abhängigkeit eines Multiplikators (<code>glowStrength</code>) der angibt wie stark sich die Glowmap auf das Endresultat auswirkt verrechnet.
-<pre>
+<pre class="fragment"><code class="language-glsl">
 void main() {
    vec3 glowmapPixel = texture2D(glowMap, texCoordI).rgb;
    vec3 origPixel = texture2D(colorBuffer, texCoordI).rgb;
@@ -57,12 +58,146 @@ void main() {
    gl_FragColor.rgb += glowmapPixel * glowStrength;
    gl_FragColor.a = 1.0;
 }
-</pre>
+</code></pre>
 </p></p></b><br><br>
-<p><b><i>* Reflection</i></b></p>
-<p>bla</p>
+<h3>Reflektion</h3>
+<p>Die Reflektion einer Oberfläche kann simuliert werden, indem die Szene
+um die Normale der Oberfläche gespiegelt wird. Das Ergebnis wird in eine
+Texture gerendert, auf die reflektierende Oberfläche gemappt wird.</p>
+<h4>1. Rendern der gespiegelte Szene </h4>
+<img src="reflection-camera-setup.png" width="400"/>
+<p>Wir haben diesen Sachverhalt vereinfacht implementiert
+und gehen davon aus, dass die spiegelnde Oberfläche sich auf der
+X-Z-Ebene befindet. Somit kann die Szene gepiegelt werden, indem die Y-Achse
+umgedreht wird. Wir haben dies im Vertex Shader umgesetzt.</p>
+<pre class="vertex"><code class="language-glsl">
+if(waterview == 1){
+    positionW.y *= -1.0;
+}
+</code></pre>
+<p><i>waterview</i> ist eine Uniform Variable, welche beim Rendervorgang des Reflektion
+Framebuffers auf 1 gesetzt wird.</p>
+<p>In diesem Schritt muss sichegestellt werden, dass Objekte, welche sich unter der Wasserobefläche befinden nicht gerendert werden.
+Die einfachste Art dies zu erreichen, ist im Fragment-Shader alle Fragmente zu verrwerfen, welche unter Wasser sind (y &lt; 0)</p>
+<pre class="fragment"><code class="language-glsl">
+if(positionW.y > 0.0){
+    discard;
+}
+</code></pre>
+<h4>2. Texturemapping der Reflektionstextur </h4>
+<p>Die umgekehrt gerenderte Szene muss nun auf die reflektierende Oberfläche gemappt werden. Dafür können die Einheitskoordinaten verwendet werden.</p>
+Vertex Shader:
+<pre class="vertex"><code class="language-glsl">
+/* Einheitskoordinaten durch tiefe (z) Teilen um die perspektivische
+Verzerrung auszugleichen */
+vec2 reflectionTexI = gl_Position.xy / gl_Position.z
+/* normalisieren auf Texturkoordinaten */
+reflectionTexI = reflectionTexI + vec2(1.0) / 2.0;
+</code></pre>
+Fragment Shader:
+<pre><code class="language-glsl">
+gl_FragColor.rgb = texture2D(reflectionMap, reflectionTexI)
+</code></pre>
+<img src="reflection-composition.png" width="600"/>
+<h4>3. Normalmapping der Reflektionstextur </h4>
+<p>Um eine wasserartige Oberfläche zu erhalten, kann eine Normalmap verwendet werden,
+welche die Texturkoordinaten der eben verwendeten reflectionMap ein wenig verschiebt.
+</p>
+<pre class="fragment"><code class="language-glsl">
+const float normalStrengh = 0.01;
+vec3 normal = texture2D(waterNormalMap, texCoordI).rgb;
+gl_FragColor.rgb = texture2D(reflectionMap + normal.xz * normalStrengh, reflectionTexI)
+</code></pre>
+<img src="reflection-normalmap.png" width="600"/>
+<h3>Refraktion</h3>
+<h5>Simpler Ansatz</h5>
+<p>Der einfache Ansatz um Refraktion zu simulieren, ist die Szene unterhalb der
+Wasseroberfläche zu rendern und danach eine Normalmap auf diese Textur anzuwenden.
+Somit sieht alles Unterhalb der Wasseroberfläche verzerrt aus und gibt dem
+Zuschauer den Eindruck von Refraktion.</p>
+<img src="refraction-simple.png" width="600"/>
+<p>Praktisch ist das allerdings nicht korrekt, da die Änderung der Dichte den
+Lichtstrahl beim austritt aus dem Wasser krümmen würde. Um dies zu simulieren
+wurde ein anderer Ansatz hinzugefügt. Snell's Gesetz beschreibt dieses Verhalten.
+Hierbei wird der Lichtstrahl folgender Formel gekrümmt
+gekrümmt:</p>
+<pre>
+sin(α)    n1
+------ = ----
+sin(β)    n2
+</pre>
+<p>
+Wobei α und β jeweils dem Ein- und Austrittswinkel bestimmen und n1 und n2 die Dichte der
+jeweiligen Materialien ist.
+</p>
+<img src="snells-law.png" width="150" />
+<p>
+    Da diese Berechnung in einem Renderdurchlauf nur sehr schwer physikalisch
+    korrekt Umsetzbar ist, haben wir uns entschieden eine grobe Approximation
+    diese Sachverhalts umzusetzen.
+</p>
+<h5>Fortgeschrittener Ansatz</h5>
+<p>
+   In der folgenden Zeichnung ist oben das physikalisch korrekte Verhalten
+   und unten unserer Trick zum nachempfinden diese Verhaltens illustriert.
+</p>
+<img src="refraction-fake.png" width="200" />
+<p>
+    Die Framebuffer Textur beinhaltet nämlich bereits die BildInformationen, die 
+    gebraucht werden um eine näherungsweise korrekte Refraktion zu zeigen an anderer Stelle!
+    Wir müssen nur die Texturekoordination des Refraktions-Framebuffers
+    so modifizieren, dass dieser in Abhängigkeit des Eintrittswinkels
+    und der Wassertiefe modifiziert wird.
+</p>
+<p>Die Tiefeninformation wird beim Rendering der Unterwasser-Szene in den
+Alpha-Kanal geschrieben. Wir können diesen wert dann später mit der Entfernung
+des Wasseroberflächen Fragments vergleichen um die Wassertiefe zu berechnen:</p>
+<pre class="vertex"><code class="language-glsl">
+varying float depthWEC;
+...
+gl_Position = projection * view * positionW;
+depthWEC = gl_Position.z;
+</code></pre>
+<pre class="fragment"><code class="language-glsl">
+uniform int refractionView;
+...
+if(refractionView == 1){
+    gl_FragColor.a = depthWEC;
+}
+</code></pre>
+<p>Wie schon zuvor ist eine weitere Uniformvariable <i>refractionView</i> als Schalter
+für diesen Rendermodus eingeführt worden.</p>
+<p>Nun kann dieser Tiefenwert genutzt werden, um beim rendern des Wassers mit
+dem dortigen Z-Wert verglichen zu werden. Praktisch berechnet dies die Eintrittstiefe
+des Sichtvektors in das Wasser.</p>
+<pre class="fragment"><code class="language-glsl">
+// der eben berechnete Tiefenwert im Alphakanal:
+float underWaterDepth = texture2D(sceneTexture, reflectionI).a;
+
+// Differenz der Tiefenwerte 
+float waterDepthDelta = (underWaterDepth - depthWEC);
+
+// berechnung der Schräge mit der aufs Wasser geblickt wird:
+// der vec3(0,1,0) ist die Normale des Wassers (geht von XZ-Plane aus)
+float eyeDirWaterAngle = 1.0 - dot(eyeDirectionW, vec3(0.0,1.0,0.0));
+
+// berechnet den Offset auf der Unterwasser-Szenen-Textur
+// refractionStrength ist eine uniform variable um die Stärke des Effekts zu bestimmen
+vec2 waterRefractOffset = vec2(0.0,-eyeDirWaterAngle * waterDepthDelta * refractionStrength);
+
+// Setzen der Farbwerte anhand des eben berechneten offsets und des originalwertes 'reflectTexCoord'
+gl_FragColor.rgb += texture2D(sceneTexture, reflectTexCoord + waterRefractOffset).rgb;
+</code></pre>
+<img src="refraction-advanced.png" width="600" />
+<p>
+    Wie man sehen kann, bringt dieser Ansatz eine einigermaßen Realistische
+    Refraktion zu stande. Allerdings ist diese physikalisch gesehen völliger
+    Humbug. Das wird insbesondere dann klar, wenn weitere Objekte unter
+    Wasser treiben, da dann der Boden unter umständen diese Objekte in die
+    Refraktion aufnimmt.
+</p>
 <br><br>
-<p><b>Ergebniss</b></p>
+<p><b>Ergebnis</b></p>
 <p><a href="uebung5/index.html"><img src="scene.jpg"></a></p>
 <li><a href="uebung5/index.html">index.html</a></li>
 <li><a href="uebung5/uebung5.js">uebung5.js</a></li>
