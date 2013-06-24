@@ -4,7 +4,7 @@
     <list default="true" id="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" name="Default" comment="" />
     <ignored path="lesson04.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/index.html" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1372062800489" ignored="false" />
+    <file path="/index.html" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1372067496580" ignored="false" />
     <file path="/ShaderScript.js" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1366034090522" ignored="false" />
     <file path="/sphere.js" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1366629746734" ignored="false" />
     <file path="/uebung1x.html" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1366310780385" ignored="false" />
@@ -19,7 +19,7 @@
     <file path="/uebung4.html" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1369658267622" ignored="false" />
     <file path="/index3.html" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1369148573435" ignored="false" />
     <file path="/uebung4.js" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1369653570871" ignored="false" />
-    <file path="/uebung5.js" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1372063183693" ignored="false" />
+    <file path="/uebung5.js" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1372065911539" ignored="false" />
     <file path="/tdlUtils.js" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1371397936023" ignored="false" />
     <file path="/primitives.js" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1371397061856" ignored="false" />
     <file path="/uebung5.html" changelist="56d8fe24-dc7d-4cdc-8f79-f7e4dde0790d" time="1371927650034" ignored="false" />
@@ -42,37 +42,19 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/uebung5/index.html">
+      <file leaf-file-name="uebung5.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/uebung5/uebung5.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="16" column="36" selection-start="712" selection-end="712" vertical-scroll-proportion="1.8367347">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="uebung5.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/uebung5.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="110" column="8" selection-start="5712" selection-end="5712" vertical-scroll-proportion="-0.625">
+            <state line="33" column="20" selection-start="2016" selection-end="2032" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="index.html" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/index.html">
+        <entry file="file://$PROJECT_DIR$/uebung5/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="52" column="26" selection-start="1842" selection-end="1842" vertical-scroll-proportion="1.7180617">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="uebung5.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/uebung5/uebung5.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="68" column="37" selection-start="3399" selection-end="3428" vertical-scroll-proportion="-5.84">
+            <state line="35" column="29" selection-start="1183" selection-end="1183" vertical-scroll-proportion="0.13574661">
               <folding />
             </state>
           </provider>
@@ -102,8 +84,8 @@
         <option value="$PROJECT_DIR$/uebung5_glow/uebung5.html" />
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/uebung5.html" />
-        <option value="$PROJECT_DIR$/uebung5/index.html" />
         <option value="$PROJECT_DIR$/uebung5/uebung5.js" />
+        <option value="$PROJECT_DIR$/uebung5/index.html" />
       </list>
     </option>
   </component>
@@ -138,7 +120,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -157,8 +138,23 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="lesson04" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="lesson04" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="uebung5" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -280,8 +276,8 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.0" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24982357" sideWeight="0.73740053" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14820042" sideWeight="0.6710875" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32891247" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14820042" sideWeight="0.67241377" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3275862" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -421,30 +417,30 @@
         <state line="19" column="138" selection-start="1314" selection-end="1314" vertical-scroll-proportion="0.64625853" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/uebung5/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="36" selection-start="712" selection-end="712" vertical-scroll-proportion="1.8367347">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/uebung5.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="110" column="8" selection-start="5712" selection-end="5712" vertical-scroll-proportion="-0.625">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/uebung5/uebung5.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="68" column="37" selection-start="3399" selection-end="3428" vertical-scroll-proportion="-5.84">
+        <state line="110" column="8" selection-start="5712" selection-end="5712" vertical-scroll-proportion="0.021770682">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="52" column="26" selection-start="1842" selection-end="1842" vertical-scroll-proportion="1.7180617">
+        <state line="52" column="26" selection-start="1842" selection-end="1842" vertical-scroll-proportion="0.8717949">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uebung5/uebung5.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="33" column="20" selection-start="2016" selection-end="2032" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uebung5/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="35" column="29" selection-start="1183" selection-end="1183" vertical-scroll-proportion="0.13574661">
           <folding />
         </state>
       </provider>

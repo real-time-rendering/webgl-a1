@@ -33,7 +33,7 @@
         }
         .table > div > div{
             display: table-cell;
-            padding-bottom: 5px;
+            padding-bottom: 3px;
         }
         .table > div > div:first-child{
             text-align: right;
@@ -46,6 +46,7 @@
             border: 1px solid #ddd;
             height: 340px;
             margin-bottom: 30px;
+            margin-left: 3px;
         }
         
     </style>
@@ -189,7 +190,7 @@
                     </div>
                     <div>
                         <div>
-                            render water
+                            update water
                         </div>
                         <div>
                             <input id="renderwater" checked="checked" type="checkbox" onclick="RENDER_WATER = $(this).is(':checked')">
@@ -588,7 +589,7 @@
             vec2 reflectTexCoord = reflectionI.xy + (refractTextureNormal.xz * refractionStrength);
             vec2 waterRefractOffset = vec2(0.0,0.0);
             if(renderWaterRefractAdvanced == 1){
-                float underWaterDepth = texture2D(sceneTexture, reflectionI).a;
+                float underWaterDepth = texture2D(sceneTexture, reflectionI).a / 255.0;
                 float waterDepthDelta = (underWaterDepth - depthWEC);
                 // assuming water is always plane on x-z-axis:
                 float eyeDirWaterAngle = 1.0 - dot(eyeDirectionWnorm, vec3(0.0,1.0,0.0));

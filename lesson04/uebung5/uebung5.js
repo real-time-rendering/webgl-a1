@@ -15,7 +15,7 @@ var REFRACTION_STRENGTH = options.REFRACTION_STRENGTH || 0.01;
 //var WATER_DENSITY = 0.00;
 var REFLECTION_ANGLE_MULTIPLICATOR = options.REFLECTION_ANGLE_MULTIPLICATOR || 1.0;
 var ENABLE_WATERVIEW = false;
-var size = "small";
+var size = "large";
 
 var RENDER_WATER = (options.RENDER_WATER)?strToBool(options.RENDER_WATER ):true;
 var RENDER_WATER_REFLECTION = (options.RENDER_WATER_REFLECTION)?strToBool(options.RENDER_WATER_REFLECTION):true;
@@ -27,7 +27,7 @@ var SHOW_WATER = (options.SHOW_WATER)?strToBool(options.SHOW_WATER):true
 //var SHOW_WATER_DEPTH = options.SHOW_WATER_DEPTH ||  false;
 var RENDER_BLOOM = (options.RENDER_BLOOM)?strToBool(options.RENDER_BLOOM):true;
 var SHOW_BLOOM = (options.SHOW_BLOOM)?strToBool(options.SHOW_BLOOM):true;
-var RENDER_SCENE = (options.SHOW_BLOOM)?strToBool(options.SHOW_BLOOM):true;
+var RENDER_SCENE = (options.RENDER_SCENE)?strToBool(options.RENDER_SCENE):true;
 var SHOW_SCENE = (options.SHOW_SCENE )?strToBool(options.SHOW_SCENE):true;
 var RENDER_SKYBOX = (options.RENDER_SKYBOX)?strToBool(options.RENDER_SKYBOX):true;
 var GLOWINGWELL = (options.GLOWINGWELL)?strToBool(options.GLOWINGWELL):true;
@@ -82,7 +82,7 @@ function strToBool(str){
 window.onload = function() {
     $(window).resize(function() {
         var width = $('#canvas-container').innerWidth();
-        $('#canvas').attr('width', width).attr('height', width*0.6);
+        $('#canvas').attr('width', width).attr('height', width*0.5);
     });
     $(window).resize();
     try {
@@ -158,7 +158,8 @@ function initialize() {
     var framebuffer = tdl.framebuffers.createFramebuffer(canvas.width, canvas.height, true);
     var smallFramebuffer = tdl.framebuffers.createFramebuffer(GLOWMAP_SIZE, GLOWMAP_SIZE, true);
     var glowmap = tdl.framebuffers.createFramebuffer(GLOWMAP_SIZE, GLOWMAP_SIZE, true);
-    var refractionmap = new tdl.framebuffers.Float32Framebuffer(WATERMAP_SIZE, WATERMAP_SIZE, true);
+    var refractionmap = new tdl.framebuffers.createFramebuffer(WATERMAP_SIZE, WATERMAP_SIZE, true);
+    //var refractionmap = new tdl.framebuffers.Float32Framebuffer(WATERMAP_SIZE, WATERMAP_SIZE, true);
     var watermap = tdl.framebuffers.createFramebuffer(WATERMAP_SIZE, WATERMAP_SIZE, true);
     var backBuffer = new tdl.framebuffers.BackBuffer(canvas);
     
