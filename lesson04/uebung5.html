@@ -27,7 +27,7 @@ void main() {
 </code></pre>
 Diese sogenannte Glowmap wird dann per linearer Interpolation auf die Ausmaße der ursprünglichen Szene vergrößert und ebenfalls in einem einem Framebuffer gespeichert.<br><br>
 
-<b>3. Glowmap weichzeichen</b></b><br>Die Glowmap wird anschließend per vereinfachten gaußschen Weichzeichner geblurt:
+<b>3. Glowmap weichzeichen</b></b><br>Die Glowmap wird anschließend weichgezeichnet, wobei sich der Farbwert eines pixels aus dem Durschnitt der Farbwerte eines 5*5 großem Pixel-Quadrats (Kernel) um den Pixel herum ergibt. Der Sogenannte Kernel kann über den Parameter (<code>glowBlurSize</code>) gespreizt werden:
 </br></br>
 <pre class="fragment"><code class="language-glsl">
 const int samples = 5;
@@ -45,8 +45,7 @@ vec3 color = vec3(0.0);
       }
 }
 </code></pre>
-BlaBlub... die (<code>glowBlurSize</code>) wirkt sich dabei wie folgt aus.
-<br><br>
+<br>
 <b>4. Berechnung des Endresultats durch additive Farbmischung</b>
 <p>Die zuvor gefüllten Frambuffer werden dann per additive Farbmischung in Abhängigkeit eines Multiplikators (<code>glowStrength</code>) der angibt wie stark sich die Glowmap auf das Endresultat auswirkt verrechnet.
 <pre class="fragment"><code class="language-glsl">
@@ -109,6 +108,7 @@ vec3 normal = texture2D(waterNormalMap, texCoordI).rgb;
 gl_FragColor.rgb = texture2D(reflectionMap + normal.xz * normalStrengh, reflectionTexI)
 </code></pre>
 <img src="reflection-normalmap.png" width="600"/>
+<br><br>
 <h3>Refraktion</h3>
 <h5>Simpler Ansatz</h5>
 <p>Der einfache Ansatz um Refraktion zu simulieren, ist die Szene unterhalb der
@@ -136,6 +136,7 @@ jeweiligen Materialien ist.
     korrekt Umsetzbar ist, haben wir uns entschieden eine grobe Approximation
     diese Sachverhalts umzusetzen.
 </p>
+<br><br>
 <h5>Fortgeschrittener Ansatz</h5>
 <p>
    In der folgenden Zeichnung ist oben das physikalisch korrekte Verhalten
@@ -202,5 +203,7 @@ gl_FragColor.rgb += texture2D(sceneTexture, reflectTexCoord + waterRefractOffset
 <li><a href="uebung5/index.html">index.html</a></li>
 <li><a href="uebung5/uebung5.js">uebung5.js</a></li>
 <li><a href="uebung5/tdlUtils.js">tdlUtils.js</a></li>
+<br><br>
+<br><br>
 
 
